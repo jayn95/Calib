@@ -1,6 +1,6 @@
+import 'package:Calib/fbase/auth_service.dart';  // Import the AuthService class
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:Calib/fbase/auth_service.dart';  // Import the AuthService class
 
 class LoginForm extends StatelessWidget {
   const LoginForm({super.key});
@@ -105,7 +105,7 @@ class LoginForm extends StatelessWidget {
                   },
                   style: ElevatedButton.styleFrom(
                     padding: EdgeInsets.symmetric(vertical: buttonHeight),
-                    backgroundColor: Color(0xFF3A6D8C),
+                    backgroundColor: const Color(0xFF3A6D8C),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8.0),
                     ),
@@ -133,7 +133,7 @@ class LoginForm extends StatelessWidget {
                     } else {
                       // If sign-in fails
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Google Sign-In failed')),
+                        const SnackBar(content: Text('Google Sign-In failed')),
                       );
                     }
                   },
