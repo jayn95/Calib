@@ -4,11 +4,19 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 class LoginForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    // Get the current screen width and height using MediaQuery
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
 
+    /// sets horizontal padding based on screen width. added so there are spaces on both sides (left and right),
+    /// else mastretch until the very edge and content.
+    /// If the screen width is greater than 500 pixels, use 32 pixels of padding
+    /// If the screen width is 500 pixels or less, use 16 pixels of padding
     double horizontalPadding = screenWidth > 500 ? 32.0 : 16.0;
+    // similar logic lang man sa horizontal but vertical spacing, adjusting based on height.
     double verticalSpacing = screenHeight > 800 ? 32.0 : 24.0;
+
+    /// same with the other two. if screenheight is more than 800 px, button height is 16 px.
     double buttonHeight = screenHeight > 800 ? 16.0 : 12.0;
 
     return Scaffold(
