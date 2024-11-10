@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:Calib/fbase/auth_service.dart';  // Import the AuthService class
 
 class LoginForm extends StatelessWidget {
   const LoginForm({super.key});
@@ -9,6 +10,7 @@ class LoginForm extends StatelessWidget {
     // Get the current screen width and height using MediaQuery
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
+    final AuthService authService = AuthService();
 
     /// sets horizontal padding based on screen width. added so there are spaces on both sides (left and right),
     /// else stretch until the very edge and content.
@@ -120,8 +122,20 @@ class LoginForm extends StatelessWidget {
 
                 // Continue with Google Button
                 OutlinedButton.icon(
-                  onPressed: () {
-                    // Handle Google sign-in logic/ Add Google sign-in huehue
+                  onPressed: () async {
+                    // Handle Google Sign-In using AuthService
+                    final user = await authService.signInWithGoogle();
+                    if (user != null) {
+                      // User signed in successfully, navigate to the next screen or show a message
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Welcome, ${user.displayName}')),
+                      );
+                    } else {
+                      // If sign-in fails
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Google Sign-In failed')),
+                      );
+                    }
                   },
                   style: OutlinedButton.styleFrom(
                     padding: EdgeInsets.symmetric(vertical: buttonHeight),
