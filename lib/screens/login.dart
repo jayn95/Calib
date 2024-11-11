@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class LoginForm extends StatelessWidget {
+  const LoginForm({super.key});
+
   @override
   Widget build(BuildContext context) {
     // Get the current screen width and height using MediaQuery
@@ -9,7 +11,7 @@ class LoginForm extends StatelessWidget {
     final screenHeight = MediaQuery.of(context).size.height;
 
     /// sets horizontal padding based on screen width. added so there are spaces on both sides (left and right),
-    /// else mastretch until the very edge and content.
+    /// else stretch until the very edge and content.
     /// If the screen width is greater than 500 pixels, use 32 pixels of padding
     /// If the screen width is 500 pixels or less, use 16 pixels of padding
     double horizontalPadding = screenWidth > 500 ? 32.0 : 16.0;
@@ -53,7 +55,7 @@ class LoginForm extends StatelessWidget {
                 SizedBox(height: verticalSpacing),
 
                 // Email Label and Field
-                Text(
+                const Text(
                   'Email',
                   style: TextStyle(
                     fontSize: 16,
@@ -61,7 +63,7 @@ class LoginForm extends StatelessWidget {
                     color: Colors.black,
                   ),
                 ),
-                SizedBox(height: 8.0),
+                const SizedBox(height: 8.0),
                 TextFormField(
                   decoration: InputDecoration(
                     hintText: 'Enter your email',
@@ -71,10 +73,10 @@ class LoginForm extends StatelessWidget {
                   ),
                   keyboardType: TextInputType.emailAddress,
                 ),
-                SizedBox(height: 16.0),
+                const SizedBox(height: 16.0),
 
                 // Password Label and Field
-                Text(
+                const Text(
                   'Password',
                   style: TextStyle(
                     fontSize: 16,
@@ -82,7 +84,7 @@ class LoginForm extends StatelessWidget {
                     color: Colors.black,
                   ),
                 ),
-                SizedBox(height: 8.0),
+                const SizedBox(height: 8.0),
                 TextFormField(
                   decoration: InputDecoration(
                     hintText: 'Enter your password',
@@ -114,7 +116,7 @@ class LoginForm extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(height: 16.0),
+                const SizedBox(height: 16.0),
 
                 // Continue with Google Button
                 OutlinedButton.icon(
@@ -123,13 +125,13 @@ class LoginForm extends StatelessWidget {
                   },
                   style: OutlinedButton.styleFrom(
                     padding: EdgeInsets.symmetric(vertical: buttonHeight),
-                    side: BorderSide(
+                    side: const BorderSide(
                         color: Colors.white), // Border color for Google button
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8.0),
                     ),
                   ),
-                  icon: Icon(
+                  icon: const Icon(
                     FontAwesomeIcons.google,
                     size: 24.0,
                   ),
@@ -141,7 +143,7 @@ class LoginForm extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(height: 16.0),
+                const SizedBox(height: 16.0),
 
                 // Don't have an account text
                 TextButton(
@@ -149,7 +151,7 @@ class LoginForm extends StatelessWidget {
                     // Navigate to account creation page
                     Navigator.pushNamed(context, '/account_creation');
                   },
-                  child: Text(
+                  child: const Text(
                     "Don't have an account? Sign up here",
                     style: TextStyle(color: Color(0xFF3A6D8C)),
                   ),

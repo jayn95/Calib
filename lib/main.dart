@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         fontFamily: 'Roboto', // Set Roboto as the default font
         colorScheme: ColorScheme.fromSeed(
-          seedColor: Color(0xFF3A6D8C), // Use a seed color for the theme
+          seedColor: const Color(0xFF3A6D8C), // Use a seed color for the theme
         ),
         useMaterial3: true,
       ),
