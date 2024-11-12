@@ -60,6 +60,13 @@ dev_dependencies:
 flutter:
   assets:
     - assets/trial.jpg
+    - assets/aboutbanner.png
+    - assets/jill.png
+    - assets/pauline.jpg
+    - assets/prince.png
+    - assets/joshua.JPG
+    - assets/ashley.jpg
+    - assets/patrick.JPG
 
 
   # The following line ensures that the Material Icons font is
