@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'screens/reviewer.dart'; // Import Login Form
 
 void main() {
-  runApp(const MyApp());
+  runApp(const Calib());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class Calib extends StatelessWidget {
+  const Calib({super.key});
 
   @override
   Widget build(BuildContext context) {
