@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'screens/reviewer.dart'; // Import Login Form
+import 'screens/study_page.dart'; // Import Login Form
 
 void main() {
   runApp(const MyApp());
@@ -19,9 +19,9 @@ class MyApp extends StatelessWidget {
         ),
         useMaterial3: true,
       ),
-      initialRoute: '/reviewer', // Set login page as initial route
+      initialRoute: '/study_page', // Set login page as initial route
       routes: {
-        '/reviewer': (context) => Reviewer(),
+        '/study_page': (context) => StudyPage(),
       },
     );
   }
