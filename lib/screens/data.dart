@@ -41,7 +41,8 @@ final List<Map<String, dynamic>> userBoxes = [
     'likes': 120,
     'description':
         'Lorem Ipsum is simply dummy text of the printing and typesetting industry.Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
-    'file': 'https:link.com',
+    'file':
+        'https://docs.google.com/document/d/1KXJm2oXYMueCSyFwgopbHKCpjOyuJECiccoJ3-roa2s/edit?usp=sharing',
     'category': 'Subject1'
   },
   {
