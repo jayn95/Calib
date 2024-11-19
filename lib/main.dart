@@ -33,6 +33,7 @@ class MyApp extends StatelessWidget {
         '/login': (context) => const LoginForm(), // Login page route
         '/account_creation': (context) =>
             AccountCreationForm(), // Account creation page route
+        '/reviewer': (context) => Reviewer(), // Reviewer page route
       },
     );
   }
