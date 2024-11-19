@@ -10,18 +10,45 @@ class Reviewer extends StatefulWidget {
 
 class _ReviewerState extends State<Reviewer> {
   Map<String, bool> _categories = Map.from(categories);
-  String? selectedCategory;
+  List<String> selectedCategories = []; // List to track selected categories
+  final ScrollController _scrollController = ScrollController();
+
+  void _scrollLeft() {
+    _scrollController.animateTo(
+      _scrollController.offset - 100,
+      duration: Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
+    );
+  }
+
+  void _scrollRight() {
+    _scrollController.animateTo(
+      _scrollController.offset + 100,
+      duration: Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
-    double cardSize = screenWidth / 3 - 32; // Adjusted for consistent padding
+    // 3 for large screens, 2 for mobile devices
+    int columns = MediaQuery.of(context).size.width > 600 ? 3 : 2;
 
-    // Filter userBoxes based on selectedCategory
-    final filteredBoxes = selectedCategory == null
-        ? userBoxes
+    double screenWidth = MediaQuery.of(context).size.width;
+    double cardSpacing = 16.0; // space between cards
+    double screenPadding =
+        screenWidth > 1100 ? 300.0 : 32.0; // padding on left and right
+    double cardSize =
+        (screenWidth - (columns - 1) * cardSpacing - screenPadding) /
+            columns; // Adjusted for consistent padding
+    cardSize = cardSize.clamp(120.0, double.infinity);
+
+    // Filter userBoxes based on selected categories
+    final filteredBoxes = selectedCategories.isEmpty ||
+            selectedCategories.contains('All')
+        ? userBoxes // Show all cards if 'All' is selected or no category is selected
         : userBoxes
-            .where((box) => box['category'] == selectedCategory)
+            .where((box) => selectedCategories.contains(box['category']))
             .toList();
 
     // Add empty placeholders if necessary to maintain 3 cards per row
@@ -29,8 +56,8 @@ class _ReviewerState extends State<Reviewer> {
     if (itemsToFill != 3) {
       filteredBoxes.addAll(List.generate(
         itemsToFill,
-        (index) => <String, dynamic>{}, // Empty map as a placeholder
-      ));
+        (index) => <String, dynamic>{},
+      )); // Empty map as a placeholder
     }
 
     return Scaffold(
@@ -48,27 +75,94 @@ class _ReviewerState extends State<Reviewer> {
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
           SizedBox(height: 36.0),
-          Wrap(
-            spacing: 10.0,
-            children: _categories.keys.map((category) {
-              return InputChip(
-                label: Text(category),
-                selected: _categories[category]!,
-                selectedColor: Colors.blue.shade100,
-                backgroundColor: Colors.white,
-                onSelected: (isSelected) {
-                  setState(() {
-                    _categories.updateAll((key, value) => false);
-                    _categories[category] = isSelected;
-                    selectedCategory = isSelected ? category : null;
-                  });
-                },
-              );
-            }).toList(),
+          // Tags with scrolling and arrows
+          Container(
+            margin: EdgeInsets.symmetric(
+              horizontal: screenWidth > 800
+                  ? 300.0
+                  : 30.0, // Adjust margin based on screen size
+            ),
+            padding: EdgeInsets.symmetric(
+              vertical: screenWidth > 800
+                  ? 16.0
+                  : 8.0, // Adjust padding based on screen size
+            ),
+            child: Row(
+              children: [
+                // Left Arrow Button
+                IconButton(
+                  icon: Icon(Icons.arrow_left),
+                  onPressed: _scrollLeft,
+                ),
+                Expanded(
+                  child: SingleChildScrollView(
+                    controller: _scrollController,
+                    scrollDirection:
+                        Axis.horizontal, // Horizontal scroll direction
+                    child: Wrap(
+                      spacing: screenWidth > 800
+                          ? 20.0
+                          : 14.0, // Space between each chip
+                      children: [
+                        // Add "All" option
+                        InputChip(
+                          label: Text('All',
+                              style: TextStyle(
+                                  fontSize: screenWidth > 800 ? 16.0 : 9.0)),
+                          selected: selectedCategories.contains('All'),
+                          selectedColor: Colors.blue.shade100,
+                          backgroundColor: Colors.white,
+                          onSelected: (isSelected) {
+                            setState(() {
+                              if (isSelected) {
+                                selectedCategories = [
+                                  'All'
+                                ]; // Only 'All' is selected
+                              } else {
+                                selectedCategories.remove(
+                                    'All'); // Remove 'All' if deselected
+                              }
+                            });
+                          },
+                        ),
+                        // Category chips
+                        ..._categories.keys.map((category) {
+                          double tagFontSize = screenWidth > 800 ? 16.0 : 9.0;
+                          return InputChip(
+                            label: Text(category,
+                                style: TextStyle(fontSize: tagFontSize)),
+                            selected: selectedCategories.contains(category),
+                            selectedColor: Colors.blue.shade100,
+                            backgroundColor: Colors.white,
+                            onSelected: (isSelected) {
+                              setState(() {
+                                if (isSelected) {
+                                  selectedCategories
+                                      .add(category); // Add to the list
+                                } else {
+                                  selectedCategories
+                                      .remove(category); // Remove from the list
+                                }
+                              });
+                            },
+                          );
+                        }).toList(),
+                      ],
+                    ),
+                  ),
+                ),
+                // Right Arrow Button
+                IconButton(
+                  icon: Icon(Icons.arrow_right),
+                  onPressed: _scrollRight,
+                ),
+              ],
+            ),
           ),
           SizedBox(height: 24.0),
           Expanded(
             child: SingleChildScrollView(
+              padding: EdgeInsets.symmetric(horizontal: 16.0),
               child: Center(
                 child: Wrap(
                   spacing: 16.0,

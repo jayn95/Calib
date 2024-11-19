@@ -21,7 +21,7 @@ class NavBar extends StatelessWidget {
               builder: (context, constraints) {
                 double logoSize = constraints.maxWidth > 800 ? 40.0 : 30.0;
                 return Image.asset(
-                  'assets/images/trial.jpg', // change with actual logo
+                  'assets/trial.jpg', // change with actual logo
                   height: logoSize,
                 );
               },
@@ -30,7 +30,7 @@ class NavBar extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              _buildNavButton(context, 'Share', '/share', Icons.share),
+              _buildNavButton(context, 'Share', '/reviewer', Icons.share),
               _buildNavButton(context, 'Study', '/study', Icons.book),
               _buildNavButton(context, 'About', '/about', Icons.info),
               _buildNavButton(context, 'Profile', '/profile', Icons.person),

@@ -5,6 +5,21 @@ final Map<String, bool> categories = {
   'Subject3': false,
   'Subject4': false,
   'Subject5': false,
+  'Subject6': false,
+  'Subject7': false,
+  'Subject8': false,
+  'Subject9': false,
+  'Subject10': false,
+  'Subject11': false,
+  'Subject12': false,
+  'Subject13': false,
+  'Subject14': false,
+  'Subject15': false,
+  'Subject16': false,
+  'Subject17': false,
+  'Subject18': false,
+  'Subject19': false,
+  'Subject20': false,
 };
 
 //sample categories for the boxes
@@ -22,10 +37,10 @@ final List<String> boxes = [
 final List<Map<String, dynamic>> userBoxes = [
   {
     'username': 'User 1',
-    'image': 'assets/images/prof.jpg',
+    'image': 'assets/trial.jpg',
     'likes': 120,
     'description':
-        'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
+        'Lorem Ipsum is simply dummy text of the printing and typesetting industry.Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
     'file': 'https:link.com',
     'category': 'Subject1'
   },
@@ -69,8 +84,7 @@ final List<Map<String, dynamic>> userBoxes = [
     'username': 'User 6',
     'image': 'assets/images/prof.jpg',
     'likes': 3,
-    'description':
-        'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
+    'description': 'Lorem Ipsum. Lorem Ipsum. Lorem Ipsum.',
     'file': 'https:link.com',
     'category': 'Subject2'
   },
