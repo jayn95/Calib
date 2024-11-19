@@ -3,8 +3,12 @@
 #
 
 list(APPEND FLUTTER_PLUGIN_LIST
+<<<<<<< HEAD
   firebase_auth
   firebase_core
+=======
+  url_launcher_windows
+>>>>>>> jill
 )
 
 list(APPEND FLUTTER_FFI_PLUGIN_LIST
