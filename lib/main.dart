@@ -1,8 +1,17 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
-import 'screens/reviewer.dart'; // Import Login Form
+import 'fbase/firebase_options.dart';
+import 'screens/account_creation.dart'; // Import Account Creation Form
+import 'screens/login.dart'; // Import Login Form
 
-void main() {
+import 'screens/reviewer.dart';
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const Calib());
 }
 
@@ -19,9 +28,11 @@ class Calib extends StatelessWidget {
         ),
         useMaterial3: true,
       ),
-      initialRoute: '/reviewer', // Set login page as initial route
+      initialRoute: '/login', // Set login page as initial route
       routes: {
-        '/reviewer': (context) => Reviewer(),
+        '/login': (context) => const LoginForm(), // Login page route
+        '/account_creation': (context) =>
+            AccountCreationForm(), // Account creation page route
       },
     );
   }

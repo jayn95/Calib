@@ -30,7 +30,7 @@ class NavBar extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              _buildNavButton(context, 'Share', '/reviewer', Icons.share),
+              _buildNavButton(context, 'Share', '/share', Icons.share),
               _buildNavButton(context, 'Study', '/study', Icons.book),
               _buildNavButton(context, 'About', '/about', Icons.info),
               _buildNavButton(context, 'Profile', '/profile', Icons.person),
