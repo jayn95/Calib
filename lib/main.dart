@@ -6,6 +6,7 @@ import 'screens/account_creation.dart'; // Import Account Creation Form
 import 'screens/login.dart'; // Import Login Form
 
 import 'screens/reviewer.dart';
+import 'screens/user_profile.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -34,6 +35,7 @@ class MyApp extends StatelessWidget {
         '/account_creation': (context) =>
             AccountCreationForm(), // Account creation page route
         '/reviewer': (context) => Reviewer(), // Reviewer page route
+        '/user_profile': (context) => ProfilePage(),
       },
     );
   }

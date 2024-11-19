@@ -33,7 +33,7 @@ class NavBar extends StatelessWidget {
               _buildNavButton(context, 'Share', '/share', Icons.share),
               _buildNavButton(context, 'Study', '/study', Icons.book),
               _buildNavButton(context, 'About', '/about', Icons.info),
-              _buildNavButton(context, 'Profile', '/profile', Icons.person),
+              _buildNavButton(context, 'Profile', '/user_profile', Icons.person),
               _buildLogoutButton(context),
             ],
           ),
