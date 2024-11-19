@@ -12,11 +12,11 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(const Calib());
+  runApp(const MyApp());
 }
 
-class Calib extends StatelessWidget {
-  const Calib({super.key});
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
