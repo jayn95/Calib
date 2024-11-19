@@ -7,6 +7,14 @@ final Map<String, bool> categories = {
   'Subject5': false,
 };
 
+final Map<String, bool> studyCategories = {
+  'Study1': false,
+  'Study2': false,
+  'Study3': false,
+  'Study4': false,
+  'Study5': false,
+};
+
 //sample categories for the boxes
 final List<String> boxes = [
   'Box 1',

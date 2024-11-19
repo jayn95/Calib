@@ -12,12 +12,12 @@ class StudyPage extends StatefulWidget {
 }
 
 class _StudyPageState extends State<StudyPage> {
-  final Map<String, bool> _categories = Map.from(categories);
+  final Map<String, bool> _scategories = Map.from(studyCategories);
 
   void _onTagSelectionChanged(Map<String, bool> selectedCategories) {
     setState(() {
-      _categories.clear();
-      _categories.addAll(selectedCategories);
+      _scategories.clear();
+      _scategories.addAll(selectedCategories);
     });
   }
 
@@ -44,7 +44,7 @@ class _StudyPageState extends State<StudyPage> {
               ),
               const SizedBox(height: 20),
               StudyTags(
-                categories: _categories,
+                studyCategories: _scategories,
                 onSelectionChanged: _onTagSelectionChanged,
               ),
               const SizedBox(height: 20),

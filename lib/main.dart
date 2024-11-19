@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: '/study_page', // Set login page as initial route
       routes: {
-        '/study_page': (context) => StudyPage(),
+        '/study_page': (context) => const StudyPage(),
       },
     );
   }
