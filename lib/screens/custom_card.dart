@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class CustomCard extends StatefulWidget {
   final String name;
@@ -97,7 +98,7 @@ class _CustomCardState extends State<CustomCard> {
           Row(
             children: [
               ClipRRect(
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(15),
                 child: Image.asset(
                   widget.imagePath, // Path to the image asset
                   width: imageSize,
@@ -168,11 +169,26 @@ class _CustomCardState extends State<CustomCard> {
                   SizedBox(height: screenWidth > 800 ? 8 : 4),
 
                   // File reference
-                  Text(
-                    'File: ${widget.file}',
-                    style: TextStyle(
-                      fontSize: fontSizeFile,
-                      color: Colors.blueAccent,
+                  InkWell(
+                    onTap: () async {
+                      final Uri url = Uri.parse(widget.file);
+                      if (await canLaunchUrl(url)) {
+                        await launchUrl(url,
+                            mode: LaunchMode.externalApplication);
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                              content: Text('Could not launch ${widget.file}')),
+                        );
+                      }
+                    },
+                    child: Text(
+                      'File: ${widget.file}',
+                      style: TextStyle(
+                        fontSize: fontSizeFile,
+                        color: Colors.blueAccent,
+                        decoration: TextDecoration.underline,
+                      ),
                     ),
                   ),
                 ],
