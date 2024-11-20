@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'fbase/firebase_options.dart';
 import 'screens/account_creation.dart'; // Import Account Creation Form
 import 'screens/login.dart'; // Import Login Form
-
+import 'screens/study_page.dart'; // Import Study Page
 import 'screens/reviewer.dart';
 import 'screens/user_profile.dart';
 
@@ -32,8 +32,8 @@ class MyApp extends StatelessWidget {
       initialRoute: '/login', // Set login page as initial route
       routes: {
         '/login': (context) => const LoginForm(), // Login page route
-        '/account_creation': (context) =>
-            AccountCreationForm(), // Account creation page route
+        '/account_creation': (context) => AccountCreationForm(), // Account creation page route
+        '/study': (context) => const StudyPage(), // Study page route
         '/reviewer': (context) => Reviewer(), // Reviewer page route
         '/user_profile': (context) => ProfilePage(),
       },

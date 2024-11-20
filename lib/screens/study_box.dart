@@ -50,11 +50,14 @@ class StudyBox extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(width: 10),
-                Text(
-                  userName,
-                  style: TextStyle(
-                    fontSize: fontSizeTitle,
-                    fontWeight: FontWeight.bold,
+                Expanded(
+                  child: Text(
+                    userName,
+                    style: TextStyle(
+                      fontSize: fontSizeTitle,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    overflow: TextOverflow.ellipsis, // Handle overflow
                   ),
                 ),
               ],
@@ -66,6 +69,7 @@ class StudyBox extends StatelessWidget {
                 fontSize: fontSizeSubtitle,
                 color: Colors.grey[600],
               ),
+              overflow: TextOverflow.ellipsis, // Handle overflow
             ),
             const SizedBox(height: 8),
             Text(
@@ -74,6 +78,7 @@ class StudyBox extends StatelessWidget {
                 fontSize: fontSizeDescription,
                 color: Colors.black87,
               ),
+              overflow: TextOverflow.ellipsis, // Handle overflow
             ),
             const Spacer(),
             Center(
@@ -87,17 +92,20 @@ class StudyBox extends StatelessWidget {
                     backgroundColor: const Color(0xFF001f3f),
                     padding: EdgeInsets.symmetric(
                       vertical: screenWidth > 600 ? 12 : 8,
-                      horizontal: screenWidth > 600 ? 80 : 60, // Extended sides
+                      horizontal: screenWidth > 600 ? 20 : 10, // Adjust padding
                     ),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(13), // Rounded borders
                     ),
                   ),
-                  child: Text(
-                    'UP FOR IT',
-                    style: TextStyle(
-                      fontSize: buttonFontSize,
-                      color: Colors.white,
+                  child: FittedBox(
+                    fit: BoxFit.scaleDown, // Scale text down if needed
+                    child: Text(
+                      'UP FOR IT',
+                      style: TextStyle(
+                        fontSize: buttonFontSize,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
                 ),
