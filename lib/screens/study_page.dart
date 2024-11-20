@@ -1,6 +1,6 @@
-import 'package:Calib/screens/data.dart';
-import 'package:Calib/screens/study_box.dart';
-import 'package:Calib/screens/studytags.dart';
+import 'data.dart';
+import 'study_box.dart';
+import 'studytags.dart';
 import 'package:flutter/material.dart';
 
 
