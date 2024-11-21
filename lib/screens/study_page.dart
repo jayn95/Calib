@@ -28,7 +28,7 @@ class _StudyPageState extends State<StudyPage> {
       home: Scaffold(
         backgroundColor: Colors.white,
         appBar: PreferredSize(
-          preferredSize: Size.fromHeight(60.0), // Adjust height if needed
+          preferredSize: const Size.fromHeight(60.0), // Adjust height if needed
           child: NavBar(currentRoute: '/study'), // Pass the current route to the NavBar
         ),
         body: SingleChildScrollView(
@@ -39,7 +39,7 @@ class _StudyPageState extends State<StudyPage> {
                 padding: EdgeInsets.symmetric(horizontal: constraints.maxWidth * 0.1),
                 child: Column(
                   children: [
-                    SizedBox(height: 80),
+                    const SizedBox(height: 80),
                     Center(
                       child: Text(
                         'Add your Text Here',
@@ -49,12 +49,12 @@ class _StudyPageState extends State<StudyPage> {
                         ),
                       ),
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     StudyTags(
                       studyCategories: _scategories,
                       onSelectionChanged: _onTagSelectionChanged,
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     GridView.builder(
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),

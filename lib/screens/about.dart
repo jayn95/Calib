@@ -277,7 +277,7 @@ class AboutPage extends StatelessWidget {
               width: profileImageSize,
               height: profileImageSize,
               clipBehavior: Clip.hardEdge,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 shape: BoxShape.circle,
               ),
               child: Image.asset(

@@ -2,6 +2,8 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 
 class ReviewForm extends StatefulWidget {
+  const ReviewForm({super.key});
+
   @override
   _ReviewFormState createState() => _ReviewFormState();
 }
@@ -94,12 +96,12 @@ class _ReviewFormState extends State<ReviewForm> {
                           }
                         });
                       },
-                      selectedColor: Color(0xFFEAD8B1), // Color when selected
+                      selectedColor: const Color(0xFFEAD8B1), // Color when selected
                       backgroundColor: Colors.white,
                       labelStyle: TextStyle(
                         color: isSelected ? Colors.black : Colors.black,
                       ),
-                      side: BorderSide(
+                      side: const BorderSide(
                         color: Colors.black,
                       ),
                     );
@@ -116,7 +118,7 @@ class _ReviewFormState extends State<ReviewForm> {
                     color: Colors.black,
                   ),
                 ),
-                SizedBox(height: 8.0),
+                const SizedBox(height: 8.0),
                 TextFormField(
                   maxLines: 4,
                   decoration: InputDecoration(
@@ -137,7 +139,7 @@ class _ReviewFormState extends State<ReviewForm> {
                     color: Colors.black,
                   ),
                 ),
-                SizedBox(height: 8.0),
+                const SizedBox(height: 8.0),
                 TextFormField(
                   controller: fileController,
                   decoration: InputDecoration(
@@ -148,17 +150,17 @@ class _ReviewFormState extends State<ReviewForm> {
                   ),
                   readOnly: false, // Allow text input for URLs
                 ),
-                SizedBox(height: 8.0),
+                const SizedBox(height: 8.0),
                 GestureDetector(
                   onTap: pickFile, // Open file picker when clicked
                   child: Container(
                     padding: EdgeInsets.symmetric(
                         vertical: buttonHeight, horizontal: 16.0),
                     decoration: BoxDecoration(
-                      color: Color(0xFF6A9AB0),
+                      color: const Color(0xFF6A9AB0),
                       borderRadius: BorderRadius.circular(8.0),
                     ),
-                    child: Row(
+                    child: const Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(Icons.attach_file, color: Colors.white),
@@ -186,7 +188,7 @@ class _ReviewFormState extends State<ReviewForm> {
                         },
                         style: ElevatedButton.styleFrom(
                           padding: EdgeInsets.symmetric(vertical: buttonHeight),
-                          backgroundColor: Color(0xFF3A6D8C),
+                          backgroundColor: const Color(0xFF3A6D8C),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8.0),
                           ),
@@ -200,7 +202,7 @@ class _ReviewFormState extends State<ReviewForm> {
                         ),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                         width: 16.0), // Space between Cancel and Submit buttons
                     // Submit button
                     Expanded(
@@ -210,7 +212,7 @@ class _ReviewFormState extends State<ReviewForm> {
                         },
                         style: ElevatedButton.styleFrom(
                           padding: EdgeInsets.symmetric(vertical: buttonHeight),
-                          backgroundColor: Color(0xFF3A6D8C),
+                          backgroundColor: const Color(0xFF3A6D8C),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8.0),
                           ),

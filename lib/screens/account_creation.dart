@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class AccountCreationForm extends StatelessWidget {
+  const AccountCreationForm({super.key});
+
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
@@ -36,7 +38,7 @@ class AccountCreationForm extends StatelessWidget {
                 SizedBox(height: verticalSpacing),
 
                 // Username Label and Field
-                Text(
+                const Text(
                   'Username',
                   style: TextStyle(
                     fontSize: 16,
@@ -44,7 +46,7 @@ class AccountCreationForm extends StatelessWidget {
                     color: Colors.black,
                   ),
                 ),
-                SizedBox(height: 8.0),
+                const SizedBox(height: 8.0),
                 TextFormField(
                   decoration: InputDecoration(
                     hintText: 'Enter Username',
@@ -53,10 +55,10 @@ class AccountCreationForm extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(height: 16.0),
+                const SizedBox(height: 16.0),
 
                 // Email Label and Field
-                Text(
+                const Text(
                   'Email',
                   style: TextStyle(
                     fontSize: 16,
@@ -64,7 +66,7 @@ class AccountCreationForm extends StatelessWidget {
                     color: Colors.black,
                   ),
                 ),
-                SizedBox(height: 8.0),
+                const SizedBox(height: 8.0),
                 TextFormField(
                   decoration: InputDecoration(
                     hintText: 'Use your school email account',
@@ -74,10 +76,10 @@ class AccountCreationForm extends StatelessWidget {
                   ),
                   keyboardType: TextInputType.emailAddress,
                 ),
-                SizedBox(height: 16.0),
+                const SizedBox(height: 16.0),
 
                 // Password Label and Field
-                Text(
+                const Text(
                   'Password',
                   style: TextStyle(
                     fontSize: 16,
@@ -85,7 +87,7 @@ class AccountCreationForm extends StatelessWidget {
                     color: Colors.black,
                   ),
                 ),
-                SizedBox(height: 8.0),
+                const SizedBox(height: 8.0),
                 TextFormField(
                   decoration: InputDecoration(
                     hintText: 'Enter password',
@@ -104,7 +106,7 @@ class AccountCreationForm extends StatelessWidget {
                   },
                   style: ElevatedButton.styleFrom(
                     padding: EdgeInsets.symmetric(vertical: buttonHeight),
-                    backgroundColor: Color(0xFF3A6D8C),
+                    backgroundColor: const Color(0xFF3A6D8C),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8.0),
                     ),
@@ -117,7 +119,7 @@ class AccountCreationForm extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(height: 16.0),
+                const SizedBox(height: 16.0),
 
                 // Continue with Google Button
                 OutlinedButton.icon(
@@ -126,13 +128,13 @@ class AccountCreationForm extends StatelessWidget {
                   },
                   style: OutlinedButton.styleFrom(
                     padding: EdgeInsets.symmetric(vertical: buttonHeight),
-                    side: BorderSide(
+                    side: const BorderSide(
                         color: Colors.white), // Border color for Google button
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8.0),
                     ),
                   ),
-                  icon: Icon(
+                  icon: const Icon(
                     FontAwesomeIcons.google,
                     size: 24.0,
                   ),
@@ -144,7 +146,7 @@ class AccountCreationForm extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(height: 16.0),
+                const SizedBox(height: 16.0),
 
                 // Already have an account link
                 TextButton(
@@ -152,7 +154,7 @@ class AccountCreationForm extends StatelessWidget {
                     // Navigate to login page using routes
                     Navigator.pushNamed(context, '/login');
                   },
-                  child: Text(
+                  child: const Text(
                     'Already have an account?',
                     style: TextStyle(color: Color(0xFF3A6D8C)),
                   ),

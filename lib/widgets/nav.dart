@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class NavBar extends StatelessWidget {
   final String currentRoute;
 
-  NavBar({
+  const NavBar({
     super.key,
     required this.currentRoute,
   });

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class StudyForm extends StatefulWidget {
+  const StudyForm({super.key});
+
   @override
   _StudyFormState createState() => _StudyFormState();
 }
@@ -64,12 +66,12 @@ class _StudyFormState extends State<StudyForm> {
                             }
                           });
                         },
-                        selectedColor: Color(0xFFEAD8B1), // Color when selected
+                        selectedColor: const Color(0xFFEAD8B1), // Color when selected
                         backgroundColor: Colors.white,
                         labelStyle: TextStyle(
                           color: isSelected ? Colors.black : Colors.black,
                         ),
-                        side: BorderSide(
+                        side: const BorderSide(
                           color: Colors.black,
                         ),
                       );
@@ -86,7 +88,7 @@ class _StudyFormState extends State<StudyForm> {
                       color: Colors.black,
                     ),
                   ),
-                  SizedBox(height: 8.0),
+                  const SizedBox(height: 8.0),
                   TextFormField(
                     maxLines: 4,
                     decoration: InputDecoration(
@@ -114,7 +116,7 @@ class _StudyFormState extends State<StudyForm> {
                           style: ElevatedButton.styleFrom(
                             padding:
                                 EdgeInsets.symmetric(vertical: buttonHeight),
-                            backgroundColor: Color(0xFF3A6D8C),
+                            backgroundColor: const Color(0xFF3A6D8C),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8.0),
                             ),
@@ -128,7 +130,7 @@ class _StudyFormState extends State<StudyForm> {
                           ),
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                           width:
                               16.0), // Space between Cancel and Submit buttons
                       // Submit button
@@ -140,7 +142,7 @@ class _StudyFormState extends State<StudyForm> {
                           style: ElevatedButton.styleFrom(
                             padding:
                                 EdgeInsets.symmetric(vertical: buttonHeight),
-                            backgroundColor: Color(0xFF3A6D8C),
+                            backgroundColor: const Color(0xFF3A6D8C),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8.0),
                             ),

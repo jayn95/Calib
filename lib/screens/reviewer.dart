@@ -4,19 +4,21 @@ import 'custom_card.dart';
 import '../widgets/nav.dart';
 
 class Reviewer extends StatefulWidget {
+  const Reviewer({super.key});
+
   @override
   _ReviewerState createState() => _ReviewerState();
 }
 
 class _ReviewerState extends State<Reviewer> {
-  Map<String, bool> _categories = Map.from(categories);
+  final Map<String, bool> _categories = Map.from(categories);
   List<String> selectedCategories = []; // List to track selected categories
   final ScrollController _scrollController = ScrollController();
 
   void _scrollLeft() {
     _scrollController.animateTo(
       _scrollController.offset - 100,
-      duration: Duration(milliseconds: 300),
+      duration: const Duration(milliseconds: 300),
       curve: Curves.easeInOut,
     );
   }
@@ -24,7 +26,7 @@ class _ReviewerState extends State<Reviewer> {
   void _scrollRight() {
     _scrollController.animateTo(
       _scrollController.offset + 100,
-      duration: Duration(milliseconds: 300),
+      duration: const Duration(milliseconds: 300),
       curve: Curves.easeInOut,
     );
   }
@@ -69,12 +71,12 @@ class _ReviewerState extends State<Reviewer> {
       ),
       body: Column(
         children: [
-          SizedBox(height: 36.0),
-          Text(
+          const SizedBox(height: 36.0),
+          const Text(
             'Add a Text',
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
-          SizedBox(height: 36.0),
+          const SizedBox(height: 36.0),
           // Tags with scrolling and arrows
           Container(
             margin: EdgeInsets.symmetric(
@@ -91,7 +93,7 @@ class _ReviewerState extends State<Reviewer> {
               children: [
                 // Left Arrow Button
                 IconButton(
-                  icon: Icon(Icons.arrow_left),
+                  icon: const Icon(Icons.arrow_left),
                   onPressed: _scrollLeft,
                 ),
                 Expanded(
@@ -146,23 +148,23 @@ class _ReviewerState extends State<Reviewer> {
                               });
                             },
                           );
-                        }).toList(),
+                        }),
                       ],
                     ),
                   ),
                 ),
                 // Right Arrow Button
                 IconButton(
-                  icon: Icon(Icons.arrow_right),
+                  icon: const Icon(Icons.arrow_right),
                   onPressed: _scrollRight,
                 ),
               ],
             ),
           ),
-          SizedBox(height: 24.0),
+          const SizedBox(height: 24.0),
           Expanded(
             child: SingleChildScrollView(
-              padding: EdgeInsets.symmetric(horizontal: 16.0),
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: Center(
                 child: Wrap(
                   spacing: 16.0,

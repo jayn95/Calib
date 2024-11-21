@@ -11,7 +11,7 @@ class CustomCard extends StatefulWidget {
   final EdgeInsetsGeometry? padding;
 
   const CustomCard({
-    Key? key,
+    super.key,
     required this.name,
     required this.numOfLikes,
     required this.description,
@@ -19,7 +19,7 @@ class CustomCard extends StatefulWidget {
     required this.imagePath,
     this.margin,
     this.padding,
-  }) : super(key: key);
+  });
 
   @override
   _CustomCardState createState() => _CustomCardState();

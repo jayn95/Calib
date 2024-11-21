@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import '../widgets/nav.dart';
 
 class ProfilePage extends StatelessWidget {
+  const ProfilePage({super.key});
+
   @override
   Widget build(BuildContext context) {
        return MaterialApp(
@@ -36,8 +38,8 @@ class ProfilePage extends StatelessWidget {
                                   fit: BoxFit.cover,
                                 ),
                               ),
-                              SizedBox(height: 20),
-                              Text(
+                              const SizedBox(height: 20),
+                              const Text(
                                 'John Doe',
                                 style: TextStyle(
                                   fontSize: 24,
@@ -45,8 +47,8 @@ class ProfilePage extends StatelessWidget {
                                 ),
                                 overflow: TextOverflow.ellipsis,
                               ),
-                              SizedBox(height: 5),
-                              Text(
+                              const SizedBox(height: 5),
+                              const Text(
                                 'Web Developer, Flutter Enthusiast',
                                 style: TextStyle(
                                   fontSize: 16,
@@ -54,8 +56,8 @@ class ProfilePage extends StatelessWidget {
                                 ),
                                 overflow: TextOverflow.ellipsis,
                               ),
-                              SizedBox(height: 5),
-                              Text(
+                              const SizedBox(height: 5),
+                              const Text(
                                 'john.doe@example.com',
                                 style: TextStyle(
                                   fontSize: 14,
@@ -63,14 +65,14 @@ class ProfilePage extends StatelessWidget {
                                 ),
                                 overflow: TextOverflow.ellipsis,
                               ),
-                              SizedBox(height: 15),
+                              const SizedBox(height: 15),
                               Container(
-                                padding: EdgeInsets.all(15),
+                                padding: const EdgeInsets.all(15),
                                 decoration: BoxDecoration(
-                                  color: Color(0xFFEAD8B1),
+                                  color: const Color(0xFFEAD8B1),
                                   border: Border.all(color: Colors.blueGrey.shade200),
                                 ),
-                                child: Column(
+                                child: const Column(
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     Text(
@@ -88,30 +90,30 @@ class ProfilePage extends StatelessWidget {
                                   ],
                                 ),
                               ),
-                              SizedBox(height: 30),
+                              const SizedBox(height: 30),
                               
                               Column(
                                 children: [
                                   ElevatedButton(
                                     onPressed: () {},
-                                    child: Text('Share a reviewer'),
                                     style: ElevatedButton.styleFrom(
-                                      backgroundColor: Color(0xFF6A9AB0),
-                                      padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+                                      backgroundColor: const Color(0xFF6A9AB0),
+                                      padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
                                       foregroundColor: Colors.white,
-                                      minimumSize: Size(double.infinity, 50), // Full-width button
+                                      minimumSize: const Size(double.infinity, 50), // Full-width button
                                     ),
+                                    child: Text('Share a reviewer'),
                                   ),
-                                  SizedBox(height: 12),
+                                  const SizedBox(height: 12),
                                   ElevatedButton(
                                     onPressed: () {},
-                                    child: Text('Look for study group'),
                                     style: ElevatedButton.styleFrom(
-                                      backgroundColor: Color(0xFF6A9AB0),
-                                      padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+                                      backgroundColor: const Color(0xFF6A9AB0),
+                                      padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
                                       foregroundColor: Colors.white,
-                                      minimumSize: Size(double.infinity, 50), // Full-width button
+                                      minimumSize: const Size(double.infinity, 50), // Full-width button
                                     ),
+                                    child: Text('Look for study group'),
                                   ),
                                 ],
                               )
@@ -128,13 +130,13 @@ class ProfilePage extends StatelessWidget {
                                   fit: BoxFit.cover,
                                 ),
                               ),
-                              SizedBox(width: 20),
+                              const SizedBox(width: 20),
                               // Column inside Expanded to take available space
                               Expanded(
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(
+                                    const Text(
                                       'John Doe',
                                       style: TextStyle(
                                         fontSize: 24,
@@ -142,8 +144,8 @@ class ProfilePage extends StatelessWidget {
                                       ),
                                       overflow: TextOverflow.ellipsis,
                                     ),
-                                    SizedBox(height: 5),
-                                    Text(
+                                    const SizedBox(height: 5),
+                                    const Text(
                                       'Web Developer, Flutter Enthusiast',
                                       style: TextStyle(
                                         fontSize: 16,
@@ -151,8 +153,8 @@ class ProfilePage extends StatelessWidget {
                                       ),
                                       overflow: TextOverflow.ellipsis,
                                     ),
-                                    SizedBox(height: 5),
-                                    Text(
+                                    const SizedBox(height: 5),
+                                    const Text(
                                       'john.doe@example.com',
                                       style: TextStyle(
                                         fontSize: 14,
@@ -160,14 +162,14 @@ class ProfilePage extends StatelessWidget {
                                       ),
                                       overflow: TextOverflow.ellipsis,
                                     ),
-                                    SizedBox(height: 15),
+                                    const SizedBox(height: 15),
                                     Container(
-                                      padding: EdgeInsets.all(15),
+                                      padding: const EdgeInsets.all(15),
                                       decoration: BoxDecoration(
-                                        color: Color(0xFFEAD8B1),
+                                        color: const Color(0xFFEAD8B1),
                                         border: Border.all(color: Colors.blueGrey.shade200),
                                       ),
-                                      child: Column(
+                                      child: const Column(
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           Text(
@@ -185,27 +187,27 @@ class ProfilePage extends StatelessWidget {
                                         ],
                                       ),
                                     ),
-                                    SizedBox(height: 10),
+                                    const SizedBox(height: 10),
                                     Row(
                                       children: [
                                         ElevatedButton(
                                           onPressed: () {},
-                                          child: Text('Share a reviewer'),
                                           style: ElevatedButton.styleFrom(
-                                            backgroundColor: Color(0xFF6A9AB0),
-                                            padding: EdgeInsets.symmetric(horizontal: 30, vertical: 12),
+                                            backgroundColor: const Color(0xFF6A9AB0),
+                                            padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 12),
                                             foregroundColor: Colors.white,
                                           ),
+                                          child: Text('Share a reviewer'),
                                         ),
-                                        SizedBox(width: 10),
+                                        const SizedBox(width: 10),
                                         ElevatedButton(
                                           onPressed: () {},
-                                          child: Text('Look for study group'),
                                           style: ElevatedButton.styleFrom(
-                                            backgroundColor: Color(0xFF6A9AB0),
-                                            padding: EdgeInsets.symmetric(horizontal: 30, vertical: 12),
+                                            backgroundColor: const Color(0xFF6A9AB0),
+                                            padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 12),
                                             foregroundColor: Colors.white,
                                           ),
+                                          child: Text('Look for study group'),
                                         ),
                                       ],
                                     ),
@@ -216,11 +218,11 @@ class ProfilePage extends StatelessWidget {
                           );
                   },
                 ),
-                SizedBox(height: 50),
+                const SizedBox(height: 50),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
+                    const Text(
                       'Activities',
                       style: TextStyle(
                         fontSize: 20,
@@ -228,12 +230,12 @@ class ProfilePage extends StatelessWidget {
                         color: Colors.black,
                       ),
                     ),
-                    SizedBox(height: 25),
+                    const SizedBox(height: 25),
                     MouseRegion(
                       onEnter: (_) {},
                       onExit: (_) {},
                       child: Container(
-                        padding: EdgeInsets.all(15),
+                        padding: const EdgeInsets.all(15),
                         decoration: BoxDecoration(
                           border: Border.all(color: Colors.blueGrey.shade200),
                           borderRadius: BorderRadius.circular(12),
@@ -241,14 +243,14 @@ class ProfilePage extends StatelessWidget {
                         child: TextButton(
                           onPressed: () {},
                           style: TextButton.styleFrom(
-                            padding: EdgeInsets.all(15),
+                            padding: const EdgeInsets.all(15),
                             foregroundColor: Colors.black,
                             backgroundColor: Colors.transparent,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(12),
                             ),
                           ),
-                          child: Column(
+                          child: const Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
@@ -268,12 +270,12 @@ class ProfilePage extends StatelessWidget {
                         ),
                       ),
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     MouseRegion(
                       onEnter: (_) {},
                       onExit: (_) {},
                       child: Container(
-                        padding: EdgeInsets.all(15),
+                        padding: const EdgeInsets.all(15),
                         decoration: BoxDecoration(
                           border: Border.all(color: Colors.blueGrey.shade200),
                           borderRadius: BorderRadius.circular(12),
@@ -281,14 +283,14 @@ class ProfilePage extends StatelessWidget {
                         child: TextButton(
                           onPressed: () {},
                           style: TextButton.styleFrom(
-                            padding: EdgeInsets.all(15),
+                            padding: const EdgeInsets.all(15),
                             foregroundColor: Colors.black,
                             backgroundColor: Colors.transparent,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(12),
                             ),
                           ),
-                          child: Column(
+                          child: const Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
@@ -308,12 +310,12 @@ class ProfilePage extends StatelessWidget {
                         ),
                       ),
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     MouseRegion(
                       onEnter: (_) {},
                       onExit: (_) {},
                       child: Container(
-                        padding: EdgeInsets.all(15),
+                        padding: const EdgeInsets.all(15),
                         decoration: BoxDecoration(
                           border: Border.all(color: Colors.blueGrey.shade200),
                           borderRadius: BorderRadius.circular(12),
@@ -321,14 +323,14 @@ class ProfilePage extends StatelessWidget {
                         child: TextButton(
                           onPressed: () {},
                           style: TextButton.styleFrom(
-                            padding: EdgeInsets.all(15),
+                            padding: const EdgeInsets.all(15),
                             foregroundColor: Colors.black,
                             backgroundColor: Colors.transparent,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(12),
                             ),
                           ),
-                          child: Column(
+                          child: const Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
