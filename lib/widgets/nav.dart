@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:Calib/fbase/auth_service.dart';
 
 class NavBar extends StatelessWidget {
   final String currentRoute;
+  final AuthService _authService = AuthService();
 
   NavBar({
     super.key,
