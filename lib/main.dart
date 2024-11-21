@@ -34,8 +34,8 @@ class MyApp extends StatelessWidget {
         '/login': (context) => const LoginForm(), // Login page route
         '/account_creation': (context) => AccountCreationForm(), // Account creation page route
         '/study': (context) => const StudyPage(), // Study page route
-        '/reviewer': (context) => Reviewer(), // Reviewer page route
-        '/user_profile': (context) => ProfilePage(),
+        '/reviewer': (context) => const Reviewer(), // Reviewer page route
+        '/user_profile': (context) => const ProfilePage(),
       },
     );
   }
