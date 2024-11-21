@@ -1,4 +1,4 @@
-import 'package:Calib/fbase/auth_service.dart';  // Import the AuthService class
+import 'package:Calib/fbase/auth_service.dart'; // Import the AuthService class
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -30,7 +30,7 @@ class LoginForm extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
           child: ConstrainedBox(
             constraints: BoxConstraints(
-              maxWidth: screenWidth > 400 ? 400 : screenWidth * 0.9,
+              maxWidth: screenWidth > 800 ? 800 : screenWidth * 0.9,
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -39,86 +39,35 @@ class LoginForm extends StatelessWidget {
                 Center(
                   child: Image.asset(
                     'assets/trial.jpg', // This is just a trial image
-                    height: 120.0,
+                    height: 100.0,
                   ),
                 ),
                 SizedBox(height: verticalSpacing),
 
                 // Page Title
-                Text(
-                  'Login to Your Account',
-                  style: TextStyle(
-                    fontSize: screenWidth > 400 ? 24 : 20,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                SizedBox(height: verticalSpacing),
-
-                // Email Label and Field
-                const Text(
-                  'Email',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                    color: Colors.black,
-                  ),
-                ),
-                const SizedBox(height: 8.0),
-                TextFormField(
-                  decoration: InputDecoration(
-                    hintText: 'Enter your email',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8.0),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Login to Your Account',
+                      style: TextStyle(
+                        fontSize: screenWidth > 800 ? 16 : 14,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
+                      textAlign: TextAlign.center,
                     ),
-                  ),
-                  keyboardType: TextInputType.emailAddress,
-                ),
-                const SizedBox(height: 16.0),
-
-                // Password Label and Field
-                const Text(
-                  'Password',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                    color: Colors.black,
-                  ),
-                ),
-                const SizedBox(height: 8.0),
-                TextFormField(
-                  decoration: InputDecoration(
-                    hintText: 'Enter your password',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8.0),
+                    Text(
+                      'Use your WVSU email',
+                      style: TextStyle(
+                        fontSize: screenWidth > 800 ? 14 : 12,
+                        fontStyle: FontStyle.italic,
+                        color: Colors.black,
+                      ),
+                      textAlign: TextAlign.center,
                     ),
-                  ),
-                  obscureText: true,
+                  ],
                 ),
-                SizedBox(height: verticalSpacing),
-
-                // Login Button
-                ElevatedButton(
-                  onPressed: () {
-                    // Handle login action
-                  },
-                  style: ElevatedButton.styleFrom(
-                    padding: EdgeInsets.symmetric(vertical: buttonHeight),
-                    backgroundColor: const Color(0xFF3A6D8C),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8.0),
-                    ),
-                  ),
-                  child: Text(
-                    'Login',
-                    style: TextStyle(
-                      fontSize: screenWidth > 400 ? 16.0 : 14.0,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 16.0),
 
                 // Continue with Google Button
                 OutlinedButton.icon(
@@ -158,18 +107,6 @@ class LoginForm extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 16.0),
-
-                // Don't have an account text
-                TextButton(
-                  onPressed: () {
-                    // Navigate to account creation page
-                    Navigator.pushNamed(context, '/account_creation');
-                  },
-                  child: const Text(
-                    "Don't have an account? Sign up here",
-                    style: TextStyle(color: Color(0xFF3A6D8C)),
-                  ),
-                ),
               ],
             ),
           ),
