@@ -3,10 +3,26 @@ import 'package:flutter/material.dart';
 class NavBar extends StatelessWidget {
   final String currentRoute;
 
-  const NavBar({
+  NavBar({
     super.key,
     required this.currentRoute,
   });
+
+  void signOutAndNavigateToLogin(BuildContext context) async {
+    await _authService.signOut();
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('You have successfully signed out.'),
+        behavior: SnackBarBehavior.floating,
+        duration: Duration(seconds: 3),
+      ),
+    );
+    Navigator.pushNamedAndRemoveUntil(
+      context,
+      '/login',
+          (route) => false,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -92,13 +108,7 @@ class NavBar extends StatelessWidget {
       child: SizedBox(
         width: buttonWidth,
         child: ElevatedButton(
-          onPressed: () {
-            Navigator.pushNamedAndRemoveUntil(
-              context,
-              '/login',
-              (route) => false,
-            );
-          },
+          onPressed: () => signOutAndNavigateToLogin(context),
           style: ElevatedButton.styleFrom(
             backgroundColor: const Color(0xFF3A6D8C),
             foregroundColor: Colors.white,
