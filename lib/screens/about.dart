@@ -73,7 +73,7 @@ class AboutPage extends StatelessWidget {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: Colors.white,
-        title: const NavBar(currentRoute: '/about'),
+        title: NavBar(currentRoute: '/about'),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -277,7 +277,7 @@ class AboutPage extends StatelessWidget {
               width: profileImageSize,
               height: profileImageSize,
               clipBehavior: Clip.hardEdge,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 shape: BoxShape.circle,
               ),
               child: Image.asset(
