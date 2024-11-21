@@ -67,7 +67,7 @@ class _ReviewerState extends State<Reviewer> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: Colors.white,
-        title: const NavBar(currentRoute: '/reviewer'),
+        title: NavBar(currentRoute: '/reviewer'),
       ),
       body: Column(
         children: [

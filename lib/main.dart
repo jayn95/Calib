@@ -1,11 +1,12 @@
+import 'package:Calib/screens/about.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 import 'fbase/firebase_options.dart';
-import 'screens/account_creation.dart'; // Import Account Creation Form
-import 'screens/login.dart'; // Import Login Form
-import 'screens/study_page.dart'; // Import Study Page
+import 'screens/account_creation.dart';
+import 'screens/login.dart';
 import 'screens/reviewer.dart';
+import 'screens/study_page.dart';
 import 'screens/user_profile.dart';
 
 Future<void> main() async {
@@ -25,17 +26,19 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         fontFamily: 'Roboto', // Set Roboto as the default font
         colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFF3A6D8C), // Use a seed color for the theme
+          seedColor: const Color(0xFF3A6D8C),
         ),
         useMaterial3: true,
       ),
       initialRoute: '/login', // Set login page as initial route
       routes: {
         '/login': (context) => const LoginForm(), // Login page route
-        '/account_creation': (context) => AccountCreationForm(), // Account creation page route
+        '/account_creation': (context) =>
+            AccountCreationForm(), // Account creation page route
         '/study': (context) => const StudyPage(), // Study page route
         '/reviewer': (context) => Reviewer(), // Reviewer page route
-        '/user_profile': (context) => ProfilePage(),
+        '/user_profile': (context) => ProfilePage(), // Profile page route
+        '/about': (context) => AboutPage(), // About page route
       },
     );
   }

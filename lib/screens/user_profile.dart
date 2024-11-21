@@ -13,7 +13,7 @@ class ProfilePage extends StatelessWidget {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: Colors.white,
-        title: const NavBar(currentRoute: '/user_profile'),
+        title: NavBar(currentRoute: '/user_profile'),
       ),
         body: SingleChildScrollView(
           child: Padding(
@@ -102,7 +102,7 @@ class ProfilePage extends StatelessWidget {
                                       foregroundColor: Colors.white,
                                       minimumSize: const Size(double.infinity, 50), // Full-width button
                                     ),
-                                    child: Text('Share a reviewer'),
+                                    child: const Text('Share a reviewer'),
                                   ),
                                   const SizedBox(height: 12),
                                   ElevatedButton(
@@ -113,7 +113,7 @@ class ProfilePage extends StatelessWidget {
                                       foregroundColor: Colors.white,
                                       minimumSize: const Size(double.infinity, 50), // Full-width button
                                     ),
-                                    child: Text('Look for study group'),
+                                    child: const Text('Look for study group'),
                                   ),
                                 ],
                               )
@@ -197,7 +197,7 @@ class ProfilePage extends StatelessWidget {
                                             padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 12),
                                             foregroundColor: Colors.white,
                                           ),
-                                          child: Text('Share a reviewer'),
+                                          child: const Text('Share a reviewer'),
                                         ),
                                         const SizedBox(width: 10),
                                         ElevatedButton(
@@ -207,7 +207,7 @@ class ProfilePage extends StatelessWidget {
                                             padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 12),
                                             foregroundColor: Colors.white,
                                           ),
-                                          child: Text('Look for study group'),
+                                          child: const Text('Look for study group'),
                                         ),
                                       ],
                                     ),
