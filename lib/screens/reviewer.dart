@@ -4,19 +4,21 @@ import 'custom_card.dart';
 import '../widgets/nav.dart';
 
 class Reviewer extends StatefulWidget {
+  const Reviewer({super.key});
+
   @override
   _ReviewerState createState() => _ReviewerState();
 }
 
 class _ReviewerState extends State<Reviewer> {
-  Map<String, bool> _categories = Map.from(categories);
+  final Map<String, bool> _categories = Map.from(categories);
   List<String> selectedCategories = []; // List to track selected categories
   final ScrollController _scrollController = ScrollController();
 
   void _scrollLeft() {
     _scrollController.animateTo(
       _scrollController.offset - 100,
-      duration: Duration(milliseconds: 300),
+      duration: const Duration(milliseconds: 300),
       curve: Curves.easeInOut,
     );
   }
@@ -24,7 +26,7 @@ class _ReviewerState extends State<Reviewer> {
   void _scrollRight() {
     _scrollController.animateTo(
       _scrollController.offset + 100,
-      duration: Duration(milliseconds: 300),
+      duration: const Duration(milliseconds: 300),
       curve: Curves.easeInOut,
     );
   }
@@ -65,16 +67,16 @@ class _ReviewerState extends State<Reviewer> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: Colors.white,
-        title: const NavBar(currentRoute: '/reviewer'),
+        title: NavBar(currentRoute: '/reviewer'),
       ),
       body: Column(
         children: [
-          SizedBox(height: 36.0),
-          Text(
+          const SizedBox(height: 36.0),
+          const Text(
             'Add a Text',
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
-          SizedBox(height: 36.0),
+          const SizedBox(height: 36.0),
           // Tags with scrolling and arrows
           Container(
             margin: EdgeInsets.symmetric(
