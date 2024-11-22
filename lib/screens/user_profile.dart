@@ -18,7 +18,7 @@ class ProfilePage extends StatelessWidget {
           padding: const EdgeInsets.all(20.0),
           child: Center( // Centers the entire layout
             child: ConstrainedBox( 
-              constraints: BoxConstraints(maxWidth: 1200), 
+              constraints: const BoxConstraints(maxWidth: 1200), 
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

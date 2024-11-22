@@ -1,19 +1,27 @@
-import 'package:Calib/screens/about.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-
-import 'fbase/firebase_options.dart';
+import 'package:flutter/services.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'screens/about.dart';
 import 'screens/account_creation.dart';
 import 'screens/login.dart';
 import 'screens/reviewer.dart';
 import 'screens/study_page.dart';
 import 'screens/user_profile.dart';
+import 'screens/share.dart';  // Make sure this import exists
+import 'fbase/firebase_options.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  await SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
+
   runApp(const MyApp());
 }
 
@@ -23,22 +31,38 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      title: 'Calib App',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        fontFamily: 'Roboto', // Set Roboto as the default font
+        fontFamily: 'Roboto',
         colorScheme: ColorScheme.fromSeed(
           seedColor: const Color(0xFF3A6D8C),
+          brightness: Brightness.light,
         ),
         useMaterial3: true,
       ),
-      initialRoute: '/login', // Set login page as initial route
-      routes: {
-        '/login': (context) => const LoginForm(), // Login page route
-        '/account_creation': (context) =>
-            AccountCreationForm(), // Account creation page route
-        '/study': (context) => const StudyPage(), // Study page route
-        '/reviewer': (context) => Reviewer(), // Reviewer page route
-        '/user_profile': (context) => ProfilePage(), // Profile page route
-        '/about': (context) => AboutPage(), // About page route
+      initialRoute: '/login',
+      onGenerateRoute: (settings) {
+        // Define all routes here to ensure consistent handling
+        switch (settings.name) {
+          case '/login':
+            return MaterialPageRoute(builder: (_) => LoginForm());
+          case '/account_creation':
+            return MaterialPageRoute(builder: (_) => AccountCreationForm());
+          case '/study':
+            return MaterialPageRoute(builder: (_) => StudyPage());
+          case '/reviewer':
+            return MaterialPageRoute(builder: (_) => Reviewer());
+          case '/user_profile':
+            return MaterialPageRoute(builder: (_) => ProfilePage());
+          case '/about':
+            return MaterialPageRoute(builder: (_) => AboutPage());
+          case '/share':
+            return MaterialPageRoute(builder: (_) => SharePage());
+          default:
+            // Return a default route or error page
+            return MaterialPageRoute(builder: (_) => LoginForm());
+        }
       },
     );
   }

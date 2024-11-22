@@ -36,7 +36,7 @@ class _ReviewFormState extends State<ReviewForm> {
       String? fileName = result.files.single.name;
       // Update the controller with the file name
       setState(() {
-        fileController.text = fileName ?? "No file selected";
+        fileController.text = fileName;
       });
     } else {
       // If no file was selected, set the text to 'No file selected'

@@ -1,3 +1,8 @@
+import 'package:Calib/screens/about.dart';
+import 'package:Calib/screens/login.dart';
+import 'package:Calib/screens/share.dart';
+import 'package:Calib/screens/study_page.dart';
+import 'package:Calib/screens/user_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:Calib/fbase/auth_service.dart';
 
@@ -5,7 +10,7 @@ class NavBar extends StatelessWidget {
   final String currentRoute;
   final AuthService _authService = AuthService();
 
-  const NavBar({
+  NavBar({
     super.key,
     required this.currentRoute,
   });
@@ -60,44 +65,61 @@ class NavBar extends StatelessWidget {
     );
   }
 
-  Widget _buildNavButton(
-    BuildContext context,
-    String title,
-    String route,
-    IconData icon,
-  ) {
-    final isActive = currentRoute == route;
-    final screenWidth = MediaQuery.of(context).size.width;
-    final showIcon = screenWidth <= 800;
-    final fontSize = screenWidth > 800 ? 16.0 : 18.0;
-    final buttonWidth = screenWidth > 800 ? 120.0 : 50.0;
+Widget _buildNavButton(
+  BuildContext context,
+  String title,
+  String route,
+  IconData icon,
+) {
+  final isActive = currentRoute == route;
+  final screenWidth = MediaQuery.of(context).size.width;
+  final showIcon = screenWidth <= 800;
+  final fontSize = screenWidth > 800 ? 16.0 : 18.0;
+  final buttonWidth = screenWidth > 800 ? 120.0 : 50.0;
 
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 4),
-      child: SizedBox(
-        width: buttonWidth,
-        child: TextButton(
-          onPressed: () {
-            if (!isActive) {
-              Navigator.pushNamed(context, route);
-            }
-          },
-          style: TextButton.styleFrom(
-            backgroundColor:
-                isActive ? const Color(0xFFEAD8B1) : Colors.transparent,
-            foregroundColor: isActive ? Colors.white : Colors.black87,
-            padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 5),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(4),
-            ),
+  return Container(
+    margin: const EdgeInsets.symmetric(horizontal: 4),
+    child: SizedBox(
+      width: buttonWidth,
+      child: TextButton(
+        onPressed: () {
+          if (!isActive) {
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(
+                builder: (context) {
+                  switch (route) {
+                    case '/share':
+                      return const SharePage();
+                    case '/study':
+                      return const StudyPage();
+                    case '/about':
+                      return const AboutPage();
+                    case '/user_profile':
+                      return const ProfilePage();
+                    default:
+                      return const LoginForm();
+                  }
+                },
+              ),
+            );
+          }
+        },
+        style: TextButton.styleFrom(
+          backgroundColor: isActive ? const Color(0xFFEAD8B1) : Colors.transparent,
+          foregroundColor: isActive ? Colors.white : Colors.black87,
+          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 5),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(4),
           ),
-          child: showIcon
-              ? Icon(icon, size: fontSize)
-              : Text(title, style: TextStyle(fontSize: fontSize)),
         ),
+        child: showIcon
+            ? Icon(icon, size: fontSize)
+            : Text(title, style: TextStyle(fontSize: fontSize)),
       ),
-    );
-  }
+    ),
+  );
+}
+
 
   Widget _buildLogoutButton(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;

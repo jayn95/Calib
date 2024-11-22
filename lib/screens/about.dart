@@ -167,8 +167,7 @@ class AboutPage extends StatelessWidget {
                 child: LayoutBuilder(
                   builder: (context, constraints) {
                     final double itemWidth = screenWidth > 800 ? 200.0 : 130.0;
-                    final int itemsPerRow =
-                        (constraints.maxWidth / (itemWidth + horizontalGap))
+                    (constraints.maxWidth / (itemWidth + horizontalGap))
                             .floor();
 
                     return Wrap(
