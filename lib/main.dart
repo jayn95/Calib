@@ -46,22 +46,22 @@ class MyApp extends StatelessWidget {
         // Define all routes here to ensure consistent handling
         switch (settings.name) {
           case '/login':
-            return MaterialPageRoute(builder: (_) => LoginForm());
+            return MaterialPageRoute(builder: (_) => const LoginForm());
           case '/account_creation':
-            return MaterialPageRoute(builder: (_) => AccountCreationForm());
+            return MaterialPageRoute(builder: (_) => const AccountCreationForm());
           case '/study':
-            return MaterialPageRoute(builder: (_) => StudyPage());
+            return MaterialPageRoute(builder: (_) => const StudyPage());
           case '/reviewer':
-            return MaterialPageRoute(builder: (_) => Reviewer());
+            return MaterialPageRoute(builder: (_) => const Reviewer());
           case '/user_profile':
-            return MaterialPageRoute(builder: (_) => ProfilePage());
+            return MaterialPageRoute(builder: (_) => const ProfilePage());
           case '/about':
-            return MaterialPageRoute(builder: (_) => AboutPage());
+            return MaterialPageRoute(builder: (_) => const AboutPage());
           case '/share':
-            return MaterialPageRoute(builder: (_) => SharePage());
+            return MaterialPageRoute(builder: (_) => const SharePage());
           default:
             // Return a default route or error page
-            return MaterialPageRoute(builder: (_) => LoginForm());
+            return MaterialPageRoute(builder: (_) => const LoginForm());
         }
       },
     );
