@@ -1,6 +1,7 @@
 import 'package:Calib/fbase/auth_service.dart'; // Import the AuthService class
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:Calib/features/about/about_page.dart';
 
 class LoginForm extends StatelessWidget {
   const LoginForm({super.key});
@@ -79,6 +80,10 @@ class LoginForm extends StatelessWidget {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(content: Text('Welcome, ${user.displayName}')),
                       );
+                      Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(builder: (context) {
+                        return const AboutPage();
+                      }));
                     } else {
                       // If sign-in fails
                       ScaffoldMessenger.of(context).showSnackBar(
