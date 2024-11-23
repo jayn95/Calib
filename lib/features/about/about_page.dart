@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../widgets/nav.dart';
+import '../screens/nav.dart';
 
 class AboutPage extends StatelessWidget {
   const AboutPage({super.key});
@@ -168,7 +168,7 @@ class AboutPage extends StatelessWidget {
                   builder: (context, constraints) {
                     final double itemWidth = screenWidth > 800 ? 200.0 : 130.0;
                     (constraints.maxWidth / (itemWidth + horizontalGap))
-                            .floor();
+                        .floor();
 
                     return Wrap(
                       spacing: horizontalGap,
