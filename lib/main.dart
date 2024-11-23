@@ -1,18 +1,19 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'screens/about.dart';
-import 'screens/account_creation.dart';
-import 'screens/login.dart';
-import 'screens/reviewer.dart';
-import 'screens/study_page.dart';
-import 'screens/user_profile.dart';
-import 'screens/share.dart';  // Make sure this import exists
+
 import 'fbase/firebase_options.dart';
+import 'features/about/about_page.dart';
+import 'features/review/reviewer_page.dart';
+import 'features/screens/account_creationform.dart';
+import 'features/screens/login_page.dart';
+import 'features/study/study_page.dart';
+import 'features/user_profile/user_profile.dart';
+import 'screens/share.dart'; // Make sure this import exists
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
+
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -48,7 +49,7 @@ class MyApp extends StatelessWidget {
           case '/login':
             return MaterialPageRoute(builder: (_) => const LoginForm());
           case '/account_creation':
-            return MaterialPageRoute(builder: (_) => const AccountCreationForm());
+            return MaterialPageRoute(builder: (_) => AccountCreationForm());
           case '/study':
             return MaterialPageRoute(builder: (_) => const StudyPage());
           case '/reviewer':
