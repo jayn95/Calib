@@ -24,11 +24,7 @@ class NavBar extends StatelessWidget {
         duration: Duration(seconds: 3),
       ),
     );
-    Navigator.pushNamedAndRemoveUntil(
-      context,
-      '/login',
-          (route) => false,
-    );
+    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context){return const LoginForm();}));
   }
 
   @override
