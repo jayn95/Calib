@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import '../widgets/nav.dart';
+
+import '../features/screens/nav.dart';
 
 class SharePage extends StatelessWidget {
   const SharePage({super.key});
