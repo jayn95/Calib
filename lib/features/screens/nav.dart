@@ -26,7 +26,7 @@ class NavBar extends StatelessWidget {
       ),
     );
     Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) {
-      return const LoginForm();
+      return const LoginPage();
     }));
   }
 
@@ -88,6 +88,8 @@ class NavBar extends StatelessWidget {
                 MaterialPageRoute(
                   builder: (context) {
                     switch (route) {
+                      case '/login':
+                        return const LoginPage();
                       case '/share':
                         return const SharePage();
                       case '/study':
@@ -97,7 +99,7 @@ class NavBar extends StatelessWidget {
                       case '/user_profile':
                         return const ProfilePage();
                       default:
-                        return const LoginForm();
+                        return const LoginPage();
                     }
                   },
                 ),

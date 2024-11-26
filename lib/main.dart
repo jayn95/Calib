@@ -6,7 +6,7 @@ import 'services/firebase_options.dart';
 import 'features/about/about_page.dart';
 import 'features/review/reviewer_page.dart';
 import 'features/screens/account_creationform.dart';
-import 'features/screens/login_page.dart';
+import 'package:Calib/features/screens/login_page.dart'; 
 import 'features/study/study_page.dart';
 import 'features/user_profile/user_profile.dart';
 import 'screens/share.dart'; 
@@ -42,12 +42,12 @@ class MyApp extends StatelessWidget {
         ),
         useMaterial3: true,
       ),
-      initialRoute: '/login',
+      initialRoute: const LoginPage().toString(),
       onGenerateRoute: (settings) {
         // Define all routes here to ensure consistent handling
         switch (settings.name) {
           case '/login':
-            return MaterialPageRoute(builder: (_) => const LoginForm());
+            return MaterialPageRoute(builder: (_) => const LoginPage());
           case '/account_creation':
             return MaterialPageRoute(builder: (_) => const AccountCreationForm());
           case '/study':
@@ -62,7 +62,7 @@ class MyApp extends StatelessWidget {
             return MaterialPageRoute(builder: (_) => const SharePage());
           default:
             // Return a default route or error page
-            return MaterialPageRoute(builder: (_) => const LoginForm());
+            return MaterialPageRoute(builder: (_) => const LoginPage());
         }
       },
     );
