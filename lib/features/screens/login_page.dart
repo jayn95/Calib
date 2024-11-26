@@ -1,4 +1,4 @@
-import 'package:Calib/fbase/auth_service.dart'; // Import the AuthService class
+import 'package:Calib/services/auth_service.dart'; // Import the AuthService class
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:Calib/features/about/about_page.dart';

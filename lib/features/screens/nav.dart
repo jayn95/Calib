@@ -1,4 +1,5 @@
-import 'package:Calib/fbase/auth_service.dart';
+import 'package:Calib/services/auth_service.dart';
+
 import 'package:Calib/features/about/about_page.dart';
 import 'package:Calib/features/screens/login_page.dart';
 import 'package:Calib/features/study/study_page.dart';

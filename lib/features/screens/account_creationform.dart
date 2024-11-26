@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 
 class AccountCreationForm extends StatefulWidget {
+  const AccountCreationForm({super.key});
+
   @override
   _AccountCreationFormState createState() => _AccountCreationFormState();
 }
 
 class _AccountCreationFormState extends State<AccountCreationForm> {
   // Controller for the Description field
-  TextEditingController _descriptionController = TextEditingController();
+  final TextEditingController _descriptionController = TextEditingController();
 
   // Limit the description words
   String _description = '';
@@ -69,7 +71,7 @@ class _AccountCreationFormState extends State<AccountCreationForm> {
                     ),
                     textAlign: TextAlign.center,
                   ),
-                  SizedBox(height: 2.0),
+                  const SizedBox(height: 2.0),
 
                   // Username Label and Field
                   Text(
@@ -80,7 +82,7 @@ class _AccountCreationFormState extends State<AccountCreationForm> {
                       color: Colors.black,
                     ),
                   ),
-                  SizedBox(height: 8.0),
+                  const SizedBox(height: 8.0),
                   TextFormField(
                     style: TextStyle(fontSize: inputFontSize),
                     decoration: InputDecoration(
@@ -90,7 +92,7 @@ class _AccountCreationFormState extends State<AccountCreationForm> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 16.0),
+                  const SizedBox(height: 16.0),
 
                   // Course and Year Level Label and Field
                   Text(
@@ -101,7 +103,7 @@ class _AccountCreationFormState extends State<AccountCreationForm> {
                       color: Colors.black,
                     ),
                   ),
-                  SizedBox(height: 8.0),
+                  const SizedBox(height: 8.0),
                   TextFormField(
                     style: TextStyle(fontSize: inputFontSize),
                     decoration: InputDecoration(
@@ -111,7 +113,7 @@ class _AccountCreationFormState extends State<AccountCreationForm> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 16.0),
+                  const SizedBox(height: 16.0),
 
                   // Facebook Account Link Label and Field
                   Text(
@@ -122,7 +124,7 @@ class _AccountCreationFormState extends State<AccountCreationForm> {
                       color: Colors.black,
                     ),
                   ),
-                  SizedBox(height: 8.0),
+                  const SizedBox(height: 8.0),
                   TextFormField(
                     style: TextStyle(fontSize: inputFontSize),
                     decoration: InputDecoration(
@@ -133,7 +135,7 @@ class _AccountCreationFormState extends State<AccountCreationForm> {
                     ),
                     keyboardType: TextInputType.url,
                   ),
-                  SizedBox(height: 16.0),
+                  const SizedBox(height: 16.0),
 
                   // Description Label and Field with word limit
                   Text(
@@ -144,7 +146,7 @@ class _AccountCreationFormState extends State<AccountCreationForm> {
                       color: Colors.black,
                     ),
                   ),
-                  SizedBox(height: 8.0),
+                  const SizedBox(height: 8.0),
                   TextFormField(
                     controller: _descriptionController,
                     onChanged: _updateWordCount,
@@ -160,7 +162,7 @@ class _AccountCreationFormState extends State<AccountCreationForm> {
                     ),
                     maxLines: 5, // Allow multiple lines for the description
                   ),
-                  SizedBox(height: 8.0),
+                  const SizedBox(height: 8.0),
 
                   // Word Count Text
                   Text(
@@ -181,11 +183,11 @@ class _AccountCreationFormState extends State<AccountCreationForm> {
                         : null, // Disable the button if word count exceeds 50
                     style: ElevatedButton.styleFrom(
                       padding: EdgeInsets.symmetric(vertical: buttonHeight),
-                      backgroundColor: Color(0xFF3A6D8C),
+                      backgroundColor: const Color(0xFF3A6D8C),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8.0),
                       ),
-                      minimumSize: Size(double.infinity, 50),
+                      minimumSize: const Size(double.infinity, 50),
                     ),
                     child: Text(
                       'Create Account',
@@ -195,7 +197,7 @@ class _AccountCreationFormState extends State<AccountCreationForm> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 16.0),
+                  const SizedBox(height: 16.0),
 
                   // Already have an account link
                   TextButton(
@@ -203,7 +205,7 @@ class _AccountCreationFormState extends State<AccountCreationForm> {
                       // Navigate to login page using routes
                       Navigator.pushNamed(context, '/login');
                     },
-                    child: Text(
+                    child: const Text(
                       'Already have an account?',
                       style: TextStyle(color: Color(0xFF3A6D8C)),
                     ),
