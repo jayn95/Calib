@@ -93,7 +93,7 @@ class NavBar extends StatelessWidget {
                       case '/share':
                         return const SharePage();
                       case '/study':
-                        return const Study();
+                        return const StudyPage();
                       case '/about':
                         return const AboutPage();
                       case '/user_profile':

@@ -51,7 +51,7 @@ class MyApp extends StatelessWidget {
           case '/account_creation':
             return MaterialPageRoute(builder: (_) => const AccountCreationForm());
           case '/study':
-            return MaterialPageRoute(builder: (_) => const Study());
+            return MaterialPageRoute(builder: (_) => const StudyPage());
           case '/reviewer':
             return MaterialPageRoute(builder: (_) => const Reviewer());
           case '/user_profile':
