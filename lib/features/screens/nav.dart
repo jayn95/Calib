@@ -1,10 +1,10 @@
-import 'package:Calib/src/features/reviewer/reviewer_page.dart';
-import 'package:Calib/src/services/auth_service.dart';
+import 'package:Calib/services/auth_service.dart';
 
-import 'package:Calib/src/features/about/about_page.dart';
-import 'package:Calib/src/features/log-in/login_page.dart';
-import 'package:Calib/src/features/study/study_page.dart';
-import 'package:Calib/src/features/user_profile/user_profile.dart';
+import 'package:Calib/features/about/about_page.dart';
+import 'package:Calib/features/screens/login_page.dart';
+import 'package:Calib/features/study/study_page.dart';
+import 'package:Calib/features/user_profile/user_profile.dart';
+import 'package:Calib/screens/share.dart';
 import 'package:flutter/material.dart';
 
 class NavBar extends StatelessWidget {
@@ -52,10 +52,11 @@ class NavBar extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              _buildNavButton(context, 'Reviewer', '/reviewer', Icons.reviews_rounded),
+              _buildNavButton(context, 'Share', '/share', Icons.share),
               _buildNavButton(context, 'Study', '/study', Icons.book),
               _buildNavButton(context, 'About', '/about', Icons.info),
-              _buildNavButton(context, 'Profile', '/user_profile', Icons.person),
+              _buildNavButton(
+                  context, 'Profile', '/user_profile', Icons.person),
               _buildLogoutButton(context),
             ],
           ),
@@ -87,10 +88,10 @@ class NavBar extends StatelessWidget {
                 MaterialPageRoute(
                   builder: (context) {
                     switch (route) {
-                      case '/reviewer':
-                        return const Reviewer(); 
                       case '/login':
                         return const LoginPage();
+                      case '/share':
+                        return const SharePage();
                       case '/study':
                         return const Study();
                       case '/about':

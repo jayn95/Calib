@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../shared_features/nav.dart';
+import '../screens/nav.dart';
 
 class AboutPage extends StatelessWidget {
   const AboutPage({super.key});
