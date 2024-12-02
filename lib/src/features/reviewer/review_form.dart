@@ -1,15 +1,20 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+
 
 class ReviewForm extends StatefulWidget {
   const ReviewForm({super.key});
 
   @override
-  _ReviewFormState createState() => _ReviewFormState();
+  ReviewFormState createState() => ReviewFormState();
 }
 
-class _ReviewFormState extends State<ReviewForm> {
+class ReviewFormState extends State<ReviewForm> {
   Set<String> selectedTags = {};
+  double _uploadProgress = 0;
   final List<String> tags = [
     "BA 234",
     "CC2 206",
@@ -20,13 +25,20 @@ class _ReviewFormState extends State<ReviewForm> {
     "CCS 227"
   ];
 
+  final TextEditingController descriptionController = TextEditingController();
   TextEditingController fileController = TextEditingController();
+  PlatformFile? pickedFile; // Store the picked file
+
 
   Future<void> pickFile() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles();
-    setState(() {
-      fileController.text = result?.files.single.name ?? "No file selected";
-    });
+
+    if (result != null) {
+      setState(() {
+        pickedFile = result.files.single;
+        _uploadProgress = 0; // Reset progress when a new file is picked
+      });
+    }
   }
 
   @override
@@ -104,6 +116,7 @@ class _ReviewFormState extends State<ReviewForm> {
             ),
             const SizedBox(height: 8.0),
             TextFormField(
+              controller: descriptionController,
               maxLines: 4,
               decoration: InputDecoration(
                 hintText: 'Enter description',
@@ -156,6 +169,17 @@ class _ReviewFormState extends State<ReviewForm> {
                 ),
               ),
             ),
+            if (pickedFile != null)  
+              Padding(       
+                padding: const EdgeInsets.only(top: 8.0),
+                child: LinearProgressIndicator(
+                  value: _uploadProgress,
+                  minHeight: 8,
+                  backgroundColor: Colors.grey[300],
+                  valueColor: const AlwaysStoppedAnimation<Color>(Color(0xFF3A6D8C)),
+                ),
+              ),
+
             SizedBox(height: verticalSpacing * 1.5),
 
             // Action buttons
@@ -186,9 +210,7 @@ class _ReviewFormState extends State<ReviewForm> {
                 const SizedBox(width: 16.0),
                 Expanded(
                   child: ElevatedButton(
-                    onPressed: () {
-                      // Handle form submission
-                    },
+                    onPressed: _submitForm,
                     style: ElevatedButton.styleFrom(
                       padding: EdgeInsets.symmetric(vertical: buttonHeight),
                       backgroundColor: const Color(0xFF3A6D8C),
@@ -211,5 +233,97 @@ class _ReviewFormState extends State<ReviewForm> {
         ),
       ),
     );
+  }
+  
+  Future<void> _submitForm() async {
+  final User? user = FirebaseAuth.instance.currentUser;
+
+  if (user == null) {
+    print("User not logged in!");
+    return;
+  }
+  if (selectedTags.isEmpty) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Please select at least one subject tag.')),
+    );
+    return;
+  }
+
+  try {
+    String fileURL = fileController.text; 
+    int likes = 0; 
+
+
+    if (pickedFile != null) { // Only upload if a file is picked
+      final fileName = '${DateTime.now().millisecondsSinceEpoch}_${pickedFile!.name}';
+      final storageRef = firebase_storage.FirebaseStorage.instance.ref().child('review_session_files/$fileName');
+
+
+      // Listen for upload progress
+      final uploadTask = storageRef.putData(pickedFile!.bytes!);
+      uploadTask.snapshotEvents.listen((snapshot) { // Progress updates
+        setState(() {
+          _uploadProgress = snapshot.bytesTransferred / snapshot.totalBytes;
+        });
+      }, onError: (error) { // Handle errors 
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Upload Error: $error')),
+          );
+        }
+        print('Upload Error: $error'); // Print to console for debugging
+      });
+
+      // Wait for the upload to complete
+      await uploadTask;
+
+      // Get the download URL
+      fileURL = await storageRef.getDownloadURL();
+    }
+    await FirebaseFirestore.instance.collection('reviewer_sessions').add({
+      'userId': user.uid,
+      'userName': user.displayName ?? 'Anonymous',
+      'userPhotoURL': user.photoURL ?? '',
+      'description': descriptionController.text,
+      'tags': selectedTags.toList(),
+      'file': fileURL, // Store the download URL or the link
+      'timestamp': FieldValue.serverTimestamp(),
+      'numOfLikes': likes, 
+    });
+
+
+    if (mounted) {
+      descriptionController.clear();
+      fileController.clear(); // Clear link field too
+      selectedTags.clear();
+      setState(() {
+        pickedFile = null;
+        _uploadProgress = 0; // Reset upload progress
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Review submitted successfully!')),
+      );
+      Navigator.pop(context);
+    }
+  } catch (e) {
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error submitting review: $e')), // Show the error
+      );
+    }
+    print('Error submitting review: $e');  // Print the error to the console for debugging.
+  }
+}
+
+
+
+
+
+
+  @override
+  void dispose() {
+    descriptionController.dispose();
+    super.dispose();
   }
 }
