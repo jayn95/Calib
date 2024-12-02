@@ -6,6 +6,7 @@ import 'package:Calib/features/study/study_page.dart';
 import 'package:Calib/features/user_profile/user_profile.dart';
 import 'package:Calib/screens/share.dart';
 import 'package:Calib/features/review/reviewer_page.dart';
+import 'package:Calib/features/study2/study.dart';
 import 'package:flutter/material.dart';
 
 class NavBar extends StatelessWidget {
@@ -94,7 +95,7 @@ class NavBar extends StatelessWidget {
                       case '/reviewer':
                         return const Reviewer();
                       case '/study':
-                        return const StudyPage();
+                        return const Study();
                       case '/about':
                         return const AboutPage();
                       case '/user_profile':
