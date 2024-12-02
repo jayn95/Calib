@@ -6,10 +6,10 @@ import 'services/firebase_options.dart';
 import 'features/about/about_page.dart';
 import 'features/review/reviewer_page.dart';
 import 'features/screens/account_creationform.dart';
-import 'package:Calib/features/screens/login_page.dart'; 
+import 'package:Calib/features/screens/login_page.dart';
 import 'features/study/study_page.dart';
 import 'features/user_profile/user_profile.dart';
-import 'screens/share.dart'; 
+import 'screens/share.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -49,7 +49,8 @@ class MyApp extends StatelessWidget {
           case '/login':
             return MaterialPageRoute(builder: (_) => const LoginPage());
           case '/account_creation':
-            return MaterialPageRoute(builder: (_) => const AccountCreationForm());
+            return MaterialPageRoute(
+                builder: (_) => const AccountCreationForm());
           case '/study':
             return MaterialPageRoute(builder: (_) => const StudyPage());
           case '/reviewer':

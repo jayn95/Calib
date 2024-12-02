@@ -77,7 +77,7 @@ class _ReviewerState extends State<Reviewer> {
             'Add a Text',
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
-          const SizedBox(height: 36.0),
+          const SizedBox(height: 25.0),
           // Tags with scrolling and arrows
           Container(
             margin: EdgeInsets.symmetric(

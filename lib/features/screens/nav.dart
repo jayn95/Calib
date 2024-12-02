@@ -5,6 +5,7 @@ import 'package:Calib/features/screens/login_page.dart';
 import 'package:Calib/features/study/study_page.dart';
 import 'package:Calib/features/user_profile/user_profile.dart';
 import 'package:Calib/screens/share.dart';
+import 'package:Calib/features/review/reviewer_page.dart';
 import 'package:flutter/material.dart';
 
 class NavBar extends StatelessWidget {
@@ -52,7 +53,7 @@ class NavBar extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              _buildNavButton(context, 'Share', '/share', Icons.share),
+              _buildNavButton(context, 'Share', '/reviewer', Icons.share),
               _buildNavButton(context, 'Study', '/study', Icons.book),
               _buildNavButton(context, 'About', '/about', Icons.info),
               _buildNavButton(
@@ -90,8 +91,8 @@ class NavBar extends StatelessWidget {
                     switch (route) {
                       case '/login':
                         return const LoginPage();
-                      case '/share':
-                        return const SharePage();
+                      case '/reviewer':
+                        return const Reviewer();
                       case '/study':
                         return const StudyPage();
                       case '/about':
