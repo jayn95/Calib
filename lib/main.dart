@@ -51,7 +51,7 @@ class MyApp extends StatelessWidget {
           // case '/account_creation':
           //   return MaterialPageRoute(builder: (_) => const AccountCreationForm());
           case '/study':
-            return MaterialPageRoute(builder: (_) => const StudyPage());
+            return MaterialPageRoute(builder: (_) => const Study());
           case '/reviewer':
             return MaterialPageRoute(builder: (_) => const Reviewer()); // mever used
           case '/user_profile':
