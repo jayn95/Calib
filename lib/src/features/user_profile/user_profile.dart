@@ -28,7 +28,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   // Text controllers
   final TextEditingController _usernameController = TextEditingController();
-  final TextEditingController _bioController = TextEditingController();
+  // final TextEditingController _bioController = TextEditingController();
   final TextEditingController _aboutMeController = TextEditingController();
 
   @override
@@ -80,7 +80,7 @@ class _ProfilePageState extends State<ProfilePage> {
         if (userDoc.exists) {
           setState(() {
             _usernameController.text = userDoc['displayName'] ?? user!.displayName ?? '';
-            _bioController.text = userDoc['bio'] ?? '';
+            // _bioController.text = userDoc['bio'] ?? '';
             _aboutMeController.text = userDoc['aboutMe'] ?? '';
             _profileImageUrl = userDoc['profileImageUrl'] ?? user?.photoURL;
           });
@@ -140,7 +140,7 @@ class _ProfilePageState extends State<ProfilePage> {
       try {
         // Validation
         final username = _usernameController.text.trim();
-        final bio = _bioController.text.trim();
+        // final bio = _bioController.text.trim();
         final aboutMe = _aboutMeController.text.trim();
 
         if (username.isEmpty) {
@@ -161,7 +161,7 @@ class _ProfilePageState extends State<ProfilePage> {
         // Update Firestore document
         await _firestore.collection('users').doc(user!.uid).update({
           'displayName': username,
-          'bio': bio,
+          // 'bio': bio,
           'aboutMe': aboutMe,
         });
 
@@ -380,17 +380,17 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget _buildBioSection() {
     return _isEditing
       ? TextField(
-          controller: _bioController,
+          // controller: _bioController,
           decoration: const InputDecoration(
-            labelText: 'Bio',
+            labelText: 'Biography',
             border: OutlineInputBorder(),
           ),
           maxLines: null,
         )
       : Text(
-          _bioController.text.isNotEmpty 
-            ? _bioController.text 
-            : 'No bio available',
+          // _bioController.text.isNotEmpty 
+          //   ? _bioController.text 
+            /*:*/ 'Biography',
           style: const TextStyle(
             fontSize: 16, 
             color: Colors.grey
@@ -483,7 +483,7 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   void dispose() {
     _usernameController.dispose();
-    _bioController.dispose();
+    // _bioController.dispose();
     _aboutMeController.dispose();
     super.dispose();
   }
