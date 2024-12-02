@@ -1,4 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart'; // Import FirebaseAuth
 import 'package:flutter/material.dart';
+ 
 
 class StudyForm extends StatefulWidget {
   const StudyForm({super.key});
@@ -10,6 +13,9 @@ class StudyForm extends StatefulWidget {
 class _StudyFormState extends State<StudyForm> {
   Set<String> selectedTags = {};
   final List<String> tags = ["CICT Shed", "Coop", "Mini Forest", "Library"];
+
+  final TextEditingController descriptionController = TextEditingController();
+
 
   @override
   Widget build(BuildContext context) {
@@ -86,6 +92,7 @@ class _StudyFormState extends State<StudyForm> {
             ),
             const SizedBox(height: 8.0),
             TextFormField(
+              controller: descriptionController,
               maxLines: 4,
               decoration: InputDecoration(
                 hintText: 'Enter description',
@@ -126,9 +133,7 @@ class _StudyFormState extends State<StudyForm> {
                 // Submit button
                 Expanded(
                   child: ElevatedButton(
-                    onPressed: () {
-                      // Handle form submission
-                    },
+                    onPressed: _submitForm,
                     style: ElevatedButton.styleFrom(
                       padding: EdgeInsets.symmetric(vertical: buttonHeight),
                       backgroundColor: const Color(0xFF3A6D8C),
@@ -152,4 +157,57 @@ class _StudyFormState extends State<StudyForm> {
       ),
     );
   }
+  
+
+
+  Future<void> _submitForm() async {
+    final User? user = FirebaseAuth.instance.currentUser; // Get current user
+
+    if (user == null) {
+      print("User not logged in!");
+      return;
+    }
+
+
+    if (selectedTags.isEmpty) {
+       ScaffoldMessenger.of(context).showSnackBar(
+         const SnackBar(content: Text('Please select at least one location tag.')),
+       );
+      return;
+    }
+
+    try {
+      await FirebaseFirestore.instance.collection('study_sessions').add({
+        'userId': user.uid, 
+        'userName': user.displayName ?? 'Anonymous',
+         'userPhotoURL': user.photoURL ?? '', 
+
+        'tags': selectedTags.toList(),
+        'description': descriptionController.text,
+        'timestamp': FieldValue.serverTimestamp(),
+      });
+
+      Navigator.of(context).pop();
+
+       ScaffoldMessenger.of(context).showSnackBar(
+         const SnackBar(content: Text('Study session submitted!')),
+       );
+
+
+      setState(() {
+        selectedTags.clear();
+        descriptionController.clear();
+      });
+      
+    } catch (e) {
+      print("Error submitting form: $e");
+    }
+  }
+
+    @override
+  void dispose() {
+    descriptionController.dispose();
+    super.dispose();
+  }
 }
+  
