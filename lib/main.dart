@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'services/firebase_options.dart';
 import 'features/about/about_page.dart';
 import 'features/review/reviewer_page.dart';
+import 'features/study2/study.dart';
 import 'features/screens/account_creationform.dart';
 import 'package:Calib/features/screens/login_page.dart';
 import 'features/study/study_page.dart';
@@ -52,7 +53,7 @@ class MyApp extends StatelessWidget {
             return MaterialPageRoute(
                 builder: (_) => const AccountCreationForm());
           case '/study':
-            return MaterialPageRoute(builder: (_) => const StudyPage());
+            return MaterialPageRoute(builder: (_) => const Study());
           case '/reviewer':
             return MaterialPageRoute(builder: (_) => const Reviewer());
           case '/user_profile':
