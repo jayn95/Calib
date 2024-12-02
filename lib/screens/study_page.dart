@@ -23,6 +23,14 @@ class _StudyPageState extends State<StudyPage> {
 
   @override
   Widget build(BuildContext context) {
+<<<<<<< Updated upstream:lib/screens/study_page.dart
+=======
+    // Filter userBoxes based on selected categories
+    final filteredBoxes = userBoxes.where((box) {
+      // Return true if 'All' is selected or if the box's category is in the selected categories
+      return _scategories['All'] == true || _scategories[box['category']] == true;
+    }).toList();
+>>>>>>> Stashed changes:lib/features/study/study_page.dart
 
     return MaterialApp(
       home: Scaffold(
@@ -64,12 +72,13 @@ class _StudyPageState extends State<StudyPage> {
                         mainAxisSpacing: 20,
                         childAspectRatio: 1,
                       ),
-                      itemCount: 9,
+                      itemCount: filteredBoxes.length,
                       itemBuilder: (context, index) {
+                        var box = filteredBoxes[index];
                         return StudyBox(
-                          userName: "User Name $index",
-                          locationTag: "#LocationTag",
-                          description: "Description",
+                          userName: box['username'],
+                          locationTag: "#${box['category']}",
+                          description: box['description'],
                         );
                       },
                     ),
