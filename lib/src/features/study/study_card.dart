@@ -124,8 +124,9 @@ class _StudyBoxState extends State<StudyBox> {
                         child: Text(
                           'UP FOR IT',
                           style: TextStyle(
-                            fontSize: buttonFontSize,
+                            fontSize:buttonFontSize,
                             color: Colors.white,
+
                           ),
                         ),
                       ),
