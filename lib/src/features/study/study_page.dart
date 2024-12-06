@@ -16,7 +16,7 @@ class StudyPage extends StatefulWidget {
 }
 
 class _StudyPageState extends State<StudyPage> {
-  final Map<String, bool> _scategories = Map.from(studyCategories);
+  final Map<String, bool> _scategories = Map.from(study_Categories);
   List<String> _selectedCategories = []; // Store selected categories
 
   void _onTagSelectionChanged(Map<String, bool> selectedCategories) {

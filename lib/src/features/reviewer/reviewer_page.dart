@@ -15,9 +15,10 @@ class Reviewer extends StatefulWidget {
 }
 
 class _ReviewerState extends State<Reviewer> {
-  final Map<String, bool> _categories = Map.from(reviewer_categories);
+  final Map<String, bool> _categories = Map.from(reviewer_Categories);
+    List<String> _selectedCategories = []; // Store selected categories
   
-  List<String> _selectedCategories = [];
+
   // final ScrollController _scrollController = ScrollController();
 
   // void _scrollLeft() {
@@ -220,7 +221,7 @@ class _ReviewerState extends State<Reviewer> {
                   ? FirebaseFirestore.instance
                       .collection('reviewer_sessions')
                       .where('tags', arrayContainsAny: _selectedCategories)
-                      .orderBy('timestamp', descending: true)
+                      // .orderBy('timestamp', descending: true)
                       .snapshots()
                   : FirebaseFirestore.instance // If empty, get all documents
                       .collection('reviewer_sessions')

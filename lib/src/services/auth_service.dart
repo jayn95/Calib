@@ -10,14 +10,14 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 
-final Map<String, bool> studyCategories = {
+final Map<String, bool> study_Categories = {
   'CICT Shed' : false,
   'Coop': false,
   'Mini Forest': false,
   'Library': false,
 };
 
-final Map<String, bool> reviewer_categories = {
+final Map<String, bool> reviewer_Categories = {
   'BA 234': false,
   'CC2 206': false,
   'CC 208': false,

@@ -47,11 +47,18 @@ class _CustomCardState extends State<ReviewerBox> {
   bool _isExpanded = false;
   bool _isLiked = false;
   bool _isHovered = false;
+  Stream<DocumentSnapshot>? _likeStatusStream; 
 
       @override
         void initState() {
         super.initState();
-        _checkLikedStatus(); // Check liked status when the widget initializes
+        _listenForLikeStatusChanges(); // Check liked status when the widget initializes
+    }
+    
+        @override
+      void dispose() {
+      _likeStatusStream?.listen(null); // Stop listening in dispose
+      super.dispose();
     }
 
   @override
@@ -59,7 +66,6 @@ class _CustomCardState extends State<ReviewerBox> {
     // Get screen dimensions
     double screenWidth = MediaQuery.of(context).size.width;
     // double screenHeight = MediaQuery.of(context).size.height;
-
     // Adjust card and font sizes based on screen dimensions
     // double cardWidth = screenWidth > 800 ? 200 : 150;
     // double cardHeight = screenHeight > 800 ? 300 : 250;
@@ -223,7 +229,10 @@ class _CustomCardState extends State<ReviewerBox> {
             child: SizedBox(
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: _toggleLike, 
+              onPressed: () async {
+                    await _toggleLike();
+                      _listenForLikeStatusChanges(); // Refresh like status
+              },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: _isLiked
                       ? const Color(0xFFEAD8B1)
@@ -318,51 +327,53 @@ class _CustomCardState extends State<ReviewerBox> {
   }
 
 
-  Future<void> _checkLikedStatus() async {
-    final user = FirebaseAuth.instance.currentUser;
-    if (user != null) {
-      final likesDoc = await FirebaseFirestore.instance
-          .collection('reviewer_sessions')
-          .doc(widget.documentId)
-          .collection('likes')
-          .doc(user.uid)
-          .get();
-
-      setState(() {
-        _isLiked = likesDoc.exists;
-      });
-    }
-  }
   Future<void> _toggleLike() async {
     final user = FirebaseAuth.instance.currentUser;
     if (user == null) {
-      return;
+      return; // Don't do anything if the user is not logged in
     }
-  
+
     final likesCollection = FirebaseFirestore.instance
         .collection('reviewer_sessions')
         .doc(widget.documentId)
         .collection('likes');
 
-
-    setState(() {
-      _isLiked = !_isLiked;
-    });
-
-    if (_isLiked) {
-      await likesCollection.doc(user.uid).set({'liked': true});
-      await FirebaseFirestore.instance.collection('reviewer_sessions').doc(widget.documentId).update({
-        'numOfLikes': FieldValue.increment(1),
-      });
-
-
-
-    } else {
-      // Remove like from Firestore
+     if (_isLiked) { // If already liked, unlike
       await likesCollection.doc(user.uid).delete();
-          await FirebaseFirestore.instance.collection('reviewer_sessions').doc(widget.documentId).update({
-        'numOfLikes': FieldValue.increment(-1),
+      await FirebaseFirestore.instance
+          .collection('reviewer_sessions')
+          .doc(widget.documentId)
+          .update({'numOfLikes': FieldValue.increment(-1)});
+    } else { // If not liked, like
+      await likesCollection.doc(user.uid).set({'liked': true});
+      await FirebaseFirestore.instance
+          .collection('reviewer_sessions')
+          .doc(widget.documentId)
+          .update({'numOfLikes': FieldValue.increment(1)});
+    }
+
+  }
+    void _listenForLikeStatusChanges() {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      _likeStatusStream = FirebaseFirestore.instance
+          .collection('reviewer_sessions')
+          .doc(widget.documentId)
+          .collection('likes')
+          .doc(user.uid)
+          .snapshots();
+
+      _likeStatusStream?.listen((snapshot) {
+        setState(() {
+          _isLiked = snapshot.exists;
+        });
+      });
+    } else {
+      // Handle case where user is not logged in (set _isLiked to false)
+      setState(() {
+        _isLiked = false;
       });
     }
   }
+
 }

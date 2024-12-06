@@ -15,7 +15,7 @@ class ReviewForm extends StatefulWidget {
 class ReviewFormState extends State<ReviewForm> {
   Set<String> selectedTags = {};
   double _uploadProgress = 0;
-  final List<String> tags = [
+  List<String> tags = [
     "BA 234",
     "CC2 206",
     "CC 208",
