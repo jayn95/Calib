@@ -15,6 +15,10 @@ final Map<String, bool> study_Categories = {
   'Coop': false,
   'Mini Forest': false,
   'Library': false,
+  'Med Gym': false,
+  'Quezon hall': false,
+  'BINHI': false,
+  'Administration building': false,
 };
 
 final Map<String, bool> reviewer_Categories = {

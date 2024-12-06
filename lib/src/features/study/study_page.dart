@@ -6,6 +6,7 @@ import 'study_card.dart';
 import 'study_form.dart'; 
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/rendering.dart'; 
 
 
 class StudyPage extends StatefulWidget {
@@ -18,6 +19,24 @@ class StudyPage extends StatefulWidget {
 class _StudyPageState extends State<StudyPage> {
   final Map<String, bool> _scategories = Map.from(study_Categories);
   List<String> _selectedCategories = []; // Store selected categories
+
+  final ScrollController _scrollController = ScrollController();
+
+  void _scrollLeft() {
+    _scrollController.animateTo(
+      _scrollController.offset - 100,
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
+    );
+  }
+
+  void _scrollRight() {
+    _scrollController.animateTo(
+      _scrollController.offset + 100,
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
+    );
+  }
 
   void _onTagSelectionChanged(Map<String, bool> selectedCategories) {
     setState(() {
@@ -54,6 +73,10 @@ class _StudyPageState extends State<StudyPage> {
 
   @override
   Widget build(BuildContext context) {
+
+    double screenWidth = MediaQuery.of(context).size.width;
+
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: PreferredSize(
@@ -80,10 +103,98 @@ class _StudyPageState extends State<StudyPage> {
                     ),
                   ),
                   const SizedBox(height: 20),
-                  StudyTags(
-                    studyCategories: _scategories,
-                    onSelectionChanged: _onTagSelectionChanged,
+                  // StudyTags(
+                  //   studyCategories: _scategories,
+                  //   onSelectionChanged: _onTagSelectionChanged,
+                  // ),
+
+
+          Container(
+            margin: EdgeInsets.symmetric(
+              horizontal: screenWidth > 800
+                  ? 300.0
+                  : 30.0, // Adjust margin based on screen size
+            ),
+            padding: EdgeInsets.symmetric(
+              vertical: screenWidth > 800
+                  ? 16.0
+                  : 8.0, // Adjust padding based on screen size
+            ),
+            alignment: Alignment.center,
+            child: Row(
+              children: [
+                // Left Arrow Button
+                IconButton(
+                  icon: const Icon(Icons.arrow_left),
+                  onPressed: _scrollLeft,
+                ),
+                Expanded(
+                  child: SingleChildScrollView(
+                    controller: _scrollController,
+                    scrollDirection:
+                        Axis.horizontal, // Horizontal scroll direction
+                    child: Wrap(
+                      spacing: screenWidth > 800
+                          ? 20.0
+                          : 14.0, // Space between each chip
+                      children: [
+                        // Add "All" option
+                        // InputChip(
+                        //   label: Text('All',
+                        //       style: TextStyle(
+                        //           fontSize: screenWidth > 800 ? 16.0 : 9.0)),
+                        //   selected: _selectedCategories.contains('All'),
+                        //   selectedColor: Colors.blue.shade100,
+                        //   backgroundColor: Colors.white,
+                        //   onSelected: (isSelected) {
+                        //     setState(() {
+                        //       if (isSelected) {
+                        //         _selectedCategories = [
+                        //           'All'
+                        //         ]; // Only 'All' is selected
+                        //       } else {
+                        //         _selectedCategories.remove(
+                        //             'All'); // Remove 'All' if deselected
+                        //       }
+                        //     });
+                        //   },
+                        // ),
+                        // Category chips
+                        ..._scategories.keys.map((category) {
+                          double tagFontSize = screenWidth > 800 ? 16.0 : 9.0;
+                          return InputChip(
+                            label: Text(category,
+                                style: TextStyle(fontSize: tagFontSize)),
+                            selected: _selectedCategories.contains(category),
+                            selectedColor: Colors.blue.shade100,
+                            backgroundColor: Colors.white,
+                            onSelected: (isSelected) {
+                              setState(() {
+                                if (isSelected) {
+                                  _selectedCategories
+                                      .add(category); // Add to the list
+                                } else {
+                                  _selectedCategories
+                                      .remove(category); // Remove from the list
+                                }
+                              });
+                            },
+                          );
+                        }),
+                      ],
+                    ),
                   ),
+                ),
+                // Right Arrow Button
+                IconButton(
+                  icon: const Icon(Icons.arrow_right),
+                  onPressed: _scrollRight,
+                ),
+              ],
+            ),
+          ),
+
+
                   const SizedBox(height: 20),
                   StreamBuilder<QuerySnapshot>(
                     stream: _selectedCategories.isNotEmpty 
