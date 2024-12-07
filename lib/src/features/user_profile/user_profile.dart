@@ -83,7 +83,11 @@ class _ProfilePageState extends State<ProfilePage> {
             _usernameController.text = userDoc['displayName'] ?? user!.displayName ?? '';
             _bioController.text = userDoc['bio'] ?? '';
             _aboutMeController.text = userDoc['aboutMe'] ?? '';
+            _facebookLinkController.text = userDoc['facebookLink'] ?? '';
             _profileImageUrl = userDoc['profileImageUrl'] ?? user?.photoURL;
+            _selectedProgram = userDoc['program'];
+            _selectedYear = userDoc['year'];
+            _selectedSection = userDoc['section'];
           });
         }
       } catch (e) {
@@ -91,6 +95,7 @@ class _ProfilePageState extends State<ProfilePage> {
       }
     }
   }
+
 
   Future<void> _pickImage() async {
     final pickedFile = await ImagePicker().pickImage(
@@ -143,38 +148,51 @@ class _ProfilePageState extends State<ProfilePage> {
         final username = _usernameController.text.trim();
         final bio = _bioController.text.trim();
         final aboutMe = _aboutMeController.text.trim();
+        final facebookLink = _facebookLinkController.text.trim();
 
         if (username.isEmpty) {
           _showValidationError('Username cannot be empty');
           return;
         }
 
-        if (username.length < 3) {
-          _showValidationError('Username must be at least 3 characters long');
+        // Add validation for new fields if needed
+        if (_selectedProgram == null) {
+          _showValidationError('Please select a program.');
           return;
         }
 
-        if (username.length > 30) {
-          _showValidationError('Username cannot exceed 30 characters');
+        if (_selectedYear == null) {
+          _showValidationError('Please select a year level.');
           return;
         }
+
+        if (_selectedSection == null) {
+          _showValidationError('Please select a section.');
+          return;
+        }
+
 
         // Update Firestore document
         await _firestore.collection('users').doc(user!.uid).update({
           'displayName': username,
           'bio': bio,
           'aboutMe': aboutMe,
+          'facebookLink': facebookLink,
+          'program': _selectedProgram,
+          'year': _selectedYear,
+          'section': _selectedSection,
         });
 
         // Optional: Update Firebase Auth display name
         await user!.updateDisplayName(username);
-        
+
         _showSuccessMessage('Profile updated successfully!');
       } catch (e) {
         _showErrorMessage('Error saving changes: ${e.toString()}');
       }
     }
   }
+
 
   void _showConfirmationDialog() {
     showDialog(
@@ -376,7 +394,7 @@ Widget _buildDefaultProfileImage() {
 String? _selectedProgram;
 int? _selectedYear;
 String? _selectedSection;
-TextEditingController _facebookLinkController = TextEditingController();
+final TextEditingController _facebookLinkController = TextEditingController();
 
 // _buildBioSection with Facebook Link field and dropdowns
 Widget _buildBioSection() {
