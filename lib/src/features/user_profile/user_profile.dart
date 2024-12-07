@@ -28,8 +28,9 @@ class _ProfilePageState extends State<ProfilePage> {
 
   // Text controllers
   final TextEditingController _usernameController = TextEditingController();
-  // final TextEditingController _bioController = TextEditingController();
+  final TextEditingController _bioController = TextEditingController();
   final TextEditingController _aboutMeController = TextEditingController();
+  final TextEditingController _descriptionController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -54,8 +55,8 @@ class _ProfilePageState extends State<ProfilePage> {
                       bool isMobile = constraints.maxWidth < 600;
 
                       return isMobile
-                        ? _buildMobileLayout()
-                        : _buildDesktopLayout();
+                          ? _buildMobileLayout()
+                          : _buildDesktopLayout();
                     },
                   ),
                 ],
@@ -76,11 +77,13 @@ class _ProfilePageState extends State<ProfilePage> {
   Future<void> _loadUserData() async {
     if (user != null) {
       try {
-        DocumentSnapshot userDoc = await _firestore.collection('users').doc(user!.uid).get();
+        DocumentSnapshot userDoc =
+            await _firestore.collection('users').doc(user!.uid).get();
         if (userDoc.exists) {
           setState(() {
-            _usernameController.text = userDoc['displayName'] ?? user!.displayName ?? '';
-            // _bioController.text = userDoc['bio'] ?? '';
+            _usernameController.text =
+                userDoc['displayName'] ?? user!.displayName ?? '';
+            _bioController.text = userDoc['bio'] ?? '';
             _aboutMeController.text = userDoc['aboutMe'] ?? '';
             _profileImageUrl = userDoc['profileImageUrl'] ?? user?.photoURL;
           });
@@ -111,11 +114,9 @@ class _ProfilePageState extends State<ProfilePage> {
     if (_profileImage != null && user != null) {
       try {
         // Upload image to Firebase Storage
-        final storageRef = _storage
-            .ref()
-            .child('profile_images')
-            .child('${user!.uid}.jpg');
-        
+        final storageRef =
+            _storage.ref().child('profile_images').child('${user!.uid}.jpg');
+
         await storageRef.putFile(_profileImage!);
         final imageUrl = await storageRef.getDownloadURL();
 
@@ -140,7 +141,7 @@ class _ProfilePageState extends State<ProfilePage> {
       try {
         // Validation
         final username = _usernameController.text.trim();
-        // final bio = _bioController.text.trim();
+        final bio = _bioController.text.trim();
         final aboutMe = _aboutMeController.text.trim();
 
         if (username.isEmpty) {
@@ -161,13 +162,13 @@ class _ProfilePageState extends State<ProfilePage> {
         // Update Firestore document
         await _firestore.collection('users').doc(user!.uid).update({
           'displayName': username,
-          // 'bio': bio,
+          'bio': bio,
           'aboutMe': aboutMe,
         });
 
         // Optional: Update Firebase Auth display name
         await user!.updateDisplayName(username);
-        
+
         _showSuccessMessage('Profile updated successfully!');
       } catch (e) {
         _showErrorMessage('Error saving changes: ${e.toString()}');
@@ -210,30 +211,24 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   void _showValidationError(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-        backgroundColor: Colors.red,
-      )
-    );
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text(message),
+      backgroundColor: Colors.red,
+    ));
   }
 
   void _showSuccessMessage(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-        backgroundColor: Colors.green,
-      )
-    );
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text(message),
+      backgroundColor: Colors.green,
+    ));
   }
 
   void _showErrorMessage(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-        backgroundColor: Colors.red,
-      )
-    );
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text(message),
+      backgroundColor: Colors.red,
+    ));
   }
 
   Widget _buildMobileLayout() {
@@ -244,8 +239,8 @@ class _ProfilePageState extends State<ProfilePage> {
         const SizedBox(height: 20),
         _buildProfileHeader(true),
         const SizedBox(height: 5),
-        _buildProfileSubtitle(),
-        const SizedBox(height: 15),
+        _buildBioSection(), // Ensure bio section is included
+        const SizedBox(height: 30),
         _buildAboutMeSection(),
         const SizedBox(height: 30),
         _buildActionButtons(true),
@@ -254,89 +249,107 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Widget _buildDesktopLayout() {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        _buildProfileImage(),
-        const SizedBox(width: 20),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _buildProfileHeader(false),
-              _buildProfileSubtitle(),
-              const SizedBox(height: 15),
-              _buildBioSection(),
-              const SizedBox(height: 15),
-              _buildAboutMeSection(),
-              const SizedBox(height: 10),
-              _buildActionButtons(false),
-            ],
-          ),
-        ),
-      ],
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center, // Center the entire column
+        crossAxisAlignment: CrossAxisAlignment.center, // Center horizontally
+        children: [
+          _buildProfileImage(),
+          const SizedBox(height: 15),
+          _buildProfileHeader(false),
+          const SizedBox(height: 10),
+          _buildBioSection(), // Bio section on desktop
+          const SizedBox(height: 10),
+          _buildAboutMeSection(),
+          const SizedBox(height: 30),
+          _buildActionButtons(false),
+        ],
+      ),
     );
   }
 
   Widget _buildProfileImage() {
     return GestureDetector(
       onTap: _isEditing ? _pickImage : null,
-      child: ClipOval(
-        child: _profileImage != null
-          ? Image.file(
-              _profileImage!, 
-              width: 80.0, 
-              height: 80.0, 
-              fit: BoxFit.cover
-            )
-          : _profileImageUrl != null
-            ? Image.network(
-                _profileImageUrl!, 
-                width: 80.0, 
-                height: 80.0, 
-                fit: BoxFit.cover,
-                errorBuilder: (context, error, stackTrace) {
-                  return _buildDefaultProfileImage();
-                },
-              )
-            : _buildDefaultProfileImage(),
+      child: Container(
+        width: 130.0,
+        height: 130.0,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          border: Border.all(
+            color: (Color(0xFFf24c00)),
+            width: 3.0,
+          ),
+        ),
+        child: ClipOval(
+          child: _profileImage != null
+              ? Image.file(
+                  _profileImage!,
+                  width: 80.0,
+                  height: 80.0,
+                  fit: BoxFit.cover,
+                )
+              : _profileImageUrl != null
+                  ? Image.network(
+                      _profileImageUrl!,
+                      width: 80.0,
+                      height: 80.0,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) {
+                        return _buildDefaultProfileImage();
+                      },
+                    )
+                  : _buildDefaultProfileImage(),
+        ),
       ),
     );
   }
 
   Widget _buildDefaultProfileImage() {
-    return Image.asset(
-      'assets/images/prof.jpg', 
-      width: 80.0, 
-      height: 80.0, 
-      fit: BoxFit.cover
+    return Container(
+      width: 80.0,
+      height: 80.0,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        border: Border.all(
+          color: (Color(0xFFf24c00)), // Border color
+          width: 3.0, // Border width
+        ),
+      ),
+      child: ClipOval(
+        child: Image.asset(
+          'assets/images/prof.jpg',
+          width: 80.0,
+          height: 80.0,
+          fit: BoxFit.cover,
+        ),
+      ),
     );
   }
 
   Widget _buildProfileHeader(bool isMobile) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisAlignment: MainAxisAlignment.center, // Change to center
       children: [
-        Expanded(
-          child: _isEditing
-            ? TextField(
-                controller: _usernameController,
-                decoration: const InputDecoration(
-                  labelText: 'Username',
-                  border: OutlineInputBorder(),
+        _isEditing
+            ? Expanded(
+                child: TextField(
+                  controller: _usernameController,
+                  decoration: const InputDecoration(
+                    labelText: 'Name',
+                    border: OutlineInputBorder(),
+                  ),
                 ),
               )
             : Text(
-                _usernameController.text.isNotEmpty 
-                  ? _usernameController.text 
-                  : 'No Username',
-                style: const TextStyle(
-                  fontSize: 24, 
-                  fontWeight: FontWeight.bold
-                ),
+                _usernameController.text.isNotEmpty
+                    ? _usernameController.text
+                    : 'No Name',
+                style:
+                    const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                 overflow: TextOverflow.ellipsis,
               ),
-        ),
+        const SizedBox(width: 10), // Adjust space between username and icon
         IconButton(
           icon: _isEditing ? const Icon(Icons.check) : const Icon(Icons.edit),
           onPressed: () {
@@ -353,88 +366,177 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  Widget _buildProfileSubtitle() {
+// Define state variables
+  String? _selectedProgram;
+  int? _selectedYear;
+  String? _selectedSection;
+  TextEditingController _facebookLinkController = TextEditingController();
+
+// _buildBioSection with Facebook Link field and dropdowns
+  Widget _buildBioSection() {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        const Text(
-          'Web Developer, Flutter Enthusiast',
-          style: TextStyle(
-            fontSize: 16,
-            color: Colors.grey,
-          ),
-          overflow: TextOverflow.ellipsis,
-        ),
+        // Editable Facebook Link (visible when editing)
+        _isEditing
+            ? Row(
+                mainAxisAlignment: MainAxisAlignment
+                    .spaceEvenly, // Evenly spaces the dropdowns
+                children: [
+                  // Program Dropdown
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                          right: 8.0), // Padding to separate the dropdowns
+                      child: DropdownButtonFormField<String>(
+                        value: _selectedProgram,
+                        decoration: const InputDecoration(
+                          labelText: 'Program',
+                          border: OutlineInputBorder(),
+                        ),
+                        items: ['BSCS', 'BSIT', 'BSEMC', 'BSIS', 'BLIS']
+                            .map((program) {
+                          return DropdownMenuItem<String>(
+                            value: program,
+                            child: Text(program),
+                          );
+                        }).toList(),
+                        onChanged: (value) {
+                          setState(() {
+                            _selectedProgram = value;
+                          });
+                        },
+                      ),
+                    ),
+                  ),
+
+                  // Year Dropdown
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 8.0),
+                      child: DropdownButtonFormField<int>(
+                        value: _selectedYear,
+                        decoration: const InputDecoration(
+                          labelText: 'Year Level',
+                          border: OutlineInputBorder(),
+                        ),
+                        items: List.generate(4, (index) {
+                          return DropdownMenuItem<int>(
+                            value: index + 1,
+                            child: Text('${index + 1}'),
+                          );
+                        }),
+                        onChanged: (value) {
+                          setState(() {
+                            _selectedYear = value;
+                          });
+                        },
+                      ),
+                    ),
+                  ),
+
+                  // Section Dropdown
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 8.0),
+                      child: DropdownButtonFormField<String>(
+                        value: _selectedSection,
+                        decoration: const InputDecoration(
+                          labelText: 'Section',
+                          border: OutlineInputBorder(),
+                        ),
+                        items: ['A', 'B'].map((section) {
+                          return DropdownMenuItem<String>(
+                            value: section,
+                            child: Text(section),
+                          );
+                        }).toList(),
+                        onChanged: (value) {
+                          setState(() {
+                            _selectedSection = value;
+                          });
+                        },
+                      ),
+                    ),
+                  ),
+                ],
+              )
+            : Text(
+                // Display Year, Section, and Program in one line when not editing
+                _selectedProgram != null &&
+                        _selectedYear != null &&
+                        _selectedSection != null
+                    ? '$_selectedProgram $_selectedYear $_selectedSection'
+                    : 'Year and Section', // Placeholder text when no selection
+                style: const TextStyle(fontSize: 16, color: Color(0xFF050315)),
+              ),
         const SizedBox(height: 5),
-        Text(
-          "${user!.email}",
-          style: const TextStyle(
-            fontSize: 14,
-            color: Colors.grey,
-          ),
-          overflow: TextOverflow.ellipsis,
-        ),
+
+        _isEditing
+            ? TextField(
+                controller: _facebookLinkController,
+                decoration: const InputDecoration(
+                  labelText: 'Facebook Profile Link',
+                  hintText: 'http://facebook.com/yourprofile',
+                  border: OutlineInputBorder(),
+                ),
+                maxLines: null,
+              )
+            : Text(
+                _facebookLinkController.text.isNotEmpty
+                    ? _facebookLinkController.text
+                    : 'Facebook Link',
+                style: const TextStyle(fontSize: 16, color: Color(0xFF050315)),
+                overflow: TextOverflow.ellipsis,
+              ),
+        const SizedBox(height: 20),
       ],
     );
   }
 
-  Widget _buildBioSection() {
-    return _isEditing
-      ? TextField(
-          // controller: _bioController,
-          decoration: const InputDecoration(
-            labelText: 'Biography',
-            border: OutlineInputBorder(),
-          ),
-          maxLines: null,
-        )
-      : Text(
-          // _bioController.text.isNotEmpty 
-          //   ? _bioController.text 
-            /*:*/ 'Biography',
-          style: const TextStyle(
-            fontSize: 16, 
-            color: Colors.grey
-          ),
-          overflow: TextOverflow.ellipsis,
-        );
-  }
-
   Widget _buildAboutMeSection() {
     return _isEditing
-      ? TextField(
-          controller: _aboutMeController,
-          decoration: const InputDecoration(
-            labelText: 'About Me',
-            border: OutlineInputBorder(),
-          ),
-          maxLines: null,
-        )
-      : Container(
-          padding: const EdgeInsets.all(15),
-          decoration: BoxDecoration(
-            color: const Color(0xFFEAD8B1),
-            border: Border.all(color: Colors.blueGrey.shade200),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text(
-                'About Me',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
+        ? TextField(
+            controller: _aboutMeController,
+            decoration: const InputDecoration(
+              labelText: 'About Me',
+              border: OutlineInputBorder(),
+            ),
+            maxLines: null,
+          )
+        : Container(
+            padding: const EdgeInsets.all(15),
+            decoration: BoxDecoration(
+                color: const Color(0xFFffbf69),
+                border: Border.all(color: Colors.black),
+                borderRadius: BorderRadius.circular(8)),
+            constraints: BoxConstraints(
+              minHeight: 150.0,
+              minWidth:
+                  500.0, // Minimum width to ensure container doesn't get too narrow
+              maxWidth:
+                  800.0, // Minimum height to prevent the container from shrinking too much
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'About Me',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-              ),
-              const SizedBox(height: 10),
-              Text(
-                _aboutMeController.text.isNotEmpty 
-                  ? _aboutMeController.text 
-                  : 'I am a passionate developer with a strong interest in Flutter and mobile app development.',
-                style: const TextStyle(fontSize: 16),
-              ),
-            ],
-          ),
-        );
+                const SizedBox(height: 10),
+                Text(
+                  _aboutMeController.text.isNotEmpty
+                      ? _aboutMeController.text
+                      : 'Share something about your background skills or interest!',
+                  style: const TextStyle(fontSize: 16),
+                ),
+              ],
+            ),
+          );
   }
 
   Widget _buildActionButtons(bool isMobile) {
@@ -452,38 +554,44 @@ class _ProfilePageState extends State<ProfilePage> {
       return ElevatedButton(
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
-          backgroundColor: const Color(0xFF6A9AB0),
+          backgroundColor: const Color(0xFFff9f1c),
           padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
-          foregroundColor: Colors.white,
-          minimumSize: isMobile 
-            ? const Size(double.infinity, 50) 
-            : const Size(0, 50),
+          foregroundColor: Color(0xFF050315),
+          minimumSize:
+              isMobile ? const Size(double.infinity, 50) : const Size(0, 50),
         ),
         child: Text(text),
       );
     }
 
+    // Only show the buttons when not editing
+    if (_isEditing) {
+      return SizedBox.shrink(); // Return an empty widget when editing
+    }
+
     return isMobile
-      ? Column(
-          children: [
-            createButton('Share a Reviewer', _handleShareReviewer),
-            const SizedBox(height: 12),
-            createButton('Look for Study Group', _handleStudyGroup),
-          ],
-        )
-      : Row(
-          children: [
-            createButton('Share a Reviewer', _handleShareReviewer),
-            const SizedBox(width: 10),
-            createButton('Look for Study Group', _handleStudyGroup),
-          ],
-        );
+        ? Column(
+            children: [
+              createButton('Share a Reviewer', _handleShareReviewer),
+              const SizedBox(height: 12),
+              createButton('Look for Study Group', _handleStudyGroup),
+            ],
+          )
+        : Row(
+            mainAxisAlignment:
+                MainAxisAlignment.center, // Center the buttons in desktop
+            children: [
+              createButton('Share a Reviewer', _handleShareReviewer),
+              const SizedBox(width: 10),
+              createButton('Look for Study Group', _handleStudyGroup),
+            ],
+          );
   }
 
   @override
   void dispose() {
     _usernameController.dispose();
-    // _bioController.dispose();
+    _bioController.dispose();
     _aboutMeController.dispose();
     super.dispose();
   }
