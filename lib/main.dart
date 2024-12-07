@@ -32,12 +32,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Calib App',
+      title: 'Calib',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         fontFamily: 'Roboto',
         colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFF3A6D8C),
+          seedColor: Colors.white,
           brightness: Brightness.light,
         ),
         useMaterial3: true,

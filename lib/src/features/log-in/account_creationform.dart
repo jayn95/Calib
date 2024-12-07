@@ -183,7 +183,7 @@
 //                         : null, // Disable the button if word count exceeds 50
 //                     style: ElevatedButton.styleFrom(
 //                       padding: EdgeInsets.symmetric(vertical: buttonHeight),
-//                       backgroundColor: const Color(0xFF3A6D8C),
+//                       backgroundColor: const Color(0xFFff9f1c),
 //                       shape: RoundedRectangleBorder(
 //                         borderRadius: BorderRadius.circular(8.0),
 //                       ),
@@ -207,7 +207,7 @@
 //                     },
 //                     child: const Text(
 //                       'Already have an account?',
-//                       style: TextStyle(color: Color(0xFF3A6D8C)),
+//                       style: TextStyle(color: Color(0xFFff9f1c)),
 //                     ),
 //                   ),
 //                 ],

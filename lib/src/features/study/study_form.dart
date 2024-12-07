@@ -44,7 +44,7 @@ class _StudyFormState extends State<StudyForm> {
               style: TextStyle(
                 fontSize: screenWidth > 400 ? 16 : 14,
                 fontWeight: FontWeight.bold,
-                color: Colors.black,
+                color: Color(0xFF050315),
               ),
               textAlign: TextAlign.left,
             ),
@@ -71,10 +71,10 @@ class _StudyFormState extends State<StudyForm> {
                   selectedColor: const Color(0xFFEAD8B1),
                   backgroundColor: Colors.white,
                   labelStyle: TextStyle(
-                    color: isSelected ? Colors.black : Colors.black,
+                    color: isSelected ? Color(0xFF050315) : Color(0xFF050315),
                   ),
                   side: const BorderSide(
-                    color: Colors.black,
+                    color: Color(0xFF050315),
                   ),
                 );
               }).toList(),
@@ -87,7 +87,7 @@ class _StudyFormState extends State<StudyForm> {
               style: TextStyle(
                 fontSize: screenWidth > 800 ? 16 : 14,
                 fontWeight: FontWeight.bold,
-                color: Colors.black,
+                color: Color(0xFF050315),
               ),
             ),
             const SizedBox(height: 8.0),
@@ -115,7 +115,7 @@ class _StudyFormState extends State<StudyForm> {
                     },
                     style: ElevatedButton.styleFrom(
                       padding: EdgeInsets.symmetric(vertical: buttonHeight),
-                      backgroundColor: const Color(0xFF3A6D8C),
+                      backgroundColor: const Color(0xFFff9f1c),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8.0),
                       ),
@@ -136,7 +136,7 @@ class _StudyFormState extends State<StudyForm> {
                     onPressed: _submitForm,
                     style: ElevatedButton.styleFrom(
                       padding: EdgeInsets.symmetric(vertical: buttonHeight),
-                      backgroundColor: const Color(0xFF3A6D8C),
+                      backgroundColor: const Color(0xFFff9f1c),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8.0),
                       ),

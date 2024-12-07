@@ -5,7 +5,6 @@ import 'package:url_launcher/url_launcher.dart';
 
 class ReviewerBox extends StatefulWidget {
   final String userName;
-
   final String description;
   final String userPhotoURL;
   final String file;
@@ -13,8 +12,6 @@ class ReviewerBox extends StatefulWidget {
   final String documentId;
   final String userId;
   final String subjectTag;
-
-
 
   final EdgeInsetsGeometry? margin;
   final EdgeInsetsGeometry? padding;
@@ -27,82 +24,44 @@ class ReviewerBox extends StatefulWidget {
     required this.file,
     required this.userPhotoURL,
     required this.documentId,
-    required this.userId, 
+    required this.userId,
     required this.subjectTag,
-
     this.margin,
-    this.padding, 
+    this.padding,
   });
 
   @override
-  // ignore: library_private_types_in_public_api
   _CustomCardState createState() => _CustomCardState();
 }
-
-
-
-
 
 class _CustomCardState extends State<ReviewerBox> {
   bool _isExpanded = false;
   bool _isLiked = false;
   bool _isHovered = false;
-  Stream<DocumentSnapshot>? _likeStatusStream; 
 
-      @override
-        void initState() {
-        super.initState();
-        _listenForLikeStatusChanges(); // Check liked status when the widget initializes
-    }
-    
-        @override
-      void dispose() {
-      _likeStatusStream?.listen(null); // Stop listening in dispose
-      super.dispose();
-    }
+  @override
+  void initState() {
+    super.initState();
+    _checkLikedStatus(); // Check liked status when the widget initializes
+  }
 
   @override
   Widget build(BuildContext context) {
-    // Get screen dimensions
     double screenWidth = MediaQuery.of(context).size.width;
-    // double screenHeight = MediaQuery.of(context).size.height;
-    // Adjust card and font sizes based on screen dimensions
-    // double cardWidth = screenWidth > 800 ? 200 : 150;
-    // double cardHeight = screenHeight > 800 ? 300 : 250;
-    double fontSizeLikes = screenWidth > 800 ? 14 : 8;
-    double fontSizeDescription = screenWidth > 800 ? 15 : 8;
+    double fontSizeLikes = screenWidth > 800 ? 16 : 14; // Increased font size for like count
+    double fontSizeDescription = screenWidth > 800 ? 15 : 10;
     double fontSizeFile = screenWidth > 800 ? 15 : 8;
-    double buttonFontSize = screenWidth > 800 ? 20 : 8;
+    double buttonFontSize = screenWidth > 800 ? 30 : 22; // Increased size for like button
     double fontSizeTitle = screenWidth > 600 ? 16 : 14;
     EdgeInsetsGeometry containerPadding =
         screenWidth > 600 ? const EdgeInsets.all(16) : const EdgeInsets.all(8);
-
-
-    // Adjust button padding
-    EdgeInsetsGeometry buttonPadding = screenWidth > 800
-        ? const EdgeInsets.symmetric(horizontal: 18, vertical: 10)
-        : const EdgeInsets.symmetric(horizontal: 15, vertical: 8);
-
-    // Adjust container and card padding
-    // EdgeInsetsGeometry cardPadding = screenWidth > 800
-    //     ? const EdgeInsets.all(
-    //         20) // Larger padding inside the card for larger screens
-    //     : const EdgeInsets.all(16);
-
-    // EdgeInsetsGeometry containerMargin = screenWidth > 800
-    //     ? const EdgeInsets.all(
-    //         20) // Larger margin around the card for larger screens
-    //     : const EdgeInsets.all(5);
-
-    // Adjust container padding/margin for larger screens
-// Default padding for smaller screens
 
     return Card(
       color: Colors.white,
       margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
-        side: const BorderSide(color: Color(0xFF001f3f), width: 2),
+        side: const BorderSide(color: Color(0xFF050315)),
       ),
       elevation: 3,
       child: Stack(
@@ -113,7 +72,7 @@ class _CustomCardState extends State<ReviewerBox> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
-                 children: [
+                  children: [
                     widget.userPhotoURL.isNotEmpty
                         ? CircleAvatar(
                             backgroundImage: NetworkImage(widget.userPhotoURL),
@@ -126,7 +85,7 @@ class _CustomCardState extends State<ReviewerBox> {
                               widget.userName[0],
                               style: TextStyle(
                                 fontSize: fontSizeTitle + 4,
-                                color: Colors.black,
+                                color: Color(0xFF050315),
                               ),
                             ),
                           ),
@@ -142,121 +101,126 @@ class _CustomCardState extends State<ReviewerBox> {
                       ),
                     ),
                   ],
-          ),
-          const SizedBox(height: 8),
-          // Number of Likes below the name
-         Row(
-            children: [
-              Text(
-                '${widget.numOfLikes} Likes',
-                style: TextStyle(
-                  fontSize: fontSizeLikes,
-                  color: Colors.grey,
                 ),
-              ),
-            ],
-          ),
-          SizedBox(height: screenWidth > 800 ? 8 : 4),
+                const SizedBox(height: 8),
 
-          Expanded(
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Description (clickable to toggle full text)
-                  GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        _isExpanded = !_isExpanded;
-                      });
-                    },
-                    child: AnimatedCrossFade(
-                      firstChild: Text(
-                        widget.description,
-                        style: TextStyle(
-                          fontSize: fontSizeDescription,
-                          color: Colors.black87,
-                        ),
-                        maxLines: 3,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      secondChild: Text(
-                        widget.description,
-                        style: TextStyle(
-                          fontSize: fontSizeDescription,
-                          color: Colors.black87,
-                        ),
-                      ),
-                      crossFadeState: _isExpanded
-                          ? CrossFadeState.showSecond
-                          : CrossFadeState.showFirst,
-                      duration: const Duration(milliseconds: 300),
-                    ),
-                  ),
-                  SizedBox(height: screenWidth > 800 ? 8 : 4),
-
-                  // File reference
-                  InkWell(
-                    onTap: () async {
-                      final Uri url = Uri.parse(widget.file);
-                      if (await canLaunchUrl(url)) {
-                        await launchUrl(url,
-                            mode: LaunchMode.externalApplication);
-                      } else {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                              content: Text('Could not launch ${widget.file}')),
-                        );
-                      }
-                    },
-                    child: Text(
-                      'File: ${widget.file}',
+                // Description with expand/collapse functionality
+                GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      _isExpanded = !_isExpanded;
+                    });
+                  },
+                  child: AnimatedCrossFade(
+                    firstChild: Text(
+                      widget.description,
                       style: TextStyle(
-                        fontSize: fontSizeFile,
-                        color: Colors.blueAccent,
-                        decoration: TextDecoration.underline,
+                        fontSize: fontSizeDescription,
+                        color: Color(0xFF050315),
+                      ),
+                      maxLines: 3,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    secondChild: Text(
+                      widget.description,
+                      style: TextStyle(
+                        fontSize: fontSizeDescription,
+                        color: Color(0xFF050315),
                       ),
                     ),
+                    crossFadeState: _isExpanded
+                        ? CrossFadeState.showSecond
+                        : CrossFadeState.showFirst,
+                    duration: const Duration(milliseconds: 300),
                   ),
-                ],
-              ),
-            ),
-          ),
-          const SizedBox(height: 8),
+                ),
+                SizedBox(height: screenWidth > 800 ? 8 : 4),
 
-          // Like Button at the bottom
-          Center(
-            child: SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-              onPressed: () async {
-                    await _toggleLike();
-                      _listenForLikeStatusChanges(); // Refresh like status
-              },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: _isLiked
-                      ? const Color(0xFFEAD8B1)
-                      : const Color(0xFF3A6D8C),
-                  padding: buttonPadding,
-                  minimumSize: const Size(double.infinity, 30),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
+                // File reference with file icon only (no URL displayed)
+                widget.file.isNotEmpty
+                    ? InkWell(
+                        onTap: () async {
+                          final Uri url = Uri.parse(widget.file);
+                          if (await canLaunchUrl(url)) {
+                            await launchUrl(url,
+                                mode: LaunchMode.externalApplication);
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                  content: Text(
+                                      'Could not launch ${widget.file}')),
+                            );
+                          }
+                        },
+                        child: Row(
+                          children: [
+                            Icon(Icons.attach_file, color: Colors.blue),
+                            const SizedBox(width: 5),
+                            Text(
+                              'File',
+                              style: TextStyle(
+                                fontSize: fontSizeFile,
+                                color: Colors.blueAccent,
+                                decoration: TextDecoration.underline,
+                              ),
+                            ),
+                          ],
+                        ),
+                      )
+                    : const SizedBox(),
+
+                // Spacer to push the like icon to the bottom
+                const Spacer(),
+              ],
+            ),
+          ),
+
+          // Like Icon and Count - Centered at the bottom inside a container
+          Positioned(
+            bottom: 20,
+            left: 0,
+            right: 0,
+            child: Center(
+              child: Container(
+                padding: const EdgeInsets.symmetric(vertical: 3, horizontal: 7),
+                width: screenWidth * 0.12, // Make the container wider
+                decoration: BoxDecoration(
+                  color: Color(0xffff9f1c).withOpacity(0.8),
+                  borderRadius: BorderRadius.circular(25),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.3),
+                      blurRadius: 4,
+                      spreadRadius: 2,
+                    ),
+                  ],
                 ),
-                child: Text(
-                  _isLiked ? 'Liked' : 'Like',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: buttonFontSize,
-                  ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    IconButton(
+                      onPressed: _toggleLike,
+                      icon: Icon(
+                        _isLiked ? Icons.thumb_up : Icons.thumb_up_off_alt,
+                        color: _isLiked ? Colors.white : Colors.white,
+                        size: buttonFontSize, // Increased size for like button
+                      ),
+                    ),
+                    Text(
+                      '${widget.numOfLikes}',
+                      style: TextStyle(
+                        fontSize: fontSizeLikes, // Increased font size for like count
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
           ),
-        ],
-      ),
-      ),
-                if (widget.userId == FirebaseAuth.instance.currentUser?.uid)
+
+          // Delete button only for the current user's post
+          if (widget.userId == FirebaseAuth.instance.currentUser?.uid)
             Positioned(
               top: 8,
               right: 8,
@@ -277,11 +241,54 @@ class _CustomCardState extends State<ReviewerBox> {
                 ),
               ),
             ),
-      ]
+        ],
       ),
-      );
+    );
   }
 
+  Future<void> _checkLikedStatus() async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      final likesDoc = await FirebaseFirestore.instance
+          .collection('reviewer_sessions')
+          .doc(widget.documentId)
+          .collection('likes')
+          .doc(user.uid)
+          .get();
+
+      setState(() {
+        _isLiked = likesDoc.exists;
+      });
+    }
+  }
+
+  Future<void> _toggleLike() async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) {
+      return;
+    }
+
+    final likesCollection = FirebaseFirestore.instance
+        .collection('reviewer_sessions')
+        .doc(widget.documentId)
+        .collection('likes');
+
+    setState(() {
+      _isLiked = !_isLiked;
+    });
+
+    if (_isLiked) {
+      await likesCollection.doc(user.uid).set({'liked': true});
+      await FirebaseFirestore.instance.collection('reviewer_sessions').doc(widget.documentId).update({
+        'numOfLikes': FieldValue.increment(1),
+      });
+    } else {
+      await likesCollection.doc(user.uid).delete();
+      await FirebaseFirestore.instance.collection('reviewer_sessions').doc(widget.documentId).update({
+        'numOfLikes': FieldValue.increment(-1),
+      });
+    }
+  }
 
   void _showDeleteConfirmationDialog(BuildContext context) {
     showDialog(
@@ -293,29 +300,26 @@ class _CustomCardState extends State<ReviewerBox> {
           actions: <Widget>[
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop(); 
+                Navigator.of(context).pop();
               },
               child: const Text("Cancel"),
             ),
             TextButton(
               onPressed: () async {
-                 try {
-                      await FirebaseFirestore.instance
-                         .collection('reviewer_sessions')
-                        .doc(widget.documentId)
-                        .delete();
-                        Navigator.pop(context); 
-                         ScaffoldMessenger.of(context).showSnackBar(
-                           const SnackBar(content: Text('reviewer session deleted!')),
-                         );
-
-
+                try {
+                  await FirebaseFirestore.instance
+                      .collection('reviewer_sessions')
+                      .doc(widget.documentId)
+                      .delete();
+                  Navigator.pop(context);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('reviewer session deleted!')),
+                  );
                 } catch (e) {
-                   print("Error deleting document: $e");
-                  // Show an error message to the user if deletion fails.
-                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Failed to delete. Please try again later.')),
-                );
+                  print("Error deleting document: $e");
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Failed to delete. Please try again later.')),
+                  );
                 }
               },
               child: const Text("Delete"),
@@ -326,54 +330,6 @@ class _CustomCardState extends State<ReviewerBox> {
     );
   }
 
-
-  Future<void> _toggleLike() async {
-    final user = FirebaseAuth.instance.currentUser;
-    if (user == null) {
-      return; // Don't do anything if the user is not logged in
-    }
-
-    final likesCollection = FirebaseFirestore.instance
-        .collection('reviewer_sessions')
-        .doc(widget.documentId)
-        .collection('likes');
-
-     if (_isLiked) { // If already liked, unlike
-      await likesCollection.doc(user.uid).delete();
-      await FirebaseFirestore.instance
-          .collection('reviewer_sessions')
-          .doc(widget.documentId)
-          .update({'numOfLikes': FieldValue.increment(-1)});
-    } else { // If not liked, like
-      await likesCollection.doc(user.uid).set({'liked': true});
-      await FirebaseFirestore.instance
-          .collection('reviewer_sessions')
-          .doc(widget.documentId)
-          .update({'numOfLikes': FieldValue.increment(1)});
-    }
-
-  }
-    void _listenForLikeStatusChanges() {
-    final user = FirebaseAuth.instance.currentUser;
-    if (user != null) {
-      _likeStatusStream = FirebaseFirestore.instance
-          .collection('reviewer_sessions')
-          .doc(widget.documentId)
-          .collection('likes')
-          .doc(user.uid)
-          .snapshots();
-
-      _likeStatusStream?.listen((snapshot) {
-        setState(() {
-          _isLiked = snapshot.exists;
-        });
-      });
-    } else {
-      // Handle case where user is not logged in (set _isLiked to false)
-      setState(() {
-        _isLiked = false;
-      });
-    }
-  }
-
+  // Add restriction to not allow submission if no file or link is provided
+  bool get isMaterialValid => widget.file.isNotEmpty;
 }

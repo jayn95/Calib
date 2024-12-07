@@ -32,7 +32,7 @@ class _StudyBoxState extends State<StudyBox> {
     double screenWidth = MediaQuery.of(context).size.width;
     double fontSizeTitle = screenWidth > 600 ? 16 : 14;
     double fontSizeSubtitle = screenWidth > 600 ? 14 : 12;
-    double fontSizeDescription = screenWidth > 600 ? 12 : 10;
+    double fontSizeDescription = screenWidth > 800 ? 15 : 10;
     double buttonFontSize = screenWidth > 600 ? 14 : 12;
     EdgeInsetsGeometry containerPadding =
         screenWidth > 600 ? const EdgeInsets.all(16) : const EdgeInsets.all(8);
@@ -42,7 +42,7 @@ class _StudyBoxState extends State<StudyBox> {
       margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
-        side: const BorderSide(color: Color(0xFF001f3f), width: 2),
+        side: const BorderSide(color: Color(0xFF050315)),
       ),
       elevation: 3,
       child: Stack(
@@ -66,7 +66,7 @@ class _StudyBoxState extends State<StudyBox> {
                               widget.userName[0],
                               style: TextStyle(
                                 fontSize: fontSizeTitle + 4,
-                                color: Colors.black,
+                                color: Color(0xFF050315),
                               ),
                             ),
                           ),
@@ -97,7 +97,7 @@ class _StudyBoxState extends State<StudyBox> {
                   widget.description,
                   style: TextStyle(
                     fontSize: fontSizeDescription,
-                    color: Colors.black87,
+                    color: Color(0xFF050315),
                   ),
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -110,7 +110,7 @@ class _StudyBoxState extends State<StudyBox> {
                         // Add functionality here
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF001f3f),
+                        backgroundColor: const Color(0xFFff9f1c),
                         padding: EdgeInsets.symmetric(
                           vertical: screenWidth > 600 ? 12 : 8,
                           horizontal: screenWidth > 600 ? 20 : 10,
@@ -124,9 +124,8 @@ class _StudyBoxState extends State<StudyBox> {
                         child: Text(
                           'UP FOR IT',
                           style: TextStyle(
-                            fontSize:buttonFontSize,
+                            fontSize: buttonFontSize,
                             color: Colors.white,
-
                           ),
                         ),
                       ),

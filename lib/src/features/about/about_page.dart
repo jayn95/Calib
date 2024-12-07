@@ -51,7 +51,7 @@ class AboutPage extends StatelessWidget {
 
     // Thresholds to determine padding, spacing, and font sizes
     double horizontalPadding = screenWidth > 800 ? 60.0 : 30.0;
-    double verticalSpacing = screenHeight > 800 ? 32.0 : 24.0;
+    double verticalSpacing = screenHeight > 800 ? 32.0 : 30.0;
     double bodyFontSize = screenWidth > 800 ? 16.0 : 12.0;
 
     // Image size based on screen width (this for About the Calib section)
@@ -64,15 +64,15 @@ class AboutPage extends StatelessWidget {
     // Text style based on screen size
     TextStyle bodyTextStyle = TextStyle(
       fontSize: bodyFontSize,
-      color: Colors.black,
+      color: Color(0xFF050315),
       height: 1.2,
     );
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Color(0xfffbfbfe),
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.transparent,
         title: NavBar(currentRoute: '/about'),
       ),
       body: SingleChildScrollView(
@@ -92,7 +92,7 @@ class AboutPage extends StatelessWidget {
                 ),
                 clipBehavior: Clip.hardEdge,
                 child: Image.asset(
-                  'assets/aboutbanner.png',
+                  'assets/aboutbanner2.png',
                   fit: BoxFit.cover,
                 ),
               ),
@@ -105,7 +105,7 @@ class AboutPage extends StatelessWidget {
                     margin: const EdgeInsets.only(top: 16.0),
                     padding: const EdgeInsets.all(16.0),
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: Color(0xffffb768),
                       border: Border.all(color: Colors.black),
                       borderRadius: const BorderRadius.only(
                         topLeft: Radius.circular(0),
@@ -118,7 +118,7 @@ class AboutPage extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Image.asset(
-                          'assets/trial.jpg', // will be changed if there is logo already
+                          'assets/logo.png', // will be changed if there is logo already
                           width: imageWidth,
                           height: imageHeight,
                         ),
@@ -134,14 +134,14 @@ class AboutPage extends StatelessWidget {
                   ),
                   Positioned(
                     left: 0.0,
-                    top: -13.0,
+                    top: -20.0,
                     child: Container(
                       padding: const EdgeInsets.symmetric(
                         horizontal: 12.0,
                         vertical: 4.0,
                       ),
                       decoration: BoxDecoration(
-                        color: const Color(0xFFB0C4DE),
+                        color: const Color(0xFFffb768),
                         border: Border.all(color: Colors.black),
                         borderRadius: const BorderRadius.only(
                           topLeft: Radius.circular(8.0),
@@ -151,8 +151,8 @@ class AboutPage extends StatelessWidget {
                       child: const Text(
                         'About Calib',
                         style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 14.0,
+                          color: Color(0xFF050315),
+                          fontSize: 18.0,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -207,7 +207,7 @@ class AboutPage extends StatelessWidget {
           margin: const EdgeInsets.only(top: 16.0),
           padding: const EdgeInsets.all(16.0),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: Color(0xffff9f1c),
             border: Border.all(color: Colors.black),
             borderRadius: BorderRadius.only(
               topLeft: Radius.circular(titlePosition == 'right' ? 8.0 : 0),
@@ -221,12 +221,12 @@ class AboutPage extends StatelessWidget {
         Positioned(
           left: titlePosition == 'left' ? 0.0 : null,
           right: titlePosition == 'right' ? 0.0 : null,
-          top: -13.0,
+          top: -20.0,
           child: Container(
             padding:
                 const EdgeInsets.symmetric(horizontal: 12.0, vertical: 4.0),
             decoration: BoxDecoration(
-              color: const Color(0xFFEAD8B1),
+              color: const Color(0xFFff9f1c),
               border: Border.all(color: Colors.black),
               borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(8.0),
@@ -236,8 +236,8 @@ class AboutPage extends StatelessWidget {
             child: Text(
               title,
               style: const TextStyle(
-                color: Colors.black,
-                fontSize: 14.0,
+                color: Color(0xFF050315),
+                fontSize: 18.0, 
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -261,13 +261,21 @@ class AboutPage extends StatelessWidget {
       final profileImageSize = screenWidth > 800 ? 120.0 : 80.0;
 
       return Container(
-        height: containerHeight,
-        width: containerWidth,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          border: Border.all(color: Colors.black),
-          borderRadius: BorderRadius.circular(8.0),
-        ),
+  height: containerHeight,
+  width: containerWidth,
+  decoration: BoxDecoration(
+    color: Colors.white, // Background color
+    border: Border.all(color: Colors.black), // Border color
+    borderRadius: BorderRadius.circular(8.0), // Border radius for rounded corners
+    boxShadow: [
+      BoxShadow(
+        color: Colors.black.withOpacity(0.1), // Shadow color with transparency
+        offset: Offset(0, 4), 
+        blurRadius: 4.0, 
+        spreadRadius: 1.0, 
+      ),
+    ],
+  ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,

@@ -15,27 +15,26 @@ class Reviewer extends StatefulWidget {
 }
 
 class _ReviewerState extends State<Reviewer> {
-  final Map<String, bool> _categories = Map.from(reviewer_Categories);
-    List<String> _selectedCategories = []; // Store selected categories
+  final Map<String, bool> _categories = Map.from(reviewer_categories);
   
+  List<String> _selectedCategories = [];
+  // final ScrollController _scrollController = ScrollController();
 
-  final ScrollController _scrollController = ScrollController();
+  // void _scrollLeft() {
+  //   _scrollController.animateTo(
+  //     _scrollController.offset - 100,
+  //     duration: const Duration(milliseconds: 300),
+  //     curve: Curves.easeInOut,
+  //   );
+  // }
 
-  void _scrollLeft() {
-    _scrollController.animateTo(
-      _scrollController.offset - 100,
-      duration: const Duration(milliseconds: 300),
-      curve: Curves.easeInOut,
-    );
-  }
-
-  void _scrollRight() {
-    _scrollController.animateTo(
-      _scrollController.offset + 100,
-      duration: const Duration(milliseconds: 300),
-      curve: Curves.easeInOut,
-    );
-  }
+  // void _scrollRight() {
+  //   _scrollController.animateTo(
+  //     _scrollController.offset + 100,
+  //     duration: const Duration(milliseconds: 300),
+  //     curve: Curves.easeInOut,
+  //   );
+  // }
 
   void _onTagSelectionChanged(Map<String, bool> selectedCategories) {
     setState(() {
@@ -119,18 +118,18 @@ class _ReviewerState extends State<Reviewer> {
                   const SizedBox(height: 80),
                   Center(
                     child: Text(
-                      'Add your Text Here',
+                      'Lets review!',
                       style: TextStyle(
                         fontSize: constraints.maxWidth > 1000 ? 28 : 20,
-                        color: Colors.black,
+                        color: Color(0xff050315),
                       ),
                     ),
                   ),
           const SizedBox(height: 20.0),
-          // ReviewerTags(
-          //           reviewerCategories: _categories,
-          //           onSelectionChanged: _onTagSelectionChanged,
-          //         ),
+          ReviewerTags(
+                    reviewerCategories: _categories,
+                    onSelectionChanged: _onTagSelectionChanged,
+                  ),
           // Tags with scrolling and arrows
           Container(
             margin: EdgeInsets.symmetric(
@@ -145,73 +144,73 @@ class _ReviewerState extends State<Reviewer> {
             ),
             child: Row(
               children: [
-                // Left Arrow Button
-                IconButton(
-                  icon: const Icon(Icons.arrow_left),
-                  onPressed: _scrollLeft,
-                ),
-                Expanded(
-                  child: SingleChildScrollView(
-                    controller: _scrollController,
-                    scrollDirection:
-                        Axis.horizontal, // Horizontal scroll direction
-                    child: Wrap(
-                      spacing: screenWidth > 800
-                          ? 20.0
-                          : 14.0, // Space between each chip
-                      children: [
-                        // Add "All" option
-                        // InputChip(
-                        //   label: Text('All',
-                        //       style: TextStyle(
-                        //           fontSize: screenWidth > 800 ? 16.0 : 9.0)),
-                        //   selected: _selectedCategories.contains('All'),
-                        //   selectedColor: Colors.blue.shade100,
-                        //   backgroundColor: Colors.white,
-                        //   onSelected: (isSelected) {
-                        //     setState(() {
-                        //       if (isSelected) {
-                        //         _selectedCategories = [
-                        //           'All'
-                        //         ]; // Only 'All' is selected
-                        //       } else {
-                        //         _selectedCategories.remove(
-                        //             'All'); // Remove 'All' if deselected
-                        //       }
-                        //     });
-                        //   },
-                        // ),
-                        // Category chips
-                        ..._categories.keys.map((category) {
-                          double tagFontSize = screenWidth > 800 ? 16.0 : 9.0;
-                          return InputChip(
-                            label: Text(category,
-                                style: TextStyle(fontSize: tagFontSize)),
-                            selected: _selectedCategories.contains(category),
-                            selectedColor: Colors.blue.shade100,
-                            backgroundColor: Colors.white,
-                            onSelected: (isSelected) {
-                              setState(() {
-                                if (isSelected) {
-                                  _selectedCategories
-                                      .add(category); // Add to the list
-                                } else {
-                                  _selectedCategories
-                                      .remove(category); // Remove from the list
-                                }
-                              });
-                            },
-                          );
-                        }),
-                      ],
-                    ),
-                  ),
-                ),
-                // Right Arrow Button
-                IconButton(
-                  icon: const Icon(Icons.arrow_right),
-                  onPressed: _scrollRight,
-                ),
+                // // Left Arrow Button
+                // IconButton(
+                //   icon: const Icon(Icons.arrow_left),
+                //   onPressed: _scrollLeft,
+                // ),
+                // Expanded(
+                //   child: SingleChildScrollView(
+                //     controller: _scrollController,
+                //     scrollDirection:
+                //         Axis.horizontal, // Horizontal scroll direction
+                //     child: Wrap(
+                //       spacing: screenWidth > 800
+                //           ? 20.0
+                //           : 14.0, // Space between each chip
+                //       children: [
+                //         // Add "All" option
+                //         InputChip(
+                //           label: Text('All',
+                //               style: TextStyle(
+                //                   fontSize: screenWidth > 800 ? 16.0 : 9.0)),
+                //           selected: _selectedCategories.contains('All'),
+                //           selectedColor: Colors.blue.shade100,
+                //           backgroundColor: Colors.white,
+                //           onSelected: (isSelected) {
+                //             setState(() {
+                //               if (isSelected) {
+                //                 _selectedCategories = [
+                //                   'All'
+                //                 ]; // Only 'All' is selected
+                //               } else {
+                //                 _selectedCategories.remove(
+                //                     'All'); // Remove 'All' if deselected
+                //               }
+                //             });
+                //           },
+                //         ),
+                //         // Category chips
+                //         ..._categories.keys.map((category) {
+                //           double tagFontSize = screenWidth > 800 ? 16.0 : 9.0;
+                //           return InputChip(
+                //             label: Text(category,
+                //                 style: TextStyle(fontSize: tagFontSize)),
+                //             selected: _selectedCategories.contains(category),
+                //             selectedColor: Colors.blue.shade100,
+                //             backgroundColor: Colors.white,
+                //             onSelected: (isSelected) {
+                //               setState(() {
+                //                 if (isSelected) {
+                //                   _selectedCategories
+                //                       .add(category); // Add to the list
+                //                 } else {
+                //                   _selectedCategories
+                //                       .remove(category); // Remove from the list
+                //                 }
+                //               });
+                //             },
+                //           );
+                //         }),
+                //       ],
+                //     ),
+                //   ),
+                // ),
+                // // Right Arrow Button
+                // IconButton(
+                //   icon: const Icon(Icons.arrow_right),
+                //   onPressed: _scrollRight,
+                // ),
               ],
             ),
           ),
@@ -221,7 +220,7 @@ class _ReviewerState extends State<Reviewer> {
                   ? FirebaseFirestore.instance
                       .collection('reviewer_sessions')
                       .where('tags', arrayContainsAny: _selectedCategories)
-                      // .orderBy('timestamp', descending: true)
+                      .orderBy('timestamp', descending: true)
                       .snapshots()
                   : FirebaseFirestore.instance // If empty, get all documents
                       .collection('reviewer_sessions')
@@ -293,7 +292,7 @@ class _ReviewerState extends State<Reviewer> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _showReviewForm(context),
-        backgroundColor: const Color(0xFF3A6D8C),
+        backgroundColor: const Color(0xFFff9f1c),
         child: const Icon(Icons.add),
       ),
     );
@@ -324,7 +323,7 @@ class ReviewerTags extends StatelessWidget {
             newCategories[key] = selected;
             onSelectionChanged(newCategories);
           },
-          selectedColor: const Color(0xFF3A6D8C),
+          selectedColor: const Color(0xFFff9f1c),
           backgroundColor: Colors.white,
           labelStyle: TextStyle(
             color: reviewerCategories[key]! ? Colors.white : Colors.black, 

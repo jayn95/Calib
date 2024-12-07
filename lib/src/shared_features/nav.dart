@@ -33,7 +33,7 @@ class NavBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.white,
+      color: Colors.transparent,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -43,7 +43,7 @@ class NavBar extends StatelessWidget {
               builder: (context, constraints) {
                 double logoSize = constraints.maxWidth > 800 ? 40.0 : 30.0;
                 return Image.asset(
-                  'assets/trial.jpg', // change with actual logo
+                  'assets/logo.png', 
                   height: logoSize,
                 );
               },
@@ -107,8 +107,8 @@ class NavBar extends StatelessWidget {
           },
           style: TextButton.styleFrom(
             backgroundColor:
-                isActive ? const Color(0xFFEAD8B1) : Colors.transparent,
-            foregroundColor: isActive ? Colors.white : Colors.black87,
+                isActive ? const Color(0xFFff9f1c) : Colors.transparent,
+            foregroundColor: isActive ? Colors.white : Color(0xFF050315),
             padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 5),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(4),
@@ -135,7 +135,7 @@ class NavBar extends StatelessWidget {
         child: ElevatedButton(
           onPressed: () => signOutAndNavigateToLogin(context),
           style: ElevatedButton.styleFrom(
-            backgroundColor: const Color(0xFF3A6D8C),
+            backgroundColor: const Color(0xFFf24c00),
             foregroundColor: Colors.white,
             padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 10),
             shape: RoundedRectangleBorder(

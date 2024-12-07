@@ -15,7 +15,7 @@ class ReviewForm extends StatefulWidget {
 class ReviewFormState extends State<ReviewForm> {
   Set<String> selectedTags = {};
   double _uploadProgress = 0;
-  List<String> tags = [
+  final List<String> tags = [
     "BA 234",
     "CC2 206",
     "CC 208",
@@ -68,7 +68,7 @@ class ReviewFormState extends State<ReviewForm> {
               style: TextStyle(
                 fontSize: screenWidth > 400 ? 16 : 14,
                 fontWeight: FontWeight.bold,
-                color: Colors.black,
+                color: Color(0xFF050315),
               ),
               textAlign: TextAlign.left,
             ),
@@ -95,10 +95,10 @@ class ReviewFormState extends State<ReviewForm> {
                   selectedColor: const Color(0xFFEAD8B1),
                   backgroundColor: Colors.white,
                   labelStyle: TextStyle(
-                    color: isSelected ? Colors.black : Colors.black,
+                    color: isSelected ? Color(0xFF050315) : Color(0xFF050315),
                   ),
                   side: const BorderSide(
-                    color: Colors.black,
+                    color: Color(0xFF050315),
                   ),
                 );
               }).toList(),
@@ -111,7 +111,7 @@ class ReviewFormState extends State<ReviewForm> {
               style: TextStyle(
                 fontSize: screenWidth > 400 ? 16 : 14,
                 fontWeight: FontWeight.bold,
-                color: Colors.black,
+                color: Color(0xFF050315),
               ),
             ),
             const SizedBox(height: 8.0),
@@ -133,7 +133,7 @@ class ReviewFormState extends State<ReviewForm> {
               style: TextStyle(
                 fontSize: screenWidth > 400 ? 16 : 14,
                 fontWeight: FontWeight.bold,
-                color: Colors.black,
+                color: Color(0xFF050315),
               ),
             ),
             const SizedBox(height: 8.0),
@@ -153,7 +153,7 @@ class ReviewFormState extends State<ReviewForm> {
                 padding: EdgeInsets.symmetric(
                     vertical: buttonHeight, horizontal: 16.0),
                 decoration: BoxDecoration(
-                  color: const Color(0xFF3A6D8C),
+                  color: const Color(0xFFff9f1c),
                   borderRadius: BorderRadius.circular(8.0),
                 ),
                 child: const Row(
@@ -176,7 +176,7 @@ class ReviewFormState extends State<ReviewForm> {
                   value: _uploadProgress,
                   minHeight: 8,
                   backgroundColor: Colors.grey[300],
-                  valueColor: const AlwaysStoppedAnimation<Color>(Color(0xFF3A6D8C)),
+                  valueColor: const AlwaysStoppedAnimation<Color>(Color(0xFFff9f1c)),
                 ),
               ),
 
@@ -193,7 +193,7 @@ class ReviewFormState extends State<ReviewForm> {
                     },
                     style: ElevatedButton.styleFrom(
                       padding: EdgeInsets.symmetric(vertical: buttonHeight),
-                      backgroundColor: const Color(0xFF3A6D8C),
+                      backgroundColor: const Color(0xFFff9f1c),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8.0),
                       ),
@@ -213,7 +213,7 @@ class ReviewFormState extends State<ReviewForm> {
                     onPressed: _submitForm,
                     style: ElevatedButton.styleFrom(
                       padding: EdgeInsets.symmetric(vertical: buttonHeight),
-                      backgroundColor: const Color(0xFF3A6D8C),
+                      backgroundColor: const Color(0xFFff9f1c),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8.0),
                       ),
