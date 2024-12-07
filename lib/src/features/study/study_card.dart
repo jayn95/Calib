@@ -27,6 +27,66 @@ class StudyBox extends StatefulWidget {
 class _StudyBoxState extends State<StudyBox> {
   bool _isHovered = false;
 
+  Future<void> _joinGroupChat() async {
+    final currentUser = FirebaseAuth.instance.currentUser;
+    if (currentUser == null) return;
+
+    try {
+      final groupDoc = FirebaseFirestore.instance
+          .collection('group_chats')
+          .doc(widget.documentId);
+
+      final groupData = await groupDoc.get();
+
+      if (!groupData.exists) {
+        // Create the group chat document if it doesn't exist
+        await groupDoc.set({
+          'name': widget.description,
+          'members': [currentUser.uid],
+          'maxMembers': 5,
+          'createdBy': currentUser.uid,
+        });
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Group chat created!')),
+        );
+      } else {
+        // Check if the group chat has space
+        final members = List<String>.from(groupData['members'] ?? []);
+        if (members.length < groupData['maxMembers']) {
+          if (!members.contains(currentUser.uid)) {
+            members.add(currentUser.uid);
+            await groupDoc.update({'members': members});
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Joined the group chat!')),
+            );
+          } else {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('You are already in this group!')),
+            );
+          }
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Group chat is full!')),
+          );
+        }
+      }
+
+      // If the group chat is full, mark the study card as not visible
+      final updatedGroup = await groupDoc.get();
+      if (List<String>.from(updatedGroup['members'] ?? []).length >=
+          updatedGroup['maxMembers']) {
+        await FirebaseFirestore.instance
+            .collection('study_sessions')
+            .doc(widget.documentId)
+            .update({'isVisible': false});
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error: $e')),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
@@ -35,7 +95,7 @@ class _StudyBoxState extends State<StudyBox> {
     double fontSizeDescription = screenWidth > 800 ? 15 : 10;
     double buttonFontSize = screenWidth > 600 ? 14 : 12;
     EdgeInsetsGeometry containerPadding =
-        screenWidth > 600 ? const EdgeInsets.all(16) : const EdgeInsets.all(8);
+    screenWidth > 600 ? const EdgeInsets.all(16) : const EdgeInsets.all(8);
 
     return Card(
       color: Colors.white,
@@ -56,20 +116,20 @@ class _StudyBoxState extends State<StudyBox> {
                   children: [
                     widget.userPhotoURL.isNotEmpty
                         ? CircleAvatar(
-                            backgroundImage: NetworkImage(widget.userPhotoURL),
-                            radius: fontSizeTitle + 2,
-                          )
+                      backgroundImage: NetworkImage(widget.userPhotoURL),
+                      radius: fontSizeTitle + 2,
+                    )
                         : CircleAvatar(
-                            backgroundColor: Colors.white,
-                            radius: fontSizeTitle + 2,
-                            child: Text(
-                              widget.userName[0],
-                              style: TextStyle(
-                                fontSize: fontSizeTitle + 4,
-                                color: Color(0xFF050315),
-                              ),
-                            ),
-                          ),
+                      backgroundColor: Colors.white,
+                      radius: fontSizeTitle + 2,
+                      child: Text(
+                        widget.userName[0],
+                        style: TextStyle(
+                          fontSize: fontSizeTitle + 4,
+                          color: Color(0xFF050315),
+                        ),
+                      ),
+                    ),
                     const SizedBox(width: 10),
                     Expanded(
                       child: Text(
@@ -106,9 +166,7 @@ class _StudyBoxState extends State<StudyBox> {
                   child: SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
-                      onPressed: () {
-                        // Add functionality here
-                      },
+                      onPressed: _joinGroupChat,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFFff9f1c),
                         padding: EdgeInsets.symmetric(
@@ -161,8 +219,7 @@ class _StudyBoxState extends State<StudyBox> {
     );
   }
 
-
-void _showDeleteConfirmationDialog(BuildContext context) {
+  void _showDeleteConfirmationDialog(BuildContext context) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -178,22 +235,21 @@ void _showDeleteConfirmationDialog(BuildContext context) {
             ),
             TextButton(
               onPressed: () async {
-                 try {
-                      await FirebaseFirestore.instance
-                         .collection('study_sessions')
-                        .doc(widget.documentId)
-                        .delete();
-                        Navigator.pop(context); 
-                         ScaffoldMessenger.of(context).showSnackBar(
-                           const SnackBar(content: Text('Study session deleted!')),
-                         );
-
-
+                try {
+                  await FirebaseFirestore.instance
+                      .collection('study_sessions')
+                      .doc(widget.documentId)
+                      .delete();
+                  Navigator.pop(context);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Study session deleted!')),
+                  );
                 } catch (e) {
-                   print("Error deleting document: $e");
-                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Failed to delete. Please try again later.')),
-                );
+                  print("Error deleting document: $e");
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                        content: Text('Failed to delete. Please try again later.')),
+                  );
                 }
               },
               child: const Text("Delete"),
