@@ -82,7 +82,7 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
 Future<void> _loadUserData(String userId) async {
-  try {
+ // try {
     DocumentSnapshot userDoc =
         await _firestore.collection('users').doc(userId).get(); // Use userId here
 
@@ -97,13 +97,15 @@ Future<void> _loadUserData(String userId) async {
         _selectedYear = userDoc['year'];
         _selectedSection = userDoc['section'];
       });
+      
     } else {
       // Handle the case where the user document doesn't exist
       _showErrorMessage('User not found.');
     }
-  } catch (e) {
-    _showErrorMessage('Error loading user data: $e');
-  }
+ //} 
+ // catch (e) {
+ //   _showErrorMessage('Error loading user data: $e');
+ // }
 }
 
 
