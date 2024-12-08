@@ -40,20 +40,20 @@ class _StudyPageState extends State<StudyPage> {
     );
   }
 
-  // Updates the selected categories and refreshes the UI
-  void _onTagSelectionChanged(Map<String, bool> selectedCategories) {
-    setState(() {
-      // Update the entire map with the new selection state
-      _scategories.clear();
-      _scategories.addAll(selectedCategories);
+  // // Updates the selected categories and refreshes the UI
+  // void _onTagSelectionChanged(Map<String, bool> selectedCategories) {
+  //   setState(() {
+  //     // Update the entire map with the new selection state
+  //     _scategories.clear();
+  //     _scategories.addAll(selectedCategories);
 
-      // Create a list of selected category names
-      _selectedCategories = selectedCategories.entries
-          .where((entry) => entry.value) // Filter only selected entries
-          .map((entry) => entry.key) // Extract category names
-          .toList();
-    });
-  }
+  //     // Create a list of selected category names
+  //     _selectedCategories = selectedCategories.entries
+  //         .where((entry) => entry.value) // Filter only selected entries
+  //         .map((entry) => entry.key) // Extract category names
+  //         .toList();
+  //   });
+  // }
 
   // Opens a bottom sheet with the study form
   void _showStudyForm(BuildContext context) {

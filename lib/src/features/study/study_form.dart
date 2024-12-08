@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart'; // Import FirebaseAuth
+import 'package:firebase_auth/firebase_auth.dart'; 
 import 'package:flutter/material.dart';
- 
 
 class StudyForm extends StatefulWidget {
   const StudyForm({super.key});
@@ -133,7 +132,10 @@ class _StudyFormState extends State<StudyForm> {
                 // Submit button
                 Expanded(
                   child: ElevatedButton(
-                    onPressed: _submitForm,
+                    onPressed: () async {
+                      await _submitForm();
+                    },
+                    // onPressed: _submitForm,
                     style: ElevatedButton.styleFrom(
                       padding: EdgeInsets.symmetric(vertical: buttonHeight),
                       backgroundColor: const Color(0xFFff9f1c),
@@ -161,46 +163,50 @@ class _StudyFormState extends State<StudyForm> {
 
 
   Future<void> _submitForm() async {
-    final User? user = FirebaseAuth.instance.currentUser; // Get current user
+    final User? user = FirebaseAuth.instance.currentUser;
 
     if (user == null) {
       print("User not logged in!");
       return;
     }
 
-
     if (selectedTags.isEmpty) {
-       ScaffoldMessenger.of(context).showSnackBar(
-         const SnackBar(content: Text('Please select at least one location tag.')),
-       );
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please select at least one location tag.')),
+      );
       return;
     }
 
     try {
-      await FirebaseFirestore.instance.collection('study_sessions').add({
-        'userId': user.uid, 
+      final docRef = await FirebaseFirestore.instance.collection('study_sessions').add({
+        'userId': user.uid,
         'userName': user.displayName ?? 'Anonymous',
-         'userPhotoURL': user.photoURL ?? '', 
-
+        'userPhotoURL': user.photoURL ?? '',
         'tags': selectedTags.toList(),
         'description': descriptionController.text,
         'timestamp': FieldValue.serverTimestamp(),
+        'isVisible': true, // Add isVisible field, initially true
       });
 
+      final newDocumentId = docRef.id; // Get the ID of the newly created document
+
+      // Automatically join the group chat after successful submission
+      await StudyUtils.callJoinGroupChat(context, newDocumentId, user.uid, descriptionController.text);
+
       Navigator.of(context).pop();
-
-       ScaffoldMessenger.of(context).showSnackBar(
-         const SnackBar(content: Text('Study session submitted!')),
-       );
-
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Study session submitted and joined!')),
+      );
 
       setState(() {
         selectedTags.clear();
         descriptionController.clear();
       });
-      
     } catch (e) {
       print("Error submitting form: $e");
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error: $e')), // Show error message to user
+      );
     }
   }
 
@@ -210,4 +216,57 @@ class _StudyFormState extends State<StudyForm> {
     super.dispose();
   }
 }
-  
+
+
+
+
+
+
+
+
+
+
+  class StudyUtils {
+    // Public function callJoinGroupChat to call the private function _joinGroupChat
+    static Future<void> callJoinGroupChat(BuildContext context, String documentId, String userId, String description) async {
+      await _joinGroupChat(context, documentId, userId, description);
+    }
+
+  // Private _joinGroupChat
+  static Future<void> _joinGroupChat(BuildContext context, String documentId, String userId, String description) async {
+    try {
+      final groupDoc = FirebaseFirestore.instance.collection('group_chats').doc(documentId);
+      final groupData = await groupDoc.get();
+
+      if (!groupData.exists) {
+        await groupDoc.set({
+          'name': description,
+          'members': [userId],
+          'maxMembers': 5,
+          'createdBy': userId,
+        });
+      } else {
+        final members = List<String>.from(groupData['members'] ?? []);
+        if (members.length < groupData['maxMembers'] && !members.contains(userId)) {
+          members.add(userId);
+          await groupDoc.update({'members': members});
+        }
+      }
+
+      final updatedGroup = await groupDoc.get();
+      if (List<String>.from(updatedGroup['members']).length >= updatedGroup['maxMembers']) {
+         await FirebaseFirestore.instance
+              .collection('study_sessions')
+              .doc(documentId)
+              .update({'isVisible': false});     
+      }
+
+
+    } catch (e) {
+      print("Error joining group chat: $e");
+      ScaffoldMessenger.of(context).showSnackBar( // SnackBar here
+        SnackBar(content: Text('Error joining group chat: $e')),
+      );
+    }
+  }
+}

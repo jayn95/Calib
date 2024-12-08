@@ -1,6 +1,8 @@
+import 'package:Calib/src/features/study/study_form.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+
 
 class StudyBox extends StatefulWidget {
   final String userName;
@@ -25,67 +27,18 @@ class StudyBox extends StatefulWidget {
 }
 
 class _StudyBoxState extends State<StudyBox> {
-  bool _isHovered = false;
+  bool _isHovered = false; 
 
-  Future<void> _joinGroupChat() async {
-    final currentUser = FirebaseAuth.instance.currentUser;
-    if (currentUser == null) return;
 
-    try {
-      final groupDoc = FirebaseFirestore.instance
-          .collection('group_chats')
-          .doc(widget.documentId);
-
-      final groupData = await groupDoc.get();
-
-      if (!groupData.exists) {
-        // Create the group chat document if it doesn't exist
-        await groupDoc.set({
-          'name': widget.description,
-          'members': [currentUser.uid],
-          'maxMembers': 5,
-          'createdBy': currentUser.uid,
-        });
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Group chat created!')),
-        );
-      } else {
-        // Check if the group chat has space
-        final members = List<String>.from(groupData['members'] ?? []);
-        if (members.length < groupData['maxMembers']) {
-          if (!members.contains(currentUser.uid)) {
-            members.add(currentUser.uid);
-            await groupDoc.update({'members': members});
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Joined the group chat!')),
-            );
-          } else {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('You are already in this group!')),
-            );
-          }
-        } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Group chat is full!')),
-          );
-        }
-      }
-
-      // If the group chat is full, mark the study card as not visible
-      final updatedGroup = await groupDoc.get();
-      if (List<String>.from(updatedGroup['members'] ?? []).length >=
-          updatedGroup['maxMembers']) {
-        await FirebaseFirestore.instance
-            .collection('study_sessions')
-            .doc(widget.documentId)
-            .update({'isVisible': false});
-      }
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error: $e')),
-      );
-    }
+  void _handleJoinGroupChat() async {  // New named function
+  final currentUser = FirebaseAuth.instance.currentUser;
+  if (currentUser != null) {
+    await StudyUtils.callJoinGroupChat(context, widget.documentId, currentUser.uid, widget.description);
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Joined the group chat!')),
+    );
   }
+}
 
   @override
   Widget build(BuildContext context) {
@@ -166,7 +119,7 @@ class _StudyBoxState extends State<StudyBox> {
                   child: SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
-                      onPressed: _joinGroupChat,
+                      onPressed: _handleJoinGroupChat,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFFff9f1c),
                         padding: EdgeInsets.symmetric(
@@ -237,7 +190,7 @@ class _StudyBoxState extends State<StudyBox> {
               onPressed: () async {
                 try {
                   await FirebaseFirestore.instance
-                      .collection('study_sessions')
+                      .collection('study_sessions''group_chats')
                       .doc(widget.documentId)
                       .delete();
                   Navigator.pop(context);
