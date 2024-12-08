@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -7,7 +8,7 @@ import 'src/features/about/about_page.dart';
 import 'src/features/reviewer/reviewer_page.dart';
 // import 'features/screens/account_creationform.dart';
 import 'package:Calib/src/features/log-in/login_page.dart'; 
-import 'src/features/study/study_page.dart';
+import 'src/features/study/study_1.1_page.dart';
 import 'src/features/user_profile/user_profile.dart';
 
 Future<void> main() async {
@@ -55,7 +56,8 @@ class MyApp extends StatelessWidget {
           case '/reviewer':
             return MaterialPageRoute(builder: (_) => const Reviewer()); // mever used
           case '/user_profile':
-            return MaterialPageRoute(builder: (_) => const ProfilePage());
+            String userId = FirebaseAuth.instance.currentUser!.uid; // Or get the ID however you need
+            return MaterialPageRoute(builder: (_) => ProfilePage(userId: userId)); 
           case '/about':
             return MaterialPageRoute(builder: (_) => const AboutPage());
           default:

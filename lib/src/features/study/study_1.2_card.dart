@@ -1,7 +1,9 @@
-import 'package:Calib/src/features/study/study_form.dart';
+// import 'package:Calib/src/features/study/study_1.3_form.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:Calib/src/features/user_profile/user_profile.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 
 class StudyBox extends StatefulWidget {
@@ -29,16 +31,6 @@ class StudyBox extends StatefulWidget {
 class _StudyBoxState extends State<StudyBox> {
   bool _isHovered = false; 
 
-
-  void _handleJoinGroupChat() async {  // New named function
-  final currentUser = FirebaseAuth.instance.currentUser;
-  if (currentUser != null) {
-    await StudyUtils.callJoinGroupChat(context, widget.documentId, currentUser.uid, widget.description);
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Joined the group chat!')),
-    );
-  }
-}
 
   @override
   Widget build(BuildContext context) {
@@ -119,7 +111,10 @@ class _StudyBoxState extends State<StudyBox> {
                   child: SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
-                      onPressed: _handleJoinGroupChat,
+                      onPressed: () {
+                        _facebookdiabox();
+                      },
+                      // onPressed: _facebookdiabox,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFFff9f1c),
                         padding: EdgeInsets.symmetric(
@@ -212,4 +207,84 @@ class _StudyBoxState extends State<StudyBox> {
       },
     );
   }
+
+  void _facebookdiabox() async {
+    final currentUser = FirebaseAuth.instance.currentUser;
+    if (currentUser != null) {
+      try {
+        // Get the facebookLink of the study session creator
+        DocumentSnapshot userSnapshot = await FirebaseFirestore.instance
+            .collection('users')
+            .doc(widget.userId)
+            .get();
+        String facebookLink = userSnapshot.get('facebookLink') ?? '';
+
+        // Show the Facebook Link Dialog (passing necessary data)
+        _showFacebookLinkDialog(context, facebookLink, widget.userName, widget.userId);
+
+
+
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error $e')),
+        );
+      }
+    }
+  }
+  
+  void _showFacebookLinkDialog(BuildContext context, String facebookLink, String userName, String userId) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('$userName\'s Facebook Link'),
+          content: facebookLink.isNotEmpty
+              ? Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    InkWell(
+                      onTap: () async {
+                        final Uri url = Uri.parse(facebookLink);
+                        if (!await launchUrl(url,
+                            mode: LaunchMode.externalApplication)) {
+                          throw Exception('Could not launch $facebookLink');
+                        }
+                      },
+                      child: Text(
+                        facebookLink,
+                        style: const TextStyle(
+                          color: Colors.blue,
+                          decoration: TextDecoration.underline,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ProfilePage(userId: userId),
+                          ),
+                        );
+                      },
+                      child: const Text('Contact them now thru Facebook'),
+                    ),
+                  ],
+                )
+              : const Text('No Facebook link available.'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Close'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
 }

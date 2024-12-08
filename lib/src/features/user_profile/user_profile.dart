@@ -5,10 +5,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../shared_features/nav.dart';
 
 class ProfilePage extends StatefulWidget {
-  const ProfilePage({super.key});
+  final String userId; // Add userId parameter
+
+  const ProfilePage({super.key, required this.userId}); // Make it required
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
@@ -26,11 +29,21 @@ class _ProfilePageState extends State<ProfilePage> {
   File? _profileImage;
   String? _profileImageUrl;
 
+  bool get _canEdit {  // Add a getter for edit permission
+    return widget.userId == FirebaseAuth.instance.currentUser?.uid;
+  }
+
   // Text controllers
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _bioController = TextEditingController();
   final TextEditingController _aboutMeController = TextEditingController();
-  final TextEditingController _descriptionController = TextEditingController();
+  // final TextEditingController _descriptionController = TextEditingController();
+
+  @override
+    void initState() {
+    super.initState();
+    _loadUserData(widget.userId); // Pass the userId to _loadUserData
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -68,33 +81,30 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  @override
-  void initState() {
-    super.initState();
-    _loadUserData();
-  }
+Future<void> _loadUserData(String userId) async {
+  try {
+    DocumentSnapshot userDoc =
+        await _firestore.collection('users').doc(userId).get(); // Use userId here
 
-  Future<void> _loadUserData() async {
-    if (user != null) {
-      try {
-        DocumentSnapshot userDoc = await _firestore.collection('users').doc(user!.uid).get();
-        if (userDoc.exists) {
-          setState(() {
-            _usernameController.text = userDoc['displayName'] ?? user!.displayName ?? '';
-            _bioController.text = userDoc['bio'] ?? '';
-            _aboutMeController.text = userDoc['aboutMe'] ?? '';
-            _facebookLinkController.text = userDoc['facebookLink'] ?? '';
-            _profileImageUrl = userDoc['profileImageUrl'] ?? user?.photoURL;
-            _selectedProgram = userDoc['program'];
-            _selectedYear = userDoc['year'];
-            _selectedSection = userDoc['section'];
-          });
-        }
-      } catch (e) {
-        _showErrorMessage('Error loading user data: $e');
-      }
+    if (userDoc.exists) {
+      setState(() {
+        _usernameController.text = userDoc['displayName'] ?? ''; // No need for user!.displayName
+        _bioController.text = userDoc['bio'] ?? '';
+        _aboutMeController.text = userDoc['aboutMe'] ?? '';
+        _facebookLinkController.text = userDoc['facebookLink'] ?? '';
+        _profileImageUrl = userDoc['profileImageUrl'] ?? ''; // No need for user?.photoURL
+        _selectedProgram = userDoc['program'];
+        _selectedYear = userDoc['year'];
+        _selectedSection = userDoc['section'];
+      });
+    } else {
+      // Handle the case where the user document doesn't exist
+      _showErrorMessage('User not found.');
     }
+  } catch (e) {
+    _showErrorMessage('Error loading user data: $e');
   }
+}
 
 
   Future<void> _pickImage() async {
@@ -206,7 +216,7 @@ class _ProfilePageState extends State<ProfilePage> {
               child: const Text('Cancel'),
               onPressed: () {
                 Navigator.of(context).pop();
-                _loadUserData();
+                _loadUserData(widget.userId);
                 setState(() {
                   _isEditing = false;
                 });
@@ -374,18 +384,19 @@ Widget _buildDefaultProfileImage() {
               overflow: TextOverflow.ellipsis,
             ),
       const SizedBox(width: 10), // Adjust space between username and icon
-      IconButton(
-        icon: _isEditing ? const Icon(Icons.check) : const Icon(Icons.edit),
-        onPressed: () {
-          setState(() {
-            if (_isEditing) {
-              _showConfirmationDialog();
-            } else {
-              _isEditing = true;
-            }
-          });
-        },
-      ),
+        if (_canEdit) // Conditionally show the edit button // only current user can see edit
+          IconButton(
+            icon: _isEditing ? const Icon(Icons.check) : const Icon(Icons.edit),
+            onPressed: () {
+              setState(() {
+                if (_isEditing) {
+                  _showConfirmationDialog();
+                } else {
+                  _isEditing = true;
+                }
+              });
+            },
+          ),
     ],
   );
 }
@@ -501,18 +512,36 @@ Widget _buildBioSection() {
               ),
               maxLines: null, 
             )
-          : Text(
-              _facebookLinkController.text.isNotEmpty
-                  ? _facebookLinkController.text
-                  : 'Facebook Link',
-              style: const TextStyle(fontSize: 16, color: Color(0xFF050315)),
-              overflow: TextOverflow.ellipsis,
-            ),
+          : InkWell( // Use InkWell for tap functionality
+        onTap: () async {
+          if (_facebookLinkController.text.isNotEmpty) {
+            final Uri url = Uri.parse(_facebookLinkController.text);
+            if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
+              throw Exception('Could not launch $_facebookLinkController.text');
+            }
+          }
+        },
+        child: Text(
+          _facebookLinkController.text.isNotEmpty
+              ? _facebookLinkController.text
+              : 'Facebook Link',
+          style: TextStyle(
+            fontSize: 16,
+            color: _facebookLinkController.text.isNotEmpty
+                ? Colors.blue // Make clickable link blue
+                : const Color(0xFF050315),
+            decoration: _facebookLinkController.text.isNotEmpty
+                ? TextDecoration.underline // Underline the link
+                : null,
+          ),
+          overflow: TextOverflow.ellipsis,
+        ),
+      ),
       const SizedBox(height: 20),
-
     ],
   );
 }
+
 
   Widget _buildAboutMeSection() {
     return _isEditing

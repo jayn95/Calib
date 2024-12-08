@@ -3,8 +3,9 @@ import 'package:Calib/src/services/auth_service.dart';
 
 import 'package:Calib/src/features/about/about_page.dart';
 import 'package:Calib/src/features/log-in/login_page.dart';
-import 'package:Calib/src/features/study/study_page.dart';
+import 'package:Calib/src/features/study/study_1.1_page.dart';
 import 'package:Calib/src/features/user_profile/user_profile.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class NavBar extends StatelessWidget {
@@ -96,7 +97,14 @@ class NavBar extends StatelessWidget {
                       case '/about':
                         return const AboutPage();
                       case '/user_profile':
-                        return const ProfilePage();
+                          // Get the current user's ID:
+                        String? userId = FirebaseAuth.instance.currentUser?.uid;
+                        if (userId != null) {
+                            return ProfilePage(userId: userId);
+                          } else {
+                            // User is not logged in. Navigate to login page or handle as needed.
+                            return const LoginPage(); // Or another appropriate page
+                        }
                       default:
                         return const LoginPage();
                     }

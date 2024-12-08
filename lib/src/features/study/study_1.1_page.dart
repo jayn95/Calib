@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:Calib/src/services/auth_service.dart'; // Import for authentication service
 import '../../shared_features/nav.dart'; // Import for custom navigation bar
-import 'study_card.dart'; // Import for study session card widget
-import 'study_form.dart'; // Import for study session form widget
+import 'study_1.2_card.dart'; // Import for study session card widget
+import 'study_1.3_form.dart'; // Import for study session form widget
 import 'package:cloud_firestore/cloud_firestore.dart'; // Import for Firestore integration
 
 // Main page for managing study sessions
