@@ -104,7 +104,7 @@ class _StudyPageState extends State<StudyPage> {
                   const SizedBox(height: 80), // Add vertical spacing
                   Center(
                     child: Text(
-                      'Add your Text Here', // Placeholder text
+                      'Find Study Buddies', // Placeholder text
                       style: TextStyle(
                         fontSize: constraints.maxWidth > 1000 ? 28 : 20, // Responsive font size
                         color: Colors.black,
@@ -206,24 +206,25 @@ class _StudyPageState extends State<StudyPage> {
                         physics: const NeverScrollableScrollPhysics(), // Disable internal scrolling
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: constraints.maxWidth > 800
-                              ? 4 // 4 columns for wide screens
-                              : constraints.maxWidth > 500
-                              ? 3 // 3 columns for medium screens
-                              : 2, // 2 columns for smaller screens
+                          ? 4 // 4 columns for wide screens
+                          : 1, // Always 1 column for mobile and smaller screens
                           crossAxisSpacing: 20, // Spacing between columns
                           mainAxisSpacing: 20, // Spacing between rows
                           childAspectRatio: 1, // Keep items square
-                        ),
+                          ),
                         itemCount: snapshot.data!.docs.length, // Number of items to display
                         itemBuilder: (context, index) {
                           final doc = snapshot.data!.docs[index];
-                          return StudyBox(
-                            documentId: doc.id, // Pass document ID
-                            userId: doc['userId'], // Pass user ID
-                            userName: doc['userName'], // Pass user name
-                            userPhotoURL: doc['userPhotoURL'], // Pass user profile picture
-                            locationTag: doc['tags'].join(', '), // Display tags
-                            description: doc['description'], // Display description
+                          return Padding(
+                            padding: EdgeInsets.all(screenWidth > 600 ? 12.0 : 6.0), // Reduce padding on mobile
+                            child: StudyBox(
+                          documentId: doc.id, // Pass document ID
+                          userId: doc['userId'], // Pass user ID
+                          userName: doc['userName'], // Pass user name
+                          userPhotoURL: doc['userPhotoURL'], // Pass user profile picture
+                          locationTag: doc['tags'].join(', '), // Display tags
+                          description: doc['description'], // Display description
+                          ), 
                           );
                         },
                       );
@@ -239,7 +240,7 @@ class _StudyPageState extends State<StudyPage> {
       // Floating action button to add a new study session
       floatingActionButton: FloatingActionButton(
         onPressed: () => _showStudyForm(context), // Trigger form display
-        backgroundColor: const Color(0xFF3A6D8C), // Custom button color
+        backgroundColor: const Color(0xFFffbf69), // Custom button color
         child: const Icon(Icons.add), // Icon for the button
       ),
     );
