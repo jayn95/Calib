@@ -100,7 +100,7 @@ class _ReviewerState extends State<Reviewer> {
                   const SizedBox(height: 80), // Spacing at the top
                   Center(
                     child: Text(
-                      'Add your Text Here', // Placeholder text
+                      'Share and Discover', // Placeholder text
                       style: TextStyle(
                         fontSize: constraints.maxWidth > 1000 ? 28 : 20, // Responsive font size
                         color: Colors.black,
@@ -137,7 +137,7 @@ class _ReviewerState extends State<Reviewer> {
                                   return InputChip(
                                     label: Text(category, style: TextStyle(fontSize: tagFontSize)),
                                     selected: _selectedCategories.contains(category),
-                                    selectedColor: Colors.blue.shade100, // Selected state background
+                                    selectedColor: const Color.fromARGB(255, 252, 206, 147), // Selected state background
                                     backgroundColor: Colors.white, // Default background
                                     onSelected: (isSelected) {
                                       setState(() {
@@ -195,9 +195,7 @@ class _ReviewerState extends State<Reviewer> {
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: constraints.maxWidth > 800
                               ? 4
-                              : constraints.maxWidth > 500
-                              ? 3
-                              : 2,
+                              : 1,
                           crossAxisSpacing: 20, // Space between columns
                           mainAxisSpacing: 20, // Space between rows
                           childAspectRatio: 1, // Keep items square
@@ -205,7 +203,9 @@ class _ReviewerState extends State<Reviewer> {
                         itemCount: snapshot.data!.docs.length, // Number of items to display
                         itemBuilder: (context, index) {
                           final doc = snapshot.data!.docs[index];
-                          return ReviewerBox(
+                          return Padding(
+                            padding: EdgeInsets.all(screenWidth > 600 ? 12.0 : 6.0), // Reduce padding on mobile
+                            child: ReviewerBox(
                             documentId: doc.id, // Pass document ID
                             userId: doc['userId'] ?? '', // Default value for null
                             userName: doc['userName'] ?? '', // User name
@@ -214,7 +214,8 @@ class _ReviewerState extends State<Reviewer> {
                             description: doc['description'] ?? '', // Review description
                             file: doc['file'] ?? '', // Attached file
                             numOfLikes: doc['numOfLikes'] ?? 0, // Number of likes
-                          );
+                          ),
+                          ); 
                         },
                       );
                     },
@@ -229,7 +230,7 @@ class _ReviewerState extends State<Reviewer> {
       // Floating action button to add a new review
       floatingActionButton: FloatingActionButton(
         onPressed: () => _showReviewForm(context), // Trigger form display
-        backgroundColor: const Color(0xFF3A6D8C), // Custom button color
+        backgroundColor: const Color(0xFFffbf69), // Custom button color
         child: const Icon(Icons.add), // Plus icon for the button
       ),
     );

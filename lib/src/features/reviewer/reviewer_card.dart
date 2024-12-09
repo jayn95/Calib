@@ -48,14 +48,14 @@ class _CustomCardState extends State<ReviewerBox> {
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
-    double fontSizeLikes = screenWidth > 800 ? 16 : 14; // Increased font size for like count
-    double fontSizeDescription = screenWidth > 800 ? 15 : 10;
-    double fontSizeFile = screenWidth > 800 ? 15 : 8;
-    double buttonFontSize = screenWidth > 800 ? 30 : 22; // Increased size for like button
-    double fontSizeSubtitle = screenWidth > 600 ? 14 : 12;
-    double fontSizeTitle = screenWidth > 600 ? 16 : 14;
+    double fontSizeLikes = screenWidth > 800 ? 16 : 18; // Increased font size for like count
+    double fontSizeDescription = screenWidth > 800 ? 15 : 18;
+    double fontSizeFile = screenWidth > 800 ? 15 : 18;
+    double buttonFontSize = screenWidth > 600 ? 14 : 18; // Increased size for like button
+    double fontSizeSubtitle = screenWidth > 600 ? 14 : 16;
+    double fontSizeTitle = screenWidth > 600 ? 16 : 18;
     EdgeInsetsGeometry containerPadding =
-        screenWidth > 600 ? const EdgeInsets.all(16) : const EdgeInsets.all(8);
+        screenWidth > 600 ? const EdgeInsets.all(16) : const EdgeInsets.all(12);
 
     return Card(
       color: Colors.white,
@@ -184,48 +184,54 @@ class _CustomCardState extends State<ReviewerBox> {
           ),
 
           // Like Icon and Count - Centered at the bottom inside a container
-          Positioned(
-            bottom: 20,
-            left: 0,
-            right: 0,
-            child: Center(
-              child: Container(
-                padding: const EdgeInsets.symmetric(vertical: 3, horizontal: 7),
-                width: screenWidth * 0.12, // Make the container wider
-                decoration: BoxDecoration(
-                  color: Color(0xffff9f1c).withOpacity(0.8),
-                  borderRadius: BorderRadius.circular(25),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.3),
-                      blurRadius: 4,
-                      spreadRadius: 2,
-                    ),
-                  ],
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    IconButton(
-                      onPressed: _toggleLike,
-                      icon: Icon(
-                        _isLiked ? Icons.thumb_up : Icons.thumb_up_off_alt,
-                        color: _isLiked ? Colors.white : Colors.white,
-                        size: buttonFontSize, // Increased size for like button
-                      ),
-                    ),
-                    Text(
-                      '${widget.numOfLikes}',
-                      style: TextStyle(
-                        fontSize: fontSizeLikes, // Increased font size for like count
-                        color: Colors.white,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+      Positioned(
+  left: 0,
+  right: 0,
+  bottom: 17, 
+  child: MouseRegion(
+    onEnter: (_) => setState(() => _isHovered = true),
+    onExit: (_) => setState(() => _isHovered = false),
+    child: Center(
+      child: Container(
+        width: 200, //button
+        child: ElevatedButton(
+          onPressed: _toggleLike, // Toggles like state on press
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Color(0xFFff9f1c),
+            padding: EdgeInsets.symmetric(
+              vertical: screenWidth > 600 ? 12 : 8,
+              horizontal: screenWidth > 600 ? 20 : 10,
+            ),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(13),
             ),
           ),
+          child: FittedBox(
+            fit: BoxFit.scaleDown,
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(
+                  _isLiked ? Icons.thumb_up : Icons.thumb_up_off_alt,
+                  color: Colors.white,
+                  size: buttonFontSize, // Icon size
+                ),
+                const SizedBox(width: 8),
+                Text(
+                  '${widget.numOfLikes}',
+                  style: TextStyle(
+                    fontSize: fontSizeLikes, // Font size for like count
+                    color: Colors.white,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    ),
+  ),
+),
 
           // Delete button only for the current user's post
           if (widget.userId == FirebaseAuth.instance.currentUser?.uid)
