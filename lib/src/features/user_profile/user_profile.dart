@@ -17,28 +17,23 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  // Firebase and service instances
   final User? user = FirebaseAuth.instance.currentUser;
-  // final AuthService _authService = AuthService();
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  // State variables
   bool _isEditing = false;
   File? _profileImage;
   String? _profileImageUrl;
 
-  bool get _canEdit {  // Add a getter for edit permission
+  bool get _canEdit {
     return widget.userId == FirebaseAuth.instance.currentUser?.uid;
   }
 
-  // Text controllers
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _bioController = TextEditingController();
   final TextEditingController _aboutMeController = TextEditingController();
-  // final TextEditingController _descriptionController = TextEditingController();
 
   @override
-    void initState() {
+  void initState() {
     super.initState();
     _loadUserData(widget.userId); // Pass the userId to _loadUserData
   }
@@ -70,6 +65,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         : _buildDesktopLayout();
                     },
                   ),
+                  // Static profile data display
                 ],
               ),
             ),
@@ -79,77 +75,25 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-Future<void> _loadUserData(String userId) async {
- // try {
+  Future<void> _loadUserData(String userId) async {
     DocumentSnapshot userDoc =
-        await _firestore.collection('users').doc(userId).get(); // Use userId here
+        await _firestore.collection('users').doc(userId).get();
 
     if (userDoc.exists) {
       setState(() {
-        _usernameController.text = userDoc['displayName'] ?? ''; // No need for user!.displayName
+        _usernameController.text = userDoc['displayName'] ?? ''; 
         _bioController.text = userDoc['bio'] ?? '';
         _aboutMeController.text = userDoc['aboutMe'] ?? '';
+        _profileImageUrl = userDoc['profileImageUrl'] ?? ''; 
         _facebookLinkController.text = userDoc['facebookLink'] ?? '';
-        _profileImageUrl = userDoc['profileImageUrl'] ?? ''; // No need for user?.photoURL
         _selectedProgram = userDoc['program'];
         _selectedYear = userDoc['year'];
         _selectedSection = userDoc['section'];
       });
-      
     } else {
-      // Handle the case where the user document doesn't exist
       _showErrorMessage('User not found.');
     }
- //} 
- // catch (e) {
- //   _showErrorMessage('Error loading user data: $e');
- // }
-}
-
-
-  // Future<void> _pickImage() async {
-  //   final pickedFile = await ImagePicker().pickImage(
-  //     source: ImageSource.gallery,
-  //     maxWidth: 1000,
-  //     maxHeight: 1000,
-  //     imageQuality: 80,
-  //   );
-
-  //   if (pickedFile != null) {
-  //     setState(() {
-  //       _profileImage = File(pickedFile.path);
-  //     });
-  //     await _uploadProfileImage();
-  //   }
-  // }
-
-  // Future<void> _uploadProfileImage() async {
-  //   if (_profileImage != null && user != null) {
-  //     try {
-  //       // Upload image to Firebase Storage
-  //       final storageRef = _storage
-  //           .ref()
-  //           .child('profile_images')
-  //           .child('${user!.uid}.jpg');
-        
-  //       await storageRef.putFile(_profileImage!);
-  //       final imageUrl = await storageRef.getDownloadURL();
-
-  //       // Save image URL to Firestore
-  //       await _firestore.collection('users').doc(user!.uid).update({
-  //         'profileImageUrl': imageUrl,
-  //       });
-
-  //       setState(() {
-  //         _profileImageUrl = imageUrl;
-  //       });
-
-  //       _showSuccessMessage('Profile image updated successfully');
-  //     } catch (e) {
-  //       _showErrorMessage('Error uploading image: $e');
-  //     }
-  //   }
-  // }
+  }
 
   Future<void> _saveChanges() async {
     if (user != null) {
@@ -180,7 +124,6 @@ Future<void> _loadUserData(String userId) async {
           _showValidationError('Please select a section.');
           return;
         }
-
 
         // Update Firestore document
         await _firestore.collection('users').doc(user!.uid).update({
@@ -272,12 +215,11 @@ Future<void> _loadUserData(String userId) async {
       _buildProfileImage(),
       const SizedBox(height: 20),
       _buildProfileHeader(true),
-      const SizedBox(height: 5),
+      const SizedBox(height: 15),
       _buildBioSection(),  // Ensure bio section is included
-      const SizedBox(height: 30),
+      const SizedBox(height: 15),
       _buildAboutMeSection(),
-      const SizedBox(height: 30),
-      _buildActionButtons(true),
+      const SizedBox(height: 15),
     ],
   );
 }
@@ -289,14 +231,13 @@ Widget _buildDesktopLayout() {
       crossAxisAlignment: CrossAxisAlignment.center, // Center horizontally
       children: [
         _buildProfileImage(),
-        const SizedBox(height: 15), 
+        const SizedBox(height: 20), 
         _buildProfileHeader(false),
-        const SizedBox(height: 10), 
+        const SizedBox(height: 15), 
         _buildBioSection(), // Bio section on desktop
-        const SizedBox(height: 10),
+        const SizedBox(height: 15),
         _buildAboutMeSection(),
-        const SizedBox(height: 30),
-        _buildActionButtons(false),
+        const SizedBox(height: 15),
       ],
     ),
   );
@@ -489,7 +430,7 @@ Widget _buildBioSection() {
           : 'Year and Section', // Placeholder text when no selection
       style: const TextStyle(fontSize: 16, color: Color(0xFF050315)),
     ),
-      const SizedBox(height: 5),
+      const SizedBox(height: 15),
 
       _isEditing
           ? TextField(
@@ -526,7 +467,7 @@ Widget _buildBioSection() {
           overflow: TextOverflow.ellipsis,
         ),
       ),
-      const SizedBox(height: 20),
+      const SizedBox(height: 15),
     ],
   );
 }
@@ -564,7 +505,7 @@ Widget _buildBioSection() {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              const SizedBox(height: 10),
+              const SizedBox(height: 15),
               Text(
                 _aboutMeController.text.isNotEmpty 
                   ? _aboutMeController.text 
@@ -575,55 +516,6 @@ Widget _buildBioSection() {
           ),
         );
   }
-
-  Widget _buildActionButtons(bool isMobile) {
-    void _handleShareReviewer() {
-      // TODO: Implement share reviewer functionality //
-      _showSuccessMessage('Share Reviewer feature coming soon');
-    }
-
-    void _handleStudyGroup() {
-      // TODO: Implement study group functionality //
-      _showSuccessMessage('Study Group feature coming soon');
-    }
-
-    Widget createButton(String text, VoidCallback onPressed) {
-      return ElevatedButton(
-        onPressed: onPressed,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: const Color(0xFFff9f1c),
-          padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
-          foregroundColor: Color(0xFF050315),
-          minimumSize: isMobile 
-            ? const Size(double.infinity, 50) 
-            : const Size(0, 50),
-        ),
-        child: Text(text),
-      );
-    }
-
-     // Only show the buttons when not editing
-  if (_isEditing) {
-    return SizedBox.shrink(); // Return an empty widget when editing
-  }
-
-    return isMobile
-      ? Column(
-          children: [
-            createButton('Share a Reviewer', _handleShareReviewer),
-            const SizedBox(height: 12),
-            createButton('Look for Study Group', _handleStudyGroup),
-          ],
-        )
-  : Row(
-          mainAxisAlignment: MainAxisAlignment.center, // Center the buttons in desktop
-          children: [
-            createButton('Share a Reviewer', _handleShareReviewer),
-            const SizedBox(width: 10),
-            createButton('Look for Study Group', _handleStudyGroup),
-          ],
-        );
-}
 
   @override
   void dispose() {
