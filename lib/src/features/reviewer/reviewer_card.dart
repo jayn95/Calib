@@ -52,6 +52,7 @@ class _CustomCardState extends State<ReviewerBox> {
     double fontSizeDescription = screenWidth > 800 ? 15 : 10;
     double fontSizeFile = screenWidth > 800 ? 15 : 8;
     double buttonFontSize = screenWidth > 800 ? 30 : 22; // Increased size for like button
+    double fontSizeSubtitle = screenWidth > 600 ? 14 : 12;
     double fontSizeTitle = screenWidth > 600 ? 16 : 14;
     EdgeInsetsGeometry containerPadding =
         screenWidth > 600 ? const EdgeInsets.all(16) : const EdgeInsets.all(8);
@@ -103,7 +104,14 @@ class _CustomCardState extends State<ReviewerBox> {
                   ],
                 ),
                 const SizedBox(height: 8),
-
+                Text(
+                  widget.subjectTag,
+                  style: TextStyle(
+                    fontSize: fontSizeSubtitle,
+                    color: Colors.grey[600],
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                ),
                 // Description with expand/collapse functionality
                 GestureDetector(
                   onTap: () {
