@@ -185,7 +185,7 @@ class _StudyBoxState extends State<StudyBox> {
               onPressed: () async {
                 try {
                   await FirebaseFirestore.instance
-                      .collection('study_sessions''group_chats')
+                      .collection('study_sessions' /* 'group_chats' */)
                       .doc(widget.documentId)
                       .delete();
                   Navigator.pop(context);
