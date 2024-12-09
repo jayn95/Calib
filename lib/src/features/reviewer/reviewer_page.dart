@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:Calib/src/features/reviewer/review_form.dart'; // Import for the review form widget
 import 'package:Calib/src/services/auth_service.dart'; // Import for authentication service
 import 'package:cloud_firestore/cloud_firestore.dart'; // Import for Firestore integration
@@ -28,8 +30,8 @@ class _ReviewerState extends State<Reviewer> {
   void _scrollLeft() {
     _scrollController.animateTo(
       _scrollController.offset - 100,
-      duration: const Duration(milliseconds: 300), // Smooth animation duration
-      curve: Curves.easeInOut, // Smooth easing curve
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
     );
   }
 
@@ -37,24 +39,9 @@ class _ReviewerState extends State<Reviewer> {
   void _scrollRight() {
     _scrollController.animateTo(
       _scrollController.offset + 100,
-      duration: const Duration(milliseconds: 300), // Smooth animation duration
-      curve: Curves.easeInOut, // Smooth easing curve
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
     );
-  }
-
-  // Updates the selected categories and refreshes the UI
-  void _onTagSelectionChanged(Map<String, bool> selectedCategories) {
-    setState(() {
-      // Clear and update categories
-      _categories.clear();
-      _categories.addAll(selectedCategories);
-
-      // Update the selected categories list
-      _selectedCategories = selectedCategories.entries
-          .where((entry) => entry.value) // Filter only selected entries
-          .map((entry) => entry.key) // Extract category names
-          .toList();
-    });
   }
 
   // Opens a bottom sheet with the review form
@@ -184,19 +171,21 @@ class _ReviewerState extends State<Reviewer> {
                         ? FirebaseFirestore.instance
                         .collection('reviewer_sessions')
                         .where('tags', arrayContainsAny: _selectedCategories)
-                        .orderBy('timestamp', descending: true)
                         .snapshots()
                         : FirebaseFirestore.instance
                         .collection('reviewer_sessions')
-                        .orderBy('timestamp', descending: true)
                         .snapshots(),
                     builder: (context, snapshot) {
+                      if (snapshot.hasError) {
+                        return const Text('Something went wrong $e'); // Display error message
+                      }
+
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const Center(child: CircularProgressIndicator()); // Show loading indicator
+                        return const CircularProgressIndicator(); // Show loading indicator
                       }
 
                       if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-                        return const Center(child: Text('No review sessions found.')); // No data message
+                        return const Text('No study sessions found.'); // Handle empty state
                       }
 
                       // Display reviewer sessions in a responsive grid
@@ -243,41 +232,6 @@ class _ReviewerState extends State<Reviewer> {
         backgroundColor: const Color(0xFF3A6D8C), // Custom button color
         child: const Icon(Icons.add), // Plus icon for the button
       ),
-    );
-  }
-}
-
-// Stateless widget to display tags as chips
-class ReviewerTags extends StatelessWidget {
-  final Map<String, bool> reviewerCategories; // Map of categories
-  final ValueChanged<Map<String, bool>> onSelectionChanged; // Callback for selection changes
-
-  const ReviewerTags({
-    super.key,
-    required this.reviewerCategories,
-    required this.onSelectionChanged,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Wrap(
-      spacing: 10.0, // Space between chips
-      children: reviewerCategories.keys.map((String key) {
-        return FilterChip(
-          label: Text(key),
-          selected: reviewerCategories[key]!, // Chip selected state
-          onSelected: (bool selected) {
-            final newCategories = Map<String, bool>.from(reviewerCategories);
-            newCategories[key] = selected; // Update category selection
-            onSelectionChanged(newCategories); // Notify parent
-          },
-          selectedColor: const Color(0xFF3A6D8C), // Selected chip background color
-          backgroundColor: Colors.white, // Default chip background color
-          labelStyle: TextStyle(
-            color: reviewerCategories[key]! ? Colors.white : Colors.black, // Chip text color
-          ),
-        );
-      }).toList(),
     );
   }
 }
