@@ -4,7 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:Calib/src/features/user_profile/user_profile.dart';
 import 'package:url_launcher/url_launcher.dart';
-
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class StudyBox extends StatefulWidget {
   final String userName;
@@ -29,8 +29,7 @@ class StudyBox extends StatefulWidget {
 }
 
 class _StudyBoxState extends State<StudyBox> {
-  bool _isHovered = false; 
-
+  bool _isHovered = false;
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +39,7 @@ class _StudyBoxState extends State<StudyBox> {
     double fontSizeDescription = screenWidth > 800 ? 15 : 10;
     double buttonFontSize = screenWidth > 600 ? 14 : 12;
     EdgeInsetsGeometry containerPadding =
-    screenWidth > 600 ? const EdgeInsets.all(16) : const EdgeInsets.all(8);
+        screenWidth > 600 ? const EdgeInsets.all(16) : const EdgeInsets.all(8);
 
     return Card(
       color: Colors.white,
@@ -61,20 +60,20 @@ class _StudyBoxState extends State<StudyBox> {
                   children: [
                     widget.userPhotoURL.isNotEmpty
                         ? CircleAvatar(
-                      backgroundImage: NetworkImage(widget.userPhotoURL),
-                      radius: fontSizeTitle + 2,
-                    )
+                            backgroundImage: NetworkImage(widget.userPhotoURL),
+                            radius: fontSizeTitle + 2,
+                          )
                         : CircleAvatar(
-                      backgroundColor: Colors.white,
-                      radius: fontSizeTitle + 2,
-                      child: Text(
-                        widget.userName[0],
-                        style: TextStyle(
-                          fontSize: fontSizeTitle + 4,
-                          color: Color(0xFF050315),
-                        ),
-                      ),
-                    ),
+                            backgroundColor: Colors.white,
+                            radius: fontSizeTitle + 2,
+                            child: Text(
+                              widget.userName[0],
+                              style: TextStyle(
+                                fontSize: fontSizeTitle + 4,
+                                color: Color(0xFF050315),
+                              ),
+                            ),
+                          ),
                     const SizedBox(width: 10),
                     Expanded(
                       child: Text(
@@ -114,7 +113,6 @@ class _StudyBoxState extends State<StudyBox> {
                       onPressed: () {
                         _facebookdiabox();
                       },
-                      // onPressed: _facebookdiabox,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFFff9f1c),
                         padding: EdgeInsets.symmetric(
@@ -128,9 +126,10 @@ class _StudyBoxState extends State<StudyBox> {
                       child: FittedBox(
                         fit: BoxFit.scaleDown,
                         child: Text(
-                          'UP FOR IT',
+                          'JOIN',
                           style: TextStyle(
                             fontSize: buttonFontSize,
+                            fontWeight: FontWeight.bold,
                             color: Colors.white,
                           ),
                         ),
@@ -185,7 +184,7 @@ class _StudyBoxState extends State<StudyBox> {
               onPressed: () async {
                 try {
                   await FirebaseFirestore.instance
-                      .collection('study_sessions' /* 'group_chats' */)
+                      .collection('study_sessions') // Make sure collection name is correct
                       .doc(widget.documentId)
                       .delete();
                   Navigator.pop(context);
@@ -221,9 +220,6 @@ class _StudyBoxState extends State<StudyBox> {
 
         // Show the Facebook Link Dialog (passing necessary data)
         _showFacebookLinkDialog(context, facebookLink, widget.userName, widget.userId);
-
-
-
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Error $e')),
@@ -231,46 +227,46 @@ class _StudyBoxState extends State<StudyBox> {
       }
     }
   }
-  
+
   void _showFacebookLinkDialog(BuildContext context, String facebookLink, String userName, String userId) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('$userName\'s Facebook Link'),
+          title: Text('Connect with $userName'),
           content: facebookLink.isNotEmpty
               ? Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
+                    const SizedBox(height: 16),
                     InkWell(
                       onTap: () async {
                         final Uri url = Uri.parse(facebookLink);
-                        if (!await launchUrl(url,
-                            mode: LaunchMode.externalApplication)) {
+                        if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
                           throw Exception('Could not launch $facebookLink');
                         }
                       },
-                      child: Text(
-                        facebookLink,
-                        style: const TextStyle(
-                          color: Colors.blue,
-                          decoration: TextDecoration.underline,
+                      child: Center(
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min, 
+                          children: [
+                            FaIcon(
+                              FontAwesomeIcons.facebook, 
+                              color: Colors.blue,
+                              size: 30.0, 
+                              ),
+                              const SizedBox(width: 8),
+                              Text(
+                                'Facebook Profile',
+                                style: const TextStyle(
+                                  color: Colors.blue,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
                     ),
                     const SizedBox(height: 16),
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ProfilePage(userId: userId),
-                          ),
-                        );
-                      },
-                      child: const Text('Their User Profile'),
-                    ),
                   ],
                 )
               : const Text('No Facebook link available.'),
@@ -286,5 +282,4 @@ class _StudyBoxState extends State<StudyBox> {
       },
     );
   }
-
 }
