@@ -3,8 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:image_picker/image_picker.dart';
+// import 'package:image_picker/image_picker.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../shared_features/nav.dart';
 
@@ -22,7 +21,6 @@ class _ProfilePageState extends State<ProfilePage> {
   final User? user = FirebaseAuth.instance.currentUser;
   // final AuthService _authService = AuthService();
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  final FirebaseStorage _storage = FirebaseStorage.instance;
 
   // State variables
   bool _isEditing = false;
@@ -109,49 +107,49 @@ Future<void> _loadUserData(String userId) async {
 }
 
 
-  Future<void> _pickImage() async {
-    final pickedFile = await ImagePicker().pickImage(
-      source: ImageSource.gallery,
-      maxWidth: 1000,
-      maxHeight: 1000,
-      imageQuality: 80,
-    );
+  // Future<void> _pickImage() async {
+  //   final pickedFile = await ImagePicker().pickImage(
+  //     source: ImageSource.gallery,
+  //     maxWidth: 1000,
+  //     maxHeight: 1000,
+  //     imageQuality: 80,
+  //   );
 
-    if (pickedFile != null) {
-      setState(() {
-        _profileImage = File(pickedFile.path);
-      });
-      await _uploadProfileImage();
-    }
-  }
+  //   if (pickedFile != null) {
+  //     setState(() {
+  //       _profileImage = File(pickedFile.path);
+  //     });
+  //     await _uploadProfileImage();
+  //   }
+  // }
 
-  Future<void> _uploadProfileImage() async {
-    if (_profileImage != null && user != null) {
-      try {
-        // Upload image to Firebase Storage
-        final storageRef = _storage
-            .ref()
-            .child('profile_images')
-            .child('${user!.uid}.jpg');
+  // Future<void> _uploadProfileImage() async {
+  //   if (_profileImage != null && user != null) {
+  //     try {
+  //       // Upload image to Firebase Storage
+  //       final storageRef = _storage
+  //           .ref()
+  //           .child('profile_images')
+  //           .child('${user!.uid}.jpg');
         
-        await storageRef.putFile(_profileImage!);
-        final imageUrl = await storageRef.getDownloadURL();
+  //       await storageRef.putFile(_profileImage!);
+  //       final imageUrl = await storageRef.getDownloadURL();
 
-        // Save image URL to Firestore
-        await _firestore.collection('users').doc(user!.uid).update({
-          'profileImageUrl': imageUrl,
-        });
+  //       // Save image URL to Firestore
+  //       await _firestore.collection('users').doc(user!.uid).update({
+  //         'profileImageUrl': imageUrl,
+  //       });
 
-        setState(() {
-          _profileImageUrl = imageUrl;
-        });
+  //       setState(() {
+  //         _profileImageUrl = imageUrl;
+  //       });
 
-        _showSuccessMessage('Profile image updated successfully');
-      } catch (e) {
-        _showErrorMessage('Error uploading image: $e');
-      }
-    }
-  }
+  //       _showSuccessMessage('Profile image updated successfully');
+  //     } catch (e) {
+  //       _showErrorMessage('Error uploading image: $e');
+  //     }
+  //   }
+  // }
 
   Future<void> _saveChanges() async {
     if (user != null) {
@@ -306,7 +304,6 @@ Widget _buildDesktopLayout() {
 
   Widget _buildProfileImage() {
   return GestureDetector(
-    onTap: _isEditing ? _pickImage : null,
     child: Container(
       width: 130.0,
       height: 130.0,
@@ -367,24 +364,14 @@ Widget _buildDefaultProfileImage() {
   return Row(
     mainAxisAlignment: MainAxisAlignment.center,  // Change to center
     children: [
-      _isEditing
-          ? Expanded(
-              child: TextField(
-                controller: _usernameController,
-                decoration: const InputDecoration(
-                  labelText: 'Name',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-            )
-          : Text(
-              _usernameController.text.isNotEmpty
-                  ? _usernameController.text
-                  : 'No Name',
-              style: const TextStyle(
-                  fontSize: 24, fontWeight: FontWeight.bold),
-              overflow: TextOverflow.ellipsis,
-            ),
+          Text(
+            _usernameController.text.isNotEmpty
+                ? _usernameController.text
+                : 'No Name',
+            style: const TextStyle(
+                fontSize: 24, fontWeight: FontWeight.bold),
+            overflow: TextOverflow.ellipsis,
+          ),
       const SizedBox(width: 10), // Adjust space between username and icon
         if (_canEdit) // Conditionally show the edit button // only current user can see edit
           IconButton(

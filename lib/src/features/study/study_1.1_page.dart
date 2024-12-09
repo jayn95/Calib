@@ -184,7 +184,9 @@ class _StudyPageState extends State<StudyPage> {
                         .collection('study_sessions')
                         .where('tags', arrayContainsAny: _selectedCategories) // Filter by selected tags
                         .snapshots()
-                        : FirebaseFirestore.instance.collection('study_sessions').snapshots(), // Fetch all sessions if no tags are selected
+                        : FirebaseFirestore.instance
+                        .collection('study_sessions')
+                        .snapshots(), // Fetch all sessions if no tags are selected
                     builder: (context, snapshot) {
                       if (snapshot.hasError) {
                         return const Text('Something went wrong'); // Display error message

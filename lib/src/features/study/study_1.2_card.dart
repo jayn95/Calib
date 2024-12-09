@@ -269,7 +269,7 @@ class _StudyBoxState extends State<StudyBox> {
                           ),
                         );
                       },
-                      child: const Text('Contact them now thru Facebook'),
+                      child: const Text('Their User Profile'),
                     ),
                   ],
                 )
