@@ -46,7 +46,6 @@ class _StudyFormState extends State<StudyForm> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            // Choose location tags
             Text(
               'Choose location(s):',
               style: TextStyle(

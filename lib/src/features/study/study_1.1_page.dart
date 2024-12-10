@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:Calib/src/services/auth_service.dart'; // Import for authentication service
-import '../../shared_features/nav.dart'; // Import for custom navigation bar
-import 'study_1.2_card.dart'; // Import for study session card widget
-import 'study_1.3_form.dart'; // Import for study session form widget
-import 'package:cloud_firestore/cloud_firestore.dart'; // Import for Firestore integration
+import 'package:Calib/src/services/auth_service.dart'; 
+import '../../shared_features/nav.dart'; 
+import 'study_1.2_card.dart'; 
+import 'study_1.3_form.dart'; 
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 // Main page for managing study sessions
 class StudyPage extends StatefulWidget {
@@ -39,21 +39,6 @@ class _StudyPageState extends State<StudyPage> {
       curve: Curves.easeInOut, // Smooth easing curve
     );
   }
-
-  // // Updates the selected categories and refreshes the UI
-  // void _onTagSelectionChanged(Map<String, bool> selectedCategories) {
-  //   setState(() {
-  //     // Update the entire map with the new selection state
-  //     _scategories.clear();
-  //     _scategories.addAll(selectedCategories);
-
-  //     // Create a list of selected category names
-  //     _selectedCategories = selectedCategories.entries
-  //         .where((entry) => entry.value) // Filter only selected entries
-  //         .map((entry) => entry.key) // Extract category names
-  //         .toList();
-  //   });
-  // }
 
   // Opens a bottom sheet with the study form
   void _showStudyForm(BuildContext context) {

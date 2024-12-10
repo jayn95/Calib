@@ -1,4 +1,3 @@
-// import 'package:Calib/src/features/study/study_1.3_form.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -116,7 +115,6 @@ class _StudyBoxState extends State<StudyBox> {
                       onPressed: () {
                         _facebookdiabox();
                       },
-                      // onPressed: _facebookdiabox,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFFff9f1c),
                         padding: EdgeInsets.symmetric(
@@ -187,7 +185,7 @@ class _StudyBoxState extends State<StudyBox> {
               onPressed: () async {
                 try {
                   await FirebaseFirestore.instance
-                      .collection('study_sessions' /* 'group_chats' */)
+                      .collection('study_sessions')
                       .doc(widget.documentId)
                       .delete();
                   Navigator.pop(context);
