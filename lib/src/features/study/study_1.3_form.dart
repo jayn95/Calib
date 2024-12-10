@@ -11,7 +11,16 @@ class StudyForm extends StatefulWidget {
 
 class _StudyFormState extends State<StudyForm> {
   Set<String> selectedTags = {};
-  final List<String> tags = ["CICT Shed", "Coop", "Mini Forest", "Library"];
+  final List<String> tags = [
+  'CICT Shed',
+  'Coop',
+  'Mini Forest',
+  'Library',
+  'Med Gym',
+  'Quezon hall',
+  'BINHI',
+  'Administration building',
+  ];
 
   final TextEditingController descriptionController = TextEditingController();
 

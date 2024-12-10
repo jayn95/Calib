@@ -98,12 +98,14 @@ class _StudyBoxState extends State<StudyBox> {
                   overflow: TextOverflow.ellipsis,
                 ),
                 const SizedBox(height: 8),
+                
                 Text(
                   widget.description,
                   style: TextStyle(
                     fontSize: fontSizeDescription,
                     color: Color(0xFF050315),
                   ),
+                  maxLines: 3,
                   overflow: TextOverflow.ellipsis,
                 ),
                 const Spacer(),
@@ -207,30 +209,37 @@ class _StudyBoxState extends State<StudyBox> {
       },
     );
   }
+void _facebookdiabox() async {
+  final currentUser = FirebaseAuth.instance.currentUser;
+  if (currentUser != null) {
+    try {
+      DocumentSnapshot userSnapshot = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(widget.userId)
+          .get();
 
-  void _facebookdiabox() async {
-    final currentUser = FirebaseAuth.instance.currentUser;
-    if (currentUser != null) {
-      try {
-        // Get the facebookLink of the study session creator
-        DocumentSnapshot userSnapshot = await FirebaseFirestore.instance
-            .collection('users')
-            .doc(widget.userId)
-            .get();
-        String facebookLink = userSnapshot.get('facebookLink') ?? '';
+      String facebookLink = ''; // Initialize to an empty string
 
-        // Show the Facebook Link Dialog (passing necessary data)
-        _showFacebookLinkDialog(context, facebookLink, widget.userName, widget.userId);
+      if (userSnapshot.exists) { // Check if the document exists
+        final data = userSnapshot.data() as Map<String, dynamic>; // Get the data map
 
-
-
-      } catch (e) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error $e')),
-        );
+        if (data.containsKey('facebookLink')) { // Now check if 'facebookLink' exists IN the data map
+          facebookLink = data['facebookLink'] as String; // Access the link safely
+        }
       }
+
+
+      // Now, call the dialog.  It will handle the empty string case
+      _showFacebookLinkDialog(context, facebookLink, widget.userName, widget.userId);
+
+    } catch (e) {
+      // Handle other potential errors (e.g., network issues)
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error: $e')), // More general error message
+      );
     }
   }
+}
   
   void _showFacebookLinkDialog(BuildContext context, String facebookLink, String userName, String userId) {
     showDialog(
